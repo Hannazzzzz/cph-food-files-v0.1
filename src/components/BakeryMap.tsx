@@ -42,7 +42,23 @@ const BakeryMap = ({ selectedBakeryName }: BakeryMapProps) => {
   }, [selectedBakeryName]);
 
   return (
-    <div className="w-full h-[400px] rounded-lg overflow-hidden border border-border">
+    <div
+      data-map-theme="cph-food-files"
+      className="w-full h-[400px] rounded-lg overflow-hidden border border-border"
+    >
+      {/*
+        Leaflet tiles are raster images, so we approximate a retro pale-yellow + pale-grey look
+        via CSS filters (no change to map functionality).
+      */}
+      <style>{`
+        [data-map-theme="cph-food-files"] .leaflet-container {
+          background: hsl(var(--background));
+        }
+        [data-map-theme="cph-food-files"] .leaflet-tile {
+          filter: grayscale(1) contrast(0.9) brightness(1.15);
+          opacity: 0.92;
+        }
+      `}</style>
       <MapContainer
         ref={mapRef as any}
         center={[55.6761, 12.5683]}
