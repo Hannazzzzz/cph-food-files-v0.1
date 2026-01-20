@@ -9,8 +9,19 @@ export interface Bakery {
   phone: string | null;
 }
 
-// Map postal codes to neighbourhood names
+// Map postal codes to neighbourhood names based on official Danish postal code directory
+// København K (1000-1499) = Indre By/Christianshavn
+// København V (1500-1799) = Vesterbro/City center
+// Frederiksberg C (1800-1999) = Frederiksberg
+// Frederiksberg (2000) = Frederiksberg
+// København Ø (2100) = Østerbro
+// København N (2200) = Nørrebro
+// København S (2300) = Amager
+// København NV (2400) = Nordvest
+// København SV (2450) = Sydhavn
+// Valby (2500) = Valby
 const postalCodeToNeighbourhood: Record<string, string> = {
+  // København K - Indre By
   '1000': 'Indre By',
   '1050': 'Indre By',
   '1100': 'Indre By',
@@ -21,29 +32,82 @@ const postalCodeToNeighbourhood: Record<string, string> = {
   '1300': 'Indre By',
   '1350': 'Indre By',
   '1366': 'Indre By',
-  '1400': 'Indre By',
+  // København K - Christianshavn
+  '1400': 'Christianshavn',
+  '1401': 'Christianshavn',
+  '1402': 'Christianshavn',
+  '1403': 'Christianshavn',
+  '1404': 'Christianshavn',
+  '1405': 'Christianshavn',
+  '1406': 'Christianshavn',
+  '1407': 'Christianshavn',
+  '1408': 'Christianshavn',
+  '1409': 'Christianshavn',
+  '1410': 'Christianshavn',
+  '1411': 'Christianshavn',
+  '1412': 'Christianshavn',
+  '1413': 'Christianshavn',
+  '1414': 'Christianshavn',
+  '1415': 'Christianshavn',
+  '1416': 'Christianshavn',
+  '1417': 'Christianshavn',
+  '1418': 'Christianshavn',
+  '1419': 'Christianshavn',
+  '1420': 'Christianshavn',
+  '1421': 'Christianshavn',
+  '1422': 'Christianshavn',
+  '1423': 'Christianshavn',
+  '1424': 'Christianshavn',
+  '1425': 'Christianshavn',
+  '1426': 'Christianshavn',
+  '1427': 'Christianshavn',
+  '1428': 'Christianshavn',
+  '1429': 'Christianshavn',
+  '1430': 'Christianshavn',
+  '1431': 'Christianshavn',
+  // København K - Refshaleøen (part of Christianshavn area)
   '1432': 'Refshaleøen',
+  '1433': 'Refshaleøen',
+  // København K - continued
+  '1434': 'Christianshavn',
+  '1435': 'Christianshavn',
+  '1436': 'Christianshavn',
+  '1437': 'Christianshavn',
+  '1438': 'Christianshavn',
+  '1439': 'Christianshavn',
+  '1440': 'Christianshavn',
+  '1441': 'Christianshavn',
   '1450': 'Indre By',
   '1500': 'Indre By',
   '1550': 'Indre By',
+  // København V - Vesterbro
   '1600': 'Vesterbro',
   '1620': 'Vesterbro',
   '1650': 'Vesterbro',
   '1700': 'Vesterbro',
   '1704': 'Vesterbro',
   '1750': 'Vesterbro',
-  '1799': 'Islands Brygge',
+  '1799': 'Vesterbro', // Carlsberg area - officially København V
+  // Frederiksberg C
   '1800': 'Frederiksberg',
   '1850': 'Frederiksberg',
   '1879': 'Frederiksberg',
   '1900': 'Frederiksberg',
+  // Frederiksberg
   '2000': 'Frederiksberg',
+  // København Ø - Østerbro
   '2100': 'Østerbro',
+  // Nordhavn (part of Østerbro, newer development)
   '2150': 'Nordhavn',
+  // København N - Nørrebro
   '2200': 'Nørrebro',
+  // København S - Amager
   '2300': 'Amager',
+  // København NV - Nordvest
   '2400': 'Nordvest',
+  // København SV - Sydhavn
   '2450': 'Sydhavn',
+  // Valby
   '2500': 'Valby',
 };
 
@@ -94,7 +158,7 @@ export const bakeries: Bakery[] = [
   { name: "Rondo", address: "Sjællandsgade 7, 2200 København", neighbourhood: "Nørrebro", rating: 4.5, reviewsCount: 273, url: "https://www.google.com/maps/place/Rondo/data=!4m2!3m1!1s0x4652537ae0a512b3:0x72b66bc2215f7ca4", website: "http://www.rondo.dk/", phone: "55 55 09 90" },
   { name: "Hart (Refshaleøen)", address: "Refshalevej 159A, 1432 København", neighbourhood: "Refshaleøen", rating: 4.6, reviewsCount: 290, url: "https://www.google.com/maps/place/Hart/data=!4m2!3m1!1s0x465253b36c793463:0x34b60e6a98842084", website: "https://hartbageri.com/", phone: null },
   { name: "Hart Bageri (Vesterbro)", address: "Istedgade 61, 1650 København", neighbourhood: "Vesterbro", rating: 4.6, reviewsCount: 139, url: "https://www.google.com/maps/place/Hart+Bageri/data=!4m2!3m1!1s0x46525390d674bd49:0x4ca2fd380ff2429d", website: "http://hartbageri.com/", phone: null },
-  { name: "Københavns Bageri", address: "Flaskehalsen 22, 1799 København", neighbourhood: "Islands Brygge", rating: 4.6, reviewsCount: 247, url: "https://www.google.com/maps/place/K%C3%B8benhavns+Bageri/data=!4m2!3m1!1s0x4652532c32841b61:0x289933757748ada0", website: "https://www.earnest-eats.dk/projects-1/koebenhavnsbageri", phone: null },
+  { name: "Københavns Bageri", address: "Flaskehalsen 22, 1799 København", neighbourhood: "Vesterbro", rating: 4.6, reviewsCount: 247, url: "https://www.google.com/maps/place/K%C3%B8benhavns+Bageri/data=!4m2!3m1!1s0x4652532c32841b61:0x289933757748ada0", website: "https://www.earnest-eats.dk/projects-1/koebenhavnsbageri", phone: null },
   { name: "Juno the bakery", address: "Århusgade 48, 2100 København", neighbourhood: "Østerbro", rating: 4.7, reviewsCount: 3642, url: "https://www.google.com/maps/place/Juno+the+bakery/data=!4m2!3m1!1s0x465252f035a89c17:0x11c1cda65903316", website: "https://www.junothebakery.com/", phone: null },
   { name: "Alice Ice Cream & Coffee", address: "Markmandsgade 1, 2300 København", neighbourhood: "Amager", rating: 4.5, reviewsCount: 569, url: "https://www.google.com/maps/place/Alice+Ice+Cream+%26+Coffee/data=!4m2!3m1!1s0x4652533874b25553:0x24522c2aa3dffe0d", website: "https://www.earnest-eats.dk/projects-1/alice-63gjd", phone: null },
   { name: "Andersen Bakery (Ørestad)", address: "Ørestads Blvd. 49A, 2300 København", neighbourhood: "Amager", rating: 4.7, reviewsCount: 420, url: "https://www.google.com/maps/place/Andersen+Bakery/data=!4m2!3m1!1s0x46525598ff0d609b:0x41a63611b0520691", website: "https://andersen-bakery-eu.dk/", phone: "33 75 07 35" },
