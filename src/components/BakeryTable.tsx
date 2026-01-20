@@ -1,3 +1,4 @@
+import { useState, useMemo } from 'react';
 import { bakeries } from '@/data/bakeries';
 import {
   Table,
@@ -8,17 +9,56 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+type SortColumn = 'name' | 'neighbourhood';
+type SortDirection = 'asc' | 'desc';
+
 const BakeryTable = () => {
+  const [sortColumn, setSortColumn] = useState<SortColumn>('name');
+  const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
+
+  const sortedBakeries = useMemo(() => {
+    return [...bakeries].sort((a, b) => {
+      const aValue = a[sortColumn].toLowerCase();
+      const bValue = b[sortColumn].toLowerCase();
+      const comparison = aValue.localeCompare(bValue);
+      return sortDirection === 'asc' ? comparison : -comparison;
+    });
+  }, [sortColumn, sortDirection]);
+
+  const handleSort = (column: SortColumn) => {
+    if (sortColumn === column) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortColumn(column);
+      setSortDirection('asc');
+    }
+  };
+
+  const getSortIndicator = (column: SortColumn) => {
+    if (sortColumn !== column) return null;
+    return sortDirection === 'asc' ? ' ↑' : ' ↓';
+  };
+
   return (
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="pl-0">Bakery</TableHead>
-          <TableHead>Neighbourhood</TableHead>
+          <TableHead 
+            className="pl-0 cursor-pointer hover:text-foreground select-none"
+            onClick={() => handleSort('name')}
+          >
+            Bakery{getSortIndicator('name')}
+          </TableHead>
+          <TableHead 
+            className="cursor-pointer hover:text-foreground select-none"
+            onClick={() => handleSort('neighbourhood')}
+          >
+            Neighbourhood{getSortIndicator('neighbourhood')}
+          </TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {bakeries.map((bakery, index) => (
+        {sortedBakeries.map((bakery, index) => (
           <TableRow key={index}>
             <TableCell className="pl-0">
               <a 
