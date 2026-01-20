@@ -1,18 +1,26 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import { Icon, type Map as LeafletMap, type Marker as LeafletMarker } from 'leaflet';
+import { DivIcon, type Map as LeafletMap, type Marker as LeafletMarker } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { bakeries } from '@/data/bakeries';
 
-// Custom marker icon
-const markerIcon = new Icon({
-  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41],
+// Custom marker icon (colored using design tokens)
+const markerIcon = new DivIcon({
+  className: 'cph-food-files-marker',
+  html: `
+    <svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path
+        d="M14 27C14 27 23 18.5 23 11.2C23 6.1 19 2 14 2C9 2 5 6.1 5 11.2C5 18.5 14 27 14 27Z"
+        fill="hsl(var(--primary))"
+        stroke="hsl(var(--background))"
+        stroke-width="2"
+      />
+      <circle cx="14" cy="11.5" r="4" fill="hsl(var(--background))" />
+    </svg>
+  `,
+  iconSize: [28, 28],
+  iconAnchor: [14, 27],
+  popupAnchor: [0, -26],
 });
 
 type BakeryMapProps = {
@@ -44,7 +52,7 @@ const BakeryMap = ({ selectedBakeryName }: BakeryMapProps) => {
   return (
     <div
       data-map-theme="cph-food-files"
-      className="w-full h-[400px] rounded-lg overflow-hidden border border-border"
+      className="w-full h-[400px] rounded-lg overflow-hidden"
     >
       {/*
         Leaflet tiles are raster images, so we approximate a retro pale-yellow + pale-grey look
@@ -57,6 +65,16 @@ const BakeryMap = ({ selectedBakeryName }: BakeryMapProps) => {
         [data-map-theme="cph-food-files"] .leaflet-tile {
           filter: grayscale(1) contrast(0.9) brightness(1.15);
           opacity: 0.92;
+        }
+
+        [data-map-theme="cph-food-files"] .cph-food-files-marker {
+          background: transparent;
+          border: 0;
+        }
+
+        [data-map-theme="cph-food-files"] .cph-food-files-marker svg {
+          display: block;
+          filter: drop-shadow(0 1px 0 hsl(var(--border))) drop-shadow(0 2px 4px hsl(var(--foreground) / 0.18));
         }
       `}</style>
       <MapContainer
