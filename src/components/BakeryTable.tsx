@@ -12,7 +12,11 @@ import {
 type SortColumn = 'name' | 'neighbourhood';
 type SortDirection = 'asc' | 'desc';
 
-const BakeryTable = () => {
+type BakeryTableProps = {
+  onSelectBakery?: (name: string) => void;
+};
+
+const BakeryTable = ({ onSelectBakery }: BakeryTableProps) => {
   const [sortColumn, setSortColumn] = useState<SortColumn>('neighbourhood');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
 
@@ -61,14 +65,24 @@ const BakeryTable = () => {
         {sortedBakeries.map((bakery, index) => (
           <TableRow key={index}>
             <TableCell className="pl-0 text-left">
-              <a 
-                href={bakery.website || bakery.url} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="font-medium"
-              >
-                {bakery.name}
-              </a>
+              {onSelectBakery ? (
+                <button
+                  type="button"
+                  onClick={() => onSelectBakery(bakery.name)}
+                  className="font-medium text-primary hover:underline"
+                >
+                  {bakery.name}
+                </button>
+              ) : (
+                <a
+                  href={bakery.website || bakery.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium"
+                >
+                  {bakery.name}
+                </a>
+              )}
             </TableCell>
             <TableCell>{bakery.neighbourhood}</TableCell>
           </TableRow>

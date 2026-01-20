@@ -1,9 +1,13 @@
 import '@fontsource/press-start-2p';
+import { useRef, useState } from 'react';
 import BakeryTable from '@/components/BakeryTable';
 import BakeryMap from '@/components/BakeryMap';
 import { bakeries } from '@/data/bakeries';
 
 const Index = () => {
+  const [selectedBakeryName, setSelectedBakeryName] = useState<string | null>(null);
+  const mapSectionRef = useRef<HTMLDivElement | null>(null);
+
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
       <hr style={{ borderColor: 'black', borderWidth: '2px' }} />
@@ -36,11 +40,16 @@ const Index = () => {
         Where to get the best Fastelavnsbolle ({bakeries.length} places)
       </h2>
       
-      <BakeryTable />
+      <BakeryTable
+        onSelectBakery={(name) => {
+          setSelectedBakeryName(name);
+          mapSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }}
+      />
       
       
-      <div style={{ marginTop: '30px' }}>
-        <BakeryMap />
+      <div ref={mapSectionRef} style={{ marginTop: '30px' }}>
+        <BakeryMap selectedBakeryName={selectedBakeryName} />
       </div>
       
       <hr style={{ margin: '30px 0' }} />

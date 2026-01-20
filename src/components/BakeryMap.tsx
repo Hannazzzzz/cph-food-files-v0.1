@@ -1,5 +1,6 @@
+import { useEffect, useMemo, useRef } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import { Icon } from 'leaflet';
+import { Icon, type Map as LeafletMap, type Marker as LeafletMarker } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { bakeries } from '@/data/bakeries';
 
@@ -14,15 +15,36 @@ const markerIcon = new Icon({
   shadowSize: [41, 41],
 });
 
-const BakeryMap = () => {
-  // Filter bakeries that have valid coordinates
-  const bakeriesWithCoords = bakeries.filter(
-    (bakery) => bakery.latitude !== null && bakery.longitude !== null
+type BakeryMapProps = {
+  selectedBakeryName?: string | null;
+};
+
+const BakeryMap = ({ selectedBakeryName }: BakeryMapProps) => {
+  const mapRef = useRef<LeafletMap | null>(null);
+  const markerRefs = useRef<Record<string, LeafletMarker | null>>({});
+
+  const bakeriesWithCoords = useMemo(
+    () => bakeries.filter((bakery) => bakery.latitude !== null && bakery.longitude !== null),
+    []
   );
+
+  useEffect(() => {
+    if (!selectedBakeryName) return;
+
+    const marker = markerRefs.current[selectedBakeryName];
+    if (!marker) return;
+
+    marker.openPopup();
+    const map = mapRef.current;
+    if (!map) return;
+
+    map.setView(marker.getLatLng(), Math.max(map.getZoom(), 14), { animate: true });
+  }, [selectedBakeryName]);
 
   return (
     <div className="w-full h-[400px] rounded-lg overflow-hidden border border-border">
       <MapContainer
+        ref={mapRef as any}
         center={[55.6761, 12.5683]}
         zoom={12}
         style={{ height: '100%', width: '100%' }}
@@ -32,11 +54,14 @@ const BakeryMap = () => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {bakeriesWithCoords.map((bakery, index) => (
-          <Marker 
-            key={index} 
-            position={[bakery.latitude!, bakery.longitude!]} 
+        {bakeriesWithCoords.map((bakery) => (
+          <Marker
+            key={bakery.name}
+            position={[bakery.latitude!, bakery.longitude!]}
             icon={markerIcon}
+            ref={(marker) => {
+              markerRefs.current[bakery.name] = marker;
+            }}
           >
             <Popup>
               <div className="text-sm">
@@ -53,7 +78,7 @@ const BakeryMap = () => {
                     href={bakery.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs text-blue-600 hover:underline"
+                    className="text-xs text-primary/80 hover:underline"
                   >
                     View on Google Maps
                   </a>
