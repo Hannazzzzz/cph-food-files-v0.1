@@ -77,7 +77,7 @@ const BakeryMap = () => {
                 >
                   {bakery.name}
                 </a>
-                <p className="text-muted-foreground mt-1">{bakery.neighbourhood}</p>
+                
                 <a
                   href={bakery.url}
                   target="_blank"
