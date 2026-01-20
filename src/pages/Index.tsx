@@ -1,5 +1,6 @@
 import '@fontsource/press-start-2p';
 import BakeryTable from '@/components/BakeryTable';
+import BakeryMap from '@/components/BakeryMap';
 import { bakeries } from '@/data/bakeries';
 
 const Index = () => {
@@ -36,6 +37,12 @@ const Index = () => {
       </h2>
       
       <BakeryTable />
+      
+      <h2 style={{ fontSize: '18px', fontWeight: 'normal', marginTop: '30px', marginBottom: '15px' }}>
+        Map
+      </h2>
+      
+      <BakeryMap />
       
       <hr style={{ margin: '30px 0' }} />
       
