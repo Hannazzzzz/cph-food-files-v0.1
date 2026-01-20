@@ -13,16 +13,14 @@ const BakeryTable = () => {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Name</TableHead>
+          <TableHead className="pl-0">Bakery</TableHead>
           <TableHead>Neighbourhood</TableHead>
-          <TableHead className="text-right">Rating</TableHead>
-          <TableHead className="text-right">Reviews</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {bakeries.map((bakery, index) => (
           <TableRow key={index}>
-            <TableCell>
+            <TableCell className="pl-0">
               <a 
                 href={bakery.url} 
                 target="_blank" 
@@ -33,12 +31,6 @@ const BakeryTable = () => {
               </a>
             </TableCell>
             <TableCell>{bakery.neighbourhood}</TableCell>
-            <TableCell className="text-right">
-              {bakery.rating ? `${bakery.rating}★` : '–'}
-            </TableCell>
-            <TableCell className="text-right">
-              {bakery.reviewsCount ? bakery.reviewsCount.toLocaleString() : '–'}
-            </TableCell>
           </TableRow>
         ))}
       </TableBody>
