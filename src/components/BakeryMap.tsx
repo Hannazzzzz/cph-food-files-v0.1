@@ -77,15 +77,16 @@ const BakeryMap = () => {
                 >
                   {bakery.name}
                 </a>
-                
-                <a
-                  href={bakery.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs text-blue-600 hover:underline"
-                >
-                  View on Google Maps
-                </a>
+                <div className="mt-1">
+                  <a
+                    href={bakery.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-blue-600 hover:underline"
+                  >
+                    View on Google Maps
+                  </a>
+                </div>
               </div>
             </Popup>
           </Marker>
