@@ -83,6 +83,13 @@ const BakeryMap = ({ selectedBakeryName }: BakeryMapProps) => {
         [data-map-theme="cph-food-files"] .leaflet-popup-content a:hover {
           color: hsl(var(--primary) / 0.8);
         }
+
+        [data-map-theme="cph-food-files"] .leaflet-control-attribution {
+          color: hsl(var(--muted-foreground));
+        }
+        [data-map-theme="cph-food-files"] .leaflet-control-attribution a {
+          color: hsl(var(--muted-foreground));
+        }
       `}</style>
       <MapContainer
         ref={mapRef as any}
