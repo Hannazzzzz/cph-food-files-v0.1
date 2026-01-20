@@ -33,7 +33,7 @@ const Index = () => {
       <p style={{ margin: '20px 0' }}>
         <strong>Last updated:</strong> January 2026<br />
         <strong>Curated by:</strong> Hanna<br />
-        <Link to="/about" style={{ color: '#666' }}>About this website</Link>
+        <Link to="/about">About this website</Link>
       </p>
       
       <hr />
