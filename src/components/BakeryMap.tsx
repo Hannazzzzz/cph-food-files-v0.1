@@ -52,10 +52,11 @@ const BakeryMap = ({ selectedBakeryName }: BakeryMapProps) => {
       */}
       <style>{`
         [data-map-theme="cph-food-files"] .leaflet-container {
-          background: hsl(60 100% 95%);
+          background: hsl(var(--background));
         }
         [data-map-theme="cph-food-files"] .leaflet-tile {
-          filter: grayscale(1) sepia(0.4) hue-rotate(10deg) saturate(0.6) brightness(1.1) contrast(0.85);
+          filter: grayscale(1) contrast(0.9) brightness(1.15);
+          opacity: 0.92;
         }
       `}</style>
       <MapContainer
