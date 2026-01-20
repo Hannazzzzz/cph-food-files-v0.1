@@ -38,11 +38,10 @@ const Index = () => {
       
       <BakeryTable />
       
-      <h2 style={{ fontSize: '18px', fontWeight: 'normal', marginTop: '30px', marginBottom: '15px' }}>
-        Map
-      </h2>
       
-      <BakeryMap />
+      <div style={{ marginTop: '30px' }}>
+        <BakeryMap />
+      </div>
       
       <hr style={{ margin: '30px 0' }} />
       
