@@ -1,5 +1,5 @@
 name,keywords,address,latitude,longitude,rating,reviews_count,price_level,phone,website,hours,permanently_closed,description,original_tags,original_comment,url,status
-Leckerbaer,Cake shop,"Ryesgade 118, 2100 København Ø ",,,4.6,241,,28 40 48 64,http://leckerbaer.dk/,,No,,,,https://www.google.com/maps/place/Leckerbaer/data=!4m2!3m1!1s0x465252fc9a472a3b:0x1c69782f50b04f89,success
+Leckerbaer,Cake shop,"Ryesgade 118, 2100 København Ø ",55.697754,12.5742417,4.6,241,,28 40 48 64,http://leckerbaer.dk/,,No,,,,https://www.google.com/maps/place/Leckerbaer/data=!4m2!3m1!1s0x465252fc9a472a3b:0x1c69782f50b04f89,success
 Andersen & Maillard,Coffee shop,"Antwerpengade 10, 2150 København ",55.7072013,12.5966835,4.4,561,,33 32 23 22,https://www.andersenmaillard.dk/,,No,,,,https://www.google.com/maps/place/Andersen+%26+Maillard/data=!4m2!3m1!1s0x46525340d60ad511:0xb0f67808cae024e9,success
 Collective Bakery,Bakery,"Nørrebrogade 176, 2200 København ",55.6967659,12.5455458,4.3,141,,31 36 75 33,https://www.collectivebakery.dk/,,No,,,,https://www.google.com/maps/place/Collective+Bakery/data=!4m2!3m1!1s0x4652537daeda7453:0x4b4a8ef15339e121,success
 Bageriet Benji,Pastry shop,"Mjølnerparken 52, 2200 København N ",55.7038803,12.5417881,4.5,190,,,https://www.earnest-eats.dk/projects-1/benji,,No,,,,https://www.google.com/maps/place/Bageriet+Benji/data=!4m2!3m1!1s0x465253a73dacd217:0x8f04631805fab283,success
@@ -64,3 +64,4 @@ Daniali & Schiøtz Bageri,"Bakery; service
 7; sourdough
 5","Falkoner Alle 36, 2000 Frederiksberg ",55.6819882,12.5350209,4.5,263,,50 58 98 29,https://instagram.com/danialischioetz?igshid=MzRlODBiNWFlZA==,,No,,,,https://www.google.com/maps/place/Daniali+%26+Schi%C3%B8tz+Bageri/data=!4m2!3m1!1s0x465253bb0c39fbc9:0xd8893949ef4fd779,success
 Ard Bakery,Bakery,"Peter Bangs Vej 95, 2000 Frederiksberg ",55.678465,12.501709,4.4,223,,31 31 38 24,http://www.ardbakery.dk/,,No,,,,https://www.google.com/maps/place/Ard+Bakery/data=!4m2!3m1!1s0x465253c30d306aa7:0x96cdb8507c16e76c,success
+
