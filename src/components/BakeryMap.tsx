@@ -96,7 +96,7 @@ const BakeryMap = ({ selectedBakeryName }: BakeryMapProps) => {
         center={[55.6761, 12.5683]}
         zoom={12}
         style={{ height: '100%', width: '100%' }}
-        scrollWheelZoom={true}
+        scrollWheelZoom={false}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
