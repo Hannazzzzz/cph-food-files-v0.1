@@ -62,7 +62,7 @@ const BakeryTable = () => {
           <TableRow key={index}>
             <TableCell className="pl-0 text-left">
               <a 
-                href={bakery.url} 
+                href={bakery.website || bakery.url} 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="font-medium"
