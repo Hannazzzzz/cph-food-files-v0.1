@@ -1,5 +1,6 @@
 import '@fontsource/press-start-2p';
 import { useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import BakeryTable from '@/components/BakeryTable';
 import BakeryMap from '@/components/BakeryMap';
 import { bakeries } from '@/data/bakeries';
@@ -59,6 +60,8 @@ const Index = () => {
           CPH Food Files | My answers to 'Hanna, where do you go for ...?'<br />
           Only 5/5 recommended places according to me, updated when I feel like it. Information was correct at the time of posting. No further promises
         </em>
+        <br />
+        <Link to="/about" style={{ color: '#666' }}>About this website</Link>
       </p>
       
       <hr />
