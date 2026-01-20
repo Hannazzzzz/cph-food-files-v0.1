@@ -13,7 +13,7 @@ type SortColumn = 'name' | 'neighbourhood';
 type SortDirection = 'asc' | 'desc';
 
 const BakeryTable = () => {
-  const [sortColumn, setSortColumn] = useState<SortColumn>('name');
+  const [sortColumn, setSortColumn] = useState<SortColumn>('neighbourhood');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
 
   const sortedBakeries = useMemo(() => {
