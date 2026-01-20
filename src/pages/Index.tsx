@@ -41,7 +41,7 @@ const Index = () => {
       
       <p style={{ fontSize: '14px', color: '#666', marginTop: '20px' }}>
         <em>
-          | My answers to 'Hanna, where do you go for ...?'<br />
+          CPH Food Files — | My answers to 'Hanna, where do you go for ...?'<br />
           Only 5/5 recommended places according to me, updated when I feel like it. Information was correct at the time of posting. No further promises
         </em>
       </p>
