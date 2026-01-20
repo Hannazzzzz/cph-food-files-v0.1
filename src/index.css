@@ -1,0 +1,113 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CPH Food Files V0 - Authentic 90s retro web aesthetic */
+
+@layer base {
+  :root {
+    /* Classic 90s web colors - pale yellow background */
+    --background: 60 100% 95%;
+    --foreground: 0 0% 0%;
+    
+    --card: 60 100% 95%;
+    --card-foreground: 0 0% 0%;
+    
+    --popover: 60 100% 95%;
+    --popover-foreground: 0 0% 0%;
+    
+    /* Classic hard blue links */
+    --primary: 240 100% 40%;
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 60 50% 85%;
+    --secondary-foreground: 0 0% 0%;
+    
+    --muted: 60 30% 90%;
+    --muted-foreground: 0 0% 30%;
+    
+    --accent: 60 50% 85%;
+    --accent-foreground: 0 0% 0%;
+    
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --border: 0 0% 0%;
+    --input: 60 30% 80%;
+    --ring: 240 100% 40%;
+    
+    --radius: 0px;
+    
+    /* Sidebar - retro styled */
+    --sidebar-background: 60 100% 92%;
+    --sidebar-foreground: 0 0% 0%;
+    --sidebar-primary: 240 100% 40%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 60 50% 85%;
+    --sidebar-accent-foreground: 0 0% 0%;
+    --sidebar-border: 0 0% 0%;
+    --sidebar-ring: 240 100% 40%;
+  }
+
+  .dark {
+    --background: 60 100% 95%;
+    --foreground: 0 0% 0%;
+    --card: 60 100% 95%;
+    --card-foreground: 0 0% 0%;
+    --popover: 60 100% 95%;
+    --popover-foreground: 0 0% 0%;
+    --primary: 240 100% 40%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 60 50% 85%;
+    --secondary-foreground: 0 0% 0%;
+    --muted: 60 30% 90%;
+    --muted-foreground: 0 0% 30%;
+    --accent: 60 50% 85%;
+    --accent-foreground: 0 0% 0%;
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 0%;
+    --input: 60 30% 80%;
+    --ring: 240 100% 40%;
+    --sidebar-background: 60 100% 92%;
+    --sidebar-foreground: 0 0% 0%;
+    --sidebar-primary: 240 100% 40%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 60 50% 85%;
+    --sidebar-accent-foreground: 0 0% 0%;
+    --sidebar-border: 0 0% 0%;
+    --sidebar-ring: 240 100% 40%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
+  a {
+    color: hsl(240 100% 40%);
+    text-decoration: underline;
+    font-weight: bold;
+  }
+  
+  a:visited {
+    color: hsl(300 100% 30%);
+  }
+  
+  a:hover {
+    color: hsl(0 100% 45%);
+  }
+  
+  /* Pixel font for logos */
+  .pixel-font {
+    font-family: 'Press Start 2P', cursive;
+  }
+}
