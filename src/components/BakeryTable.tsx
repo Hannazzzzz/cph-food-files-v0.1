@@ -60,7 +60,7 @@ const BakeryTable = () => {
       <TableBody>
         {sortedBakeries.map((bakery, index) => (
           <TableRow key={index}>
-            <TableCell className="pl-0">
+            <TableCell className="pl-0 text-left">
               <a 
                 href={bakery.url} 
                 target="_blank" 
