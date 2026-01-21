@@ -23,9 +23,6 @@
     /* Electric pink for active states #FF1493 = hsl(328, 100%, 54%) */
     --accent: 328 100% 54%;
     --accent-foreground: 0 0% 100%;
-
-    /* Deep orange hover for map markers #FF4500 = hsl(16, 100%, 50%) */
-    --marker-hover: 16 100% 50%;
     
     --secondary: 45 33% 85%;
     --secondary-foreground: 0 0% 0%;
@@ -65,8 +62,6 @@
     --primary-foreground: 0 0% 100%;
     --accent: 328 100% 54%;
     --accent-foreground: 0 0% 100%;
-
-    --marker-hover: 16 100% 50%;
     --secondary: 45 33% 85%;
     --secondary-foreground: 0 0% 0%;
     --muted: 45 20% 88%;

@@ -71,14 +71,6 @@ const BakeryMap = ({ selectedBakeryName }: BakeryMapProps) => {
           filter: drop-shadow(0 1px 0 hsl(var(--border))) drop-shadow(0 2px 4px hsl(var(--foreground) / 0.18));
         }
 
-        /* Marker hover color */
-        [data-map-theme="cph-food-files"] .cph-food-files-marker svg circle {
-          transition: fill 140ms ease;
-        }
-        [data-map-theme="cph-food-files"] .cph-food-files-marker:hover svg circle {
-          fill: hsl(var(--marker-hover));
-        }
-
         /* Popup typography + link colors (match global page styles) */
         [data-map-theme="cph-food-files"] .leaflet-popup-content-wrapper,
         [data-map-theme="cph-food-files"] .leaflet-popup-content {
