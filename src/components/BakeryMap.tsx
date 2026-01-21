@@ -92,6 +92,8 @@ const BakeryMap = ({ selectedBakeryName }: BakeryMapProps) => {
         [data-map-theme="cph-food-files"] .leaflet-popup-content-wrapper,
         [data-map-theme="cph-food-files"] .leaflet-popup-content {
           font-family: inherit;
+           font-size: 14px;
+           line-height: 1.6;
           color: hsl(var(--foreground));
         }
 
