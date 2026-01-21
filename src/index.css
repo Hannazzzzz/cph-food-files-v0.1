@@ -23,6 +23,9 @@
     /* Electric pink for active states #FF1493 = hsl(328, 100%, 54%) */
     --accent: 328 100% 54%;
     --accent-foreground: 0 0% 100%;
+
+    /* Marker hover/selected: Gold #FFD700 = hsl(51, 100%, 50%) */
+    --marker-hover: 51 100% 50%;
     
     --secondary: 45 33% 85%;
     --secondary-foreground: 0 0% 0%;
@@ -62,6 +65,9 @@
     --primary-foreground: 0 0% 100%;
     --accent: 328 100% 54%;
     --accent-foreground: 0 0% 100%;
+
+    /* Marker hover/selected: Gold #FFD700 = hsl(51, 100%, 50%) */
+    --marker-hover: 51 100% 50%;
     --secondary: 45 33% 85%;
     --secondary-foreground: 0 0% 0%;
     --muted: 45 20% 88%;
