@@ -117,7 +117,7 @@ const BakeryMap = ({ selectedBakeryName }: BakeryMapProps) => {
                   href={bakery.website || bakery.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-semibold text-primary hover:underline"
+                  className="font-semibold text-primary hover:text-accent"
                 >
                   {bakery.name}
                 </a>
@@ -126,7 +126,7 @@ const BakeryMap = ({ selectedBakeryName }: BakeryMapProps) => {
                     href={bakery.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs text-primary/80 hover:underline"
+                    className="text-xs text-primary/80 hover:text-accent"
                   >
                     View on Google Maps
                   </a>

@@ -69,7 +69,7 @@ const BakeryTable = ({ onSelectBakery }: BakeryTableProps) => {
                 <button
                   type="button"
                   onClick={() => onSelectBakery(bakery.name)}
-                  className="font-medium text-primary hover:underline"
+                  className="font-medium text-primary hover:text-accent"
                 >
                   {bakery.name}
                 </button>
