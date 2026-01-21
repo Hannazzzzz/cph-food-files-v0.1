@@ -2,81 +2,83 @@
 @tailwind components;
 @tailwind utilities;
 
-/* CPH Food Files V0 - Authentic 90s retro web aesthetic */
+/* CPH Food Files - Typography Style Guide */
 
 @layer base {
   :root {
-    /* Classic 90s web colors - pale yellow background */
-    --background: 60 100% 95%;
+    /* Beige/cream background per style guide */
+    --background: 45 33% 91%;
     --foreground: 0 0% 0%;
     
-    --card: 60 100% 95%;
+    --card: 0 0% 100%;
     --card-foreground: 0 0% 0%;
     
-    --popover: 60 100% 95%;
+    --popover: 0 0% 100%;
     --popover-foreground: 0 0% 0%;
     
-    /* Classic hard blue links */
-    --primary: 240 100% 40%;
+    /* Link blue #1E90FF = hsl(210, 100%, 56%) */
+    --primary: 210 100% 56%;
     --primary-foreground: 0 0% 100%;
     
-    --secondary: 60 50% 85%;
+    /* Electric pink for active states #FF1493 = hsl(328, 100%, 54%) */
+    --accent: 328 100% 54%;
+    --accent-foreground: 0 0% 100%;
+    
+    --secondary: 45 33% 85%;
     --secondary-foreground: 0 0% 0%;
     
-    --muted: 60 30% 90%;
-    --muted-foreground: 0 0% 30%;
-    
-    --accent: 60 50% 85%;
-    --accent-foreground: 0 0% 0%;
+    /* Secondary text #666666 = hsl(0, 0%, 40%) */
+    --muted: 45 20% 88%;
+    --muted-foreground: 0 0% 40%;
     
     --destructive: 0 100% 50%;
     --destructive-foreground: 0 0% 100%;
     
     --border: 0 0% 0%;
-    --input: 60 30% 80%;
-    --ring: 240 100% 40%;
+    --input: 45 20% 85%;
+    --ring: 210 100% 56%;
     
     --radius: 0px;
     
-    /* Sidebar - retro styled */
-    --sidebar-background: 60 100% 92%;
+    /* Sidebar */
+    --sidebar-background: 45 33% 88%;
     --sidebar-foreground: 0 0% 0%;
-    --sidebar-primary: 240 100% 40%;
+    --sidebar-primary: 210 100% 56%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 60 50% 85%;
-    --sidebar-accent-foreground: 0 0% 0%;
+    --sidebar-accent: 328 100% 54%;
+    --sidebar-accent-foreground: 0 0% 100%;
     --sidebar-border: 0 0% 0%;
-    --sidebar-ring: 240 100% 40%;
+    --sidebar-ring: 210 100% 56%;
   }
 
   .dark {
-    --background: 60 100% 95%;
+    --background: 45 33% 91%;
     --foreground: 0 0% 0%;
-    --card: 60 100% 95%;
+    --card: 0 0% 100%;
     --card-foreground: 0 0% 0%;
-    --popover: 60 100% 95%;
+    --popover: 0 0% 100%;
     --popover-foreground: 0 0% 0%;
-    --primary: 240 100% 40%;
+    --primary: 210 100% 56%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 60 50% 85%;
+    --accent: 328 100% 54%;
+    --accent-foreground: 0 0% 100%;
+    --secondary: 45 33% 85%;
     --secondary-foreground: 0 0% 0%;
-    --muted: 60 30% 90%;
-    --muted-foreground: 0 0% 30%;
-    --accent: 60 50% 85%;
-    --accent-foreground: 0 0% 0%;
+    --muted: 45 20% 88%;
+    --muted-foreground: 0 0% 40%;
     --destructive: 0 100% 50%;
     --destructive-foreground: 0 0% 100%;
     --border: 0 0% 0%;
-    --input: 60 30% 80%;
-    --ring: 240 100% 40%;
-    --sidebar-background: 60 100% 92%;
+    --input: 45 20% 85%;
+    --ring: 210 100% 56%;
+    --sidebar-background: 45 33% 88%;
     --sidebar-foreground: 0 0% 0%;
-    --sidebar-primary: 240 100% 40%;
+    --sidebar-primary: 210 100% 56%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 60 50% 85%;
-    --sidebar-accent-foreground: 0 0% 0%;
+    --sidebar-accent: 328 100% 54%;
+    --sidebar-accent-foreground: 0 0% 100%;
     --sidebar-border: 0 0% 0%;
-    --sidebar-ring: 240 100% 40%;
+    --sidebar-ring: 210 100% 56%;
   }
 }
 
@@ -87,27 +89,77 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 16px;
-    line-height: 1.5;
+    font-family: 'Space Mono', 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.6;
   }
-  
+
+  /* Headings */
+  h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: hsl(0 0% 0%);
+  }
+
+  h2 {
+    font-size: 1.125rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: hsl(0 0% 0%);
+  }
+
+  h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: hsl(0 0% 0%);
+  }
+
+  /* Links per style guide */
   a {
-    color: hsl(240 100% 40%);
+    color: hsl(210 100% 56%);
     text-decoration: underline;
-    font-weight: bold;
   }
   
   a:visited {
-    color: hsl(300 100% 30%);
+    color: hsl(210 100% 56%);
   }
   
   a:hover {
-    color: hsl(0 100% 45%);
+    color: hsl(328 100% 54%);
   }
   
-  /* Pixel font for logos */
-  .pixel-font {
-    font-family: 'Press Start 2P', cursive;
+  /* Logo/Site title class */
+  .site-title {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: hsl(0 0% 0%);
+  }
+
+  /* Small text / meta */
+  .text-meta {
+    font-size: 0.8125rem;
+    line-height: 1.5;
+  }
+
+  /* Tiny text / labels */
+  .text-label {
+    font-size: 0.75rem;
+    color: hsl(0 0% 40%);
+  }
+
+  /* Section labels */
+  .section-label {
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* Tags / filter buttons */
+  .tag {
+    font-size: 0.8125rem;
+    letter-spacing: 0.5px;
+    text-transform: lowercase;
   }
 }
