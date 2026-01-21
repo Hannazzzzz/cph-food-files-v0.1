@@ -84,6 +84,12 @@ const BakeryMap = ({ selectedBakeryName }: BakeryMapProps) => {
           color: hsl(var(--foreground));
         }
 
+        /* Square popups (no rounded corners) */
+        [data-map-theme="cph-food-files"] .leaflet-popup-content-wrapper,
+        [data-map-theme="cph-food-files"] .leaflet-popup-tip {
+          border-radius: 0;
+        }
+
         [data-map-theme="cph-food-files"] .leaflet-popup-content a {
           color: hsl(var(--primary));
           text-decoration: none;
