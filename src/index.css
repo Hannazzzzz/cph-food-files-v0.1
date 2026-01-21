@@ -118,7 +118,7 @@
   /* Links per style guide */
   a {
     color: hsl(210 100% 56%);
-    text-decoration: underline;
+    text-decoration: none;
   }
   
   a:visited {
@@ -127,6 +127,7 @@
   
   a:hover {
     color: hsl(328 100% 54%);
+    text-decoration: none;
   }
   
   /* Logo/Site title class */
