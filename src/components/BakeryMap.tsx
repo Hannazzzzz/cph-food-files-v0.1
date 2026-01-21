@@ -77,11 +77,20 @@ const BakeryMap = ({ selectedBakeryName }: BakeryMapProps) => {
           filter: drop-shadow(0 1px 0 hsl(var(--border))) drop-shadow(0 2px 4px hsl(var(--foreground) / 0.18));
         }
 
+        /* Popup typography + link colors (match global page styles) */
+        [data-map-theme="cph-food-files"] .leaflet-popup-content-wrapper,
+        [data-map-theme="cph-food-files"] .leaflet-popup-content {
+          font-family: inherit;
+          color: hsl(var(--foreground));
+        }
+
         [data-map-theme="cph-food-files"] .leaflet-popup-content a {
           color: hsl(var(--primary));
+          text-decoration: none;
         }
         [data-map-theme="cph-food-files"] .leaflet-popup-content a:hover {
-          color: hsl(var(--primary) / 0.8);
+          color: hsl(var(--accent));
+          text-decoration: none;
         }
 
         [data-map-theme="cph-food-files"] .leaflet-control-attribution {
