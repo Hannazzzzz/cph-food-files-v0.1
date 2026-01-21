@@ -120,7 +120,7 @@ const BakeryMap = ({ selectedBakeryName }: BakeryMapProps) => {
       <MapContainer
         ref={mapRef as any}
         center={[55.6761, 12.5683]}
-        zoom={12}
+        zoom={13}
         style={{ height: '100%', width: '100%' }}
         scrollWheelZoom={false}
       >
