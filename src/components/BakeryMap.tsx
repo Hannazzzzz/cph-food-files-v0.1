@@ -62,6 +62,29 @@ const BakeryMap = ({ selectedBakeryName }: BakeryMapProps) => {
         [data-map-theme="cph-food-files"] .leaflet-container {
           background: hsl(var(--background));
         }
+
+        /* Match site typography inside Leaflet UI */
+        [data-map-theme="cph-food-files"] .leaflet-popup-content {
+          font-family: inherit;
+          font-size: 14px;
+          line-height: 1.6;
+          color: hsl(var(--foreground));
+        }
+        [data-map-theme="cph-food-files"] .leaflet-popup-content-wrapper,
+        [data-map-theme="cph-food-files"] .leaflet-popup-tip {
+          background: hsl(var(--background));
+          color: hsl(var(--foreground));
+          border: 2px solid hsl(var(--border));
+          border-radius: 0;
+          box-shadow: none;
+        }
+        [data-map-theme="cph-food-files"] .leaflet-popup-close-button {
+          color: hsl(var(--foreground));
+        }
+        [data-map-theme="cph-food-files"] .leaflet-popup-close-button:hover {
+          color: hsl(var(--accent));
+        }
+
         [data-map-theme="cph-food-files"] .leaflet-tile {
           filter: grayscale(1) contrast(0.9) brightness(1.15);
           opacity: 0.92;
@@ -77,11 +100,14 @@ const BakeryMap = ({ selectedBakeryName }: BakeryMapProps) => {
           filter: drop-shadow(0 1px 0 hsl(var(--border))) drop-shadow(0 2px 4px hsl(var(--foreground) / 0.18));
         }
 
+        /* Links inside popups follow the global style guide (blue -> pink hover) */
         [data-map-theme="cph-food-files"] .leaflet-popup-content a {
           color: hsl(var(--primary));
+          text-decoration: none;
         }
         [data-map-theme="cph-food-files"] .leaflet-popup-content a:hover {
-          color: hsl(var(--primary) / 0.8);
+          color: hsl(var(--accent));
+          text-decoration: none;
         }
 
         [data-map-theme="cph-food-files"] .leaflet-control-attribution {
