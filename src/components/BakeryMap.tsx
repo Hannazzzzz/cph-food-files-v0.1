@@ -17,6 +17,19 @@ const markerIcon = new DivIcon({
   popupAnchor: [0, -10],
 });
 
+// Hover/selected marker icon (gold)
+const markerIconHover = new DivIcon({
+  className: 'cph-food-files-marker',
+  html: `
+    <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+      <circle cx="8" cy="8" r="6" fill="hsl(var(--marker-hover))" />
+    </svg>
+  `,
+  iconSize: [16, 16],
+  iconAnchor: [8, 8],
+  popupAnchor: [0, -10],
+});
+
 type BakeryMapProps = {
   selectedBakeryName?: string | null;
 };
@@ -71,6 +84,10 @@ const BakeryMap = ({ selectedBakeryName }: BakeryMapProps) => {
           filter: drop-shadow(0 1px 0 hsl(var(--border))) drop-shadow(0 2px 4px hsl(var(--foreground) / 0.18));
         }
 
+        [data-map-theme="cph-food-files"] .cph-food-files-marker:hover svg circle {
+          fill: hsl(var(--marker-hover));
+        }
+
         /* Popup typography + link colors (match global page styles) */
         [data-map-theme="cph-food-files"] .leaflet-popup-content-wrapper,
         [data-map-theme="cph-food-files"] .leaflet-popup-content {
@@ -115,7 +132,7 @@ const BakeryMap = ({ selectedBakeryName }: BakeryMapProps) => {
           <Marker
             key={bakery.name}
             position={[bakery.latitude!, bakery.longitude!]}
-            icon={markerIcon}
+            icon={bakery.name === selectedBakeryName ? markerIconHover : markerIcon}
             ref={(marker) => {
               markerRefs.current[bakery.name] = marker;
             }}
