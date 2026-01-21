@@ -8,19 +8,13 @@ import { bakeries } from '@/data/bakeries';
 const markerIcon = new DivIcon({
   className: 'cph-food-files-marker',
   html: `
-    <svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path
-        d="M14 27C14 27 23 18.5 23 11.2C23 6.1 19 2 14 2C9 2 5 6.1 5 11.2C5 18.5 14 27 14 27Z"
-        fill="hsl(var(--primary))"
-        stroke="hsl(var(--background))"
-        stroke-width="2"
-      />
-      <circle cx="14" cy="11.5" r="4" fill="hsl(var(--background))" />
+    <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+      <circle cx="8" cy="8" r="6" fill="hsl(var(--accent))" />
     </svg>
   `,
-  iconSize: [28, 28],
-  iconAnchor: [14, 27],
-  popupAnchor: [0, -26],
+  iconSize: [16, 16],
+  iconAnchor: [8, 8],
+  popupAnchor: [0, -10],
 });
 
 type BakeryMapProps = {
