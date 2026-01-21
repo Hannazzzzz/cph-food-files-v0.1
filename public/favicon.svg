@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <rect width="64" height="64" fill="hsl(45 33% 91%)" />
+  <style>
+    text {
+      font-family: 'Space Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+      font-weight: 700;
+      fill: hsl(0 0% 0%);
+    }
+  </style>
+  <text x="32" y="34" text-anchor="middle" dominant-baseline="middle" font-size="44">C</text>
+</svg>
