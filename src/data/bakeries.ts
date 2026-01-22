@@ -184,7 +184,16 @@ export const bakeries: Bakery[] = (() => {
     .filter((r) => (r.status ?? '').trim() === '' || (r.status ?? '').trim().toLowerCase() === 'success')
     .map((r) => {
       const address = (r.address ?? '').trim();
-      const neighbourhood = (r.neighborhood ?? '').trim() || extractNeighbourhood(address);
+      // Support both US/UK spellings and some common variants from the CSV
+      const neighbourhoodFromCsv = (
+        r.neighborhood ??
+        r.neighbourhood ??
+        r.neighbourhoods ??
+        r.neighborhoods ??
+        ''
+      ).trim();
+
+      const neighbourhood = neighbourhoodFromCsv || extractNeighbourhood(address);
 
       const url = (r['maps_url'] ?? r['maps url'] ?? r['maps_url'] ?? '').trim();
 
