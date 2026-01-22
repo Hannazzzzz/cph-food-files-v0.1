@@ -33,12 +33,14 @@ function TagDropdown({
   variant: FilterVariant;
 }) {
   const variantClasses: Record<FilterVariant, string> = {
+    // Default: filled category color.
+    // Hover/Focus/Active: white background with a category-colored border and dark text.
     food:
-      'bg-food text-food-foreground hover:bg-food/90 hover:text-food-foreground hover:ring-food focus-visible:ring-food ring-food',
+      'bg-food text-food-foreground border-transparent hover:bg-background hover:text-foreground hover:border-food focus-visible:bg-background focus-visible:text-foreground focus-visible:border-food',
     mood:
-      'bg-mood text-mood-foreground hover:bg-mood/90 hover:text-mood-foreground hover:ring-mood focus-visible:ring-mood ring-mood',
+      'bg-mood text-mood-foreground border-transparent hover:bg-background hover:text-foreground hover:border-mood focus-visible:bg-background focus-visible:text-foreground focus-visible:border-mood',
     hood:
-      'bg-hood text-hood-foreground hover:bg-hood/90 hover:text-hood-foreground hover:ring-hood focus-visible:ring-hood ring-hood',
+      'bg-hood text-hood-foreground border-transparent hover:bg-background hover:text-foreground hover:border-hood focus-visible:bg-background focus-visible:text-foreground focus-visible:border-hood',
   };
 
   return (
@@ -49,11 +51,9 @@ function TagDropdown({
           variant="outline"
           size="sm"
           className={cn(
-            'rounded-none border-2 border-transparent',
+            'rounded-none border-2',
             variantClasses[variant],
-            'hover:ring-4 hover:ring-offset-2 hover:ring-offset-background',
-            'focus-visible:ring-4 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
-            selected && 'ring-4 ring-offset-2 ring-offset-background',
+            selected && 'bg-background text-foreground',
           )}
         >
           <span className="tracking-wide">{label}</span>
