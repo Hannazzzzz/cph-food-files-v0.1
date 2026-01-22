@@ -13,9 +13,9 @@ import { X } from 'lucide-react';
 
 type MapFiltersOverlayProps = {
   className?: string;
-  onSelectFoodTag?: (tag: string) => void;
-  onSelectMoodTag?: (tag: string) => void;
-  onSelectHoodTag?: (tag: string) => void;
+  onSelectFoodTag?: (tags: string[]) => void;
+  onSelectMoodTag?: (tags: string[]) => void;
+  onSelectHoodTag?: (tags: string[]) => void;
 };
 
 type FilterVariant = 'food' | 'mood' | 'hood';
@@ -23,14 +23,16 @@ type FilterVariant = 'food' | 'mood' | 'hood';
 function TagDropdown({
   label,
   tags,
-  onSelect,
-  selected,
+  onToggle,
+  onClear,
+  selectedTags,
   variant,
 }: {
   label: string;
   tags: string[];
-  onSelect?: (tag: string) => void;
-  selected: boolean;
+  onToggle: (tag: string) => void;
+  onClear: () => void;
+  selectedTags: Set<string>;
   variant: FilterVariant;
 }) {
   const variantClasses: Record<FilterVariant, string> = {
@@ -54,7 +56,7 @@ function TagDropdown({
           className={cn(
             'rounded-none border-2',
             variantClasses[variant],
-            selected && 'bg-background text-foreground',
+            selectedTags.size > 0 && 'bg-background text-foreground',
           )}
         >
           <span className="tracking-wide">{label}</span>
@@ -72,17 +74,21 @@ function TagDropdown({
             {tags.map((tag) => (
               <DropdownMenuItem
                 key={tag}
-                onSelect={() => {
-                  onSelect?.(tag);
+                onSelect={(e) => {
+                  // Keep dropdown open on select; close only via trigger click or outside click.
+                  e.preventDefault();
+                  onToggle(tag);
                 }}
+                className={cn(selectedTags.has(tag) && 'font-semibold')}
               >
                 {tag}
               </DropdownMenuItem>
             ))}
             <DropdownMenuItem
               key="__all__"
-              onSelect={() => {
-                onSelect?.('All');
+              onSelect={(e) => {
+                e.preventDefault();
+                onClear();
               }}
             >
               All
@@ -100,18 +106,18 @@ const MapFiltersOverlay = ({
   onSelectMoodTag,
   onSelectHoodTag,
 }: MapFiltersOverlayProps) => {
-  const [selectedFood, setSelectedFood] = useState<string | null>(null);
-  const [selectedMood, setSelectedMood] = useState<string | null>(null);
-  const [selectedHood, setSelectedHood] = useState<string | null>(null);
+  const [selectedFood, setSelectedFood] = useState<Set<string>>(() => new Set());
+  const [selectedMood, setSelectedMood] = useState<Set<string>>(() => new Set());
+  const [selectedHood, setSelectedHood] = useState<Set<string>>(() => new Set());
 
   const clearAll = () => {
-    setSelectedFood(null);
-    setSelectedMood(null);
-    setSelectedHood(null);
+    setSelectedFood(new Set());
+    setSelectedMood(new Set());
+    setSelectedHood(new Set());
 
-    onSelectFoodTag?.('All');
-    onSelectMoodTag?.('All');
-    onSelectHoodTag?.('All');
+    onSelectFoodTag?.([]);
+    onSelectMoodTag?.([]);
+    onSelectHoodTag?.([]);
   };
 
   return (
@@ -126,45 +132,60 @@ const MapFiltersOverlay = ({
           <TagDropdown
             label="FOOD"
             tags={foodTags}
-            selected={selectedFood !== null}
             variant="food"
-            onSelect={(tag) => {
-              if (tag === 'All') {
-                setSelectedFood(null);
-              } else {
-                setSelectedFood(tag);
-              }
-              onSelectFoodTag?.(tag);
+            selectedTags={selectedFood}
+            onClear={() => {
+              setSelectedFood(new Set());
+              onSelectFoodTag?.([]);
+            }}
+            onToggle={(tag) => {
+              setSelectedFood((prev) => {
+                const next = new Set(prev);
+                if (next.has(tag)) next.delete(tag);
+                else next.add(tag);
+                onSelectFoodTag?.(Array.from(next));
+                return next;
+              });
             }}
           />
 
           <TagDropdown
             label="MOOD"
             tags={moodTags}
-            selected={selectedMood !== null}
             variant="mood"
-            onSelect={(tag) => {
-              if (tag === 'All') {
-                setSelectedMood(null);
-              } else {
-                setSelectedMood(tag);
-              }
-              onSelectMoodTag?.(tag);
+            selectedTags={selectedMood}
+            onClear={() => {
+              setSelectedMood(new Set());
+              onSelectMoodTag?.([]);
+            }}
+            onToggle={(tag) => {
+              setSelectedMood((prev) => {
+                const next = new Set(prev);
+                if (next.has(tag)) next.delete(tag);
+                else next.add(tag);
+                onSelectMoodTag?.(Array.from(next));
+                return next;
+              });
             }}
           />
 
           <TagDropdown
             label="HOOD"
             tags={hoodTags}
-            selected={selectedHood !== null}
             variant="hood"
-            onSelect={(tag) => {
-              if (tag === 'All') {
-                setSelectedHood(null);
-              } else {
-                setSelectedHood(tag);
-              }
-              onSelectHoodTag?.(tag);
+            selectedTags={selectedHood}
+            onClear={() => {
+              setSelectedHood(new Set());
+              onSelectHoodTag?.([]);
+            }}
+            onToggle={(tag) => {
+              setSelectedHood((prev) => {
+                const next = new Set(prev);
+                if (next.has(tag)) next.delete(tag);
+                else next.add(tag);
+                onSelectHoodTag?.(Array.from(next));
+                return next;
+              });
             }}
           />
 

@@ -39,8 +39,8 @@ const BakeryMap = ({ selectedBakeryName }: BakeryMapProps) => {
   const mapRef = useRef<LeafletMap | null>(null);
   const markerRefs = useRef<Record<string, LeafletMarker | null>>({});
 
-  const [selectedFoodTag, setSelectedFoodTag] = useState<string | null>(null);
-  const [selectedMoodTag, setSelectedMoodTag] = useState<string | null>(null);
+  const [selectedFoodTags, setSelectedFoodTags] = useState<string[]>([]);
+  const [selectedMoodTags, setSelectedMoodTags] = useState<string[]>([]);
 
   const bakeriesWithCoords = useMemo(() => {
     const hasCoords = bakeries.filter(
@@ -49,14 +49,18 @@ const BakeryMap = ({ selectedBakeryName }: BakeryMapProps) => {
 
     return hasCoords.filter((bakery) => {
       const matchesFood =
-        !selectedFoodTag ||
-        bakery.foodTags.some((t) => t.toLowerCase() === selectedFoodTag.toLowerCase());
+        selectedFoodTags.length === 0 ||
+        bakery.foodTags.some((t) =>
+          selectedFoodTags.some((s) => s.toLowerCase() === t.toLowerCase()),
+        );
       const matchesMood =
-        !selectedMoodTag ||
-        bakery.moodTags.some((t) => t.toLowerCase() === selectedMoodTag.toLowerCase());
+        selectedMoodTags.length === 0 ||
+        bakery.moodTags.some((t) =>
+          selectedMoodTags.some((s) => s.toLowerCase() === t.toLowerCase()),
+        );
       return matchesFood && matchesMood;
     });
-  }, [selectedFoodTag, selectedMoodTag]);
+  }, [selectedFoodTags, selectedMoodTags]);
 
   useEffect(() => {
     if (!selectedBakeryName) return;
@@ -77,11 +81,11 @@ const BakeryMap = ({ selectedBakeryName }: BakeryMapProps) => {
       className="relative w-full h-[400px] rounded-lg overflow-hidden"
     >
       <MapFiltersOverlay
-        onSelectFoodTag={(tag) => {
-          setSelectedFoodTag(tag === 'All' ? null : tag);
+        onSelectFoodTag={(tags) => {
+          setSelectedFoodTags(tags);
         }}
-        onSelectMoodTag={(tag) => {
-          setSelectedMoodTag(tag === 'All' ? null : tag);
+        onSelectMoodTag={(tags) => {
+          setSelectedMoodTags(tags);
         }}
       />
       {/*
