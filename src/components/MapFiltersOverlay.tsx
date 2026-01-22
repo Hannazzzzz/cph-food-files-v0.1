@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
 import { foodTags, hoodTags, moodTags } from '@/data/tags';
+import { X } from 'lucide-react';
 
 type MapFiltersOverlayProps = {
   className?: string;
@@ -103,6 +104,8 @@ const MapFiltersOverlay = ({
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
   const [selectedHood, setSelectedHood] = useState<string | null>(null);
 
+  const hasAnySelection = selectedFood !== null || selectedMood !== null || selectedHood !== null;
+
   return (
     <div
       className={cn(
@@ -156,6 +159,29 @@ const MapFiltersOverlay = ({
               onSelectHoodTag?.(tag);
             }}
           />
+
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            aria-label="Clear all filters"
+            disabled={!hasAnySelection}
+            onClick={() => {
+              setSelectedFood(null);
+              setSelectedMood(null);
+              setSelectedHood(null);
+              onSelectFoodTag?.('All');
+              onSelectMoodTag?.('All');
+              onSelectHoodTag?.('All');
+            }}
+            className={cn(
+              'rounded-none border-2 bg-background text-foreground',
+              'hover:bg-background hover:text-foreground',
+              'disabled:opacity-40 disabled:cursor-not-allowed',
+            )}
+          >
+            <X className="h-4 w-4" aria-hidden="true" />
+          </Button>
         </div>
       </div>
     </div>
