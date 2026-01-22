@@ -53,7 +53,7 @@ const BakeryTable = ({ onSelectBakery, bakeries = allBakeries }: BakeryTableProp
             className="pl-0 cursor-pointer hover:text-foreground select-none"
             onClick={() => handleSort('name')}
           >
-            Bakery{getSortIndicator('name')}
+            Name{getSortIndicator('name')}
           </TableHead>
           <TableHead 
             className="cursor-pointer hover:text-foreground select-none"
