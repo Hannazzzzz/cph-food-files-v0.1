@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import BakeryTable from '@/components/BakeryTable';
 import BakeryMap from '@/components/BakeryMap';
@@ -7,6 +7,32 @@ import { bakeries } from '@/data/bakeries';
 const Index = () => {
   const [selectedBakeryName, setSelectedBakeryName] = useState<string | null>(null);
   const mapSectionRef = useRef<HTMLDivElement | null>(null);
+
+  const [selectedFoodTags, setSelectedFoodTags] = useState<string[]>([]);
+  const [selectedMoodTags, setSelectedMoodTags] = useState<string[]>([]);
+  const [selectedHoodTags, setSelectedHoodTags] = useState<string[]>([]);
+
+  const filteredBakeries = useMemo(() => {
+    return bakeries.filter((bakery) => {
+      const matchesFood =
+        selectedFoodTags.length === 0 ||
+        bakery.foodTags.some((t) =>
+          selectedFoodTags.some((s) => s.toLowerCase() === t.toLowerCase()),
+        );
+
+      const matchesMood =
+        selectedMoodTags.length === 0 ||
+        bakery.moodTags.some((t) =>
+          selectedMoodTags.some((s) => s.toLowerCase() === t.toLowerCase()),
+        );
+
+      const matchesHood =
+        selectedHoodTags.length === 0 ||
+        selectedHoodTags.some((s) => s.toLowerCase() === bakery.neighbourhood.toLowerCase());
+
+      return matchesFood && matchesMood && matchesHood;
+    });
+  }, [selectedFoodTags, selectedMoodTags, selectedHoodTags]);
 
   return (
     <main className="w-full px-5 py-6">
@@ -28,13 +54,19 @@ const Index = () => {
         aria-label="Map"
         className="mt-5 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]"
       >
-        <BakeryMap selectedBakeryName={selectedBakeryName} />
+        <BakeryMap
+          selectedBakeryName={selectedBakeryName}
+          onSelectFoodTags={setSelectedFoodTags}
+          onSelectMoodTags={setSelectedMoodTags}
+          onSelectHoodTags={setSelectedHoodTags}
+        />
       </section>
 
       <section className="mt-6" aria-label="Places list">
-        <h2 className="m-0 mb-3 text-left">Places ({bakeries.length})</h2>
+        <h2 className="m-0 mb-3 text-left">Places ({filteredBakeries.length})</h2>
 
         <BakeryTable
+          bakeries={filteredBakeries}
           onSelectBakery={(name) => {
             setSelectedBakeryName(name);
             mapSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });

@@ -1,5 +1,6 @@
-import { useState, useMemo } from 'react';
-import { bakeries } from '@/data/bakeries';
+import { useMemo, useState } from 'react';
+import type { Bakery } from '@/data/bakeries';
+import { bakeries as allBakeries } from '@/data/bakeries';
 import {
   Table,
   TableBody,
@@ -14,9 +15,10 @@ type SortDirection = 'asc' | 'desc';
 
 type BakeryTableProps = {
   onSelectBakery?: (name: string) => void;
+  bakeries?: Bakery[];
 };
 
-const BakeryTable = ({ onSelectBakery }: BakeryTableProps) => {
+const BakeryTable = ({ onSelectBakery, bakeries = allBakeries }: BakeryTableProps) => {
   const [sortColumn, setSortColumn] = useState<SortColumn>('neighbourhood');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
 
@@ -27,7 +29,7 @@ const BakeryTable = ({ onSelectBakery }: BakeryTableProps) => {
       const comparison = aValue.localeCompare(bValue);
       return sortDirection === 'asc' ? comparison : -comparison;
     });
-  }, [sortColumn, sortDirection]);
+  }, [bakeries, sortColumn, sortDirection]);
 
   const handleSort = (column: SortColumn) => {
     if (sortColumn === column) {
