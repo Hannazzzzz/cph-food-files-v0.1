@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, ZoomControl } from 'react-leaflet';
 import { DivIcon, type Map as LeafletMap, type Marker as LeafletMarker } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { bakeries } from '@/data/bakeries';
+import type { Bakery } from '@/data/bakeries';
 import MapFiltersOverlay from '@/components/MapFiltersOverlay';
 
 // Custom marker icon (colored using design tokens)
@@ -33,6 +33,7 @@ const markerIconHover = new DivIcon({
 
 type BakeryMapProps = {
   selectedBakeryName?: string | null;
+  bakeries: Bakery[];
   onSelectFoodTags?: (tags: string[]) => void;
   onSelectMoodTags?: (tags: string[]) => void;
   onSelectHoodTags?: (tags: string[]) => void;
@@ -40,6 +41,7 @@ type BakeryMapProps = {
 
 const BakeryMap = ({
   selectedBakeryName,
+  bakeries,
   onSelectFoodTags,
   onSelectMoodTags,
   onSelectHoodTags,
@@ -47,32 +49,12 @@ const BakeryMap = ({
   const mapRef = useRef<LeafletMap | null>(null);
   const markerRefs = useRef<Record<string, LeafletMarker | null>>({});
 
-  const [selectedFoodTags, setSelectedFoodTags] = useState<string[]>([]);
-  const [selectedMoodTags, setSelectedMoodTags] = useState<string[]>([]);
-  const [selectedHoodTags, setSelectedHoodTags] = useState<string[]>([]);
-
-  const bakeriesWithCoords = useMemo(() => {
-    const hasCoords = bakeries.filter(
-      (bakery) => bakery.latitude !== null && bakery.longitude !== null,
-    );
-
-    return hasCoords.filter((bakery) => {
-      const matchesFood =
-        selectedFoodTags.length === 0 ||
-        bakery.foodTags.some((t) =>
-          selectedFoodTags.some((s) => s.toLowerCase() === t.toLowerCase()),
-        );
-      const matchesMood =
-        selectedMoodTags.length === 0 ||
-        bakery.moodTags.some((t) =>
-          selectedMoodTags.some((s) => s.toLowerCase() === t.toLowerCase()),
-        );
-      const matchesHood =
-        selectedHoodTags.length === 0 ||
-        selectedHoodTags.some((s) => s.toLowerCase() === bakery.neighbourhood.toLowerCase());
-      return matchesFood && matchesMood && matchesHood;
-    });
-  }, [selectedFoodTags, selectedMoodTags, selectedHoodTags]);
+  // Single source of truth: `Index` decides which bakeries are currently in-scope.
+  // The map only additionally hides entries without coordinates.
+  const bakeriesWithCoords = useMemo(
+    () => bakeries.filter((bakery) => bakery.latitude !== null && bakery.longitude !== null),
+    [bakeries],
+  );
 
   useEffect(() => {
     if (!selectedBakeryName) return;
@@ -94,15 +76,12 @@ const BakeryMap = ({
     >
       <MapFiltersOverlay
         onSelectFoodTag={(tags) => {
-          setSelectedFoodTags(tags);
           onSelectFoodTags?.(tags);
         }}
         onSelectMoodTag={(tags) => {
-          setSelectedMoodTags(tags);
           onSelectMoodTags?.(tags);
         }}
         onSelectHoodTag={(tags) => {
-          setSelectedHoodTags(tags);
           onSelectHoodTags?.(tags);
         }}
       />
