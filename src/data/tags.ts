@@ -1,28 +1,4 @@
-import enrichedCsv from '../../Fastelavnsbolle_enriched.csv?raw';
-import { parseCsv } from '@/lib/csv';
 import { bakeries } from '@/data/bakeries';
-
-function normalizeHeader(header: string) {
-  return header
-    .trim()
-    .toLowerCase()
-    .replace(/\s+/g, '_');
-}
-
-function rowToRecord(headers: string[], row: string[]) {
-  const record: Record<string, string> = {};
-  for (let i = 0; i < headers.length; i++) {
-    record[headers[i]] = row[i] ?? '';
-  }
-  return record;
-}
-
-function splitTags(value: string): string[] {
-  return (value ?? '')
-    .split(/[;,]+/g)
-    .map((t) => t.trim())
-    .filter(Boolean);
-}
 
 function uniqueSorted(values: Iterable<string>): string[] {
   return Array.from(new Set(Array.from(values).map((v) => v.trim()).filter(Boolean))).sort((a, b) =>
@@ -31,35 +7,13 @@ function uniqueSorted(values: Iterable<string>): string[] {
 }
 
 // Source of truth: Fastelavnsbolle_enriched.csv
-export const foodTags: string[] = (() => {
-  const rows = parseCsv(enrichedCsv);
-  if (rows.length === 0) return [];
+// We derive tag options from the already CSV-parsed `bakeries` array to:
+// - guarantee dropdowns never go empty if CSV parsing nuances change
+// - avoid parsing the CSV multiple times
+// - ensure tags always track the CSV content
+export const foodTags: string[] = uniqueSorted(bakeries.flatMap((b) => b.foodTags));
 
-  const headers = rows[0].map(normalizeHeader);
-  const dataRows = rows.slice(1);
-
-  const tags: string[] = [];
-  for (const r of dataRows) {
-    const record = rowToRecord(headers, r);
-    tags.push(...splitTags(record.food_tags ?? record.food_tag ?? ''));
-  }
-  return uniqueSorted(tags);
-})();
-
-export const moodTags: string[] = (() => {
-  const rows = parseCsv(enrichedCsv);
-  if (rows.length === 0) return [];
-
-  const headers = rows[0].map(normalizeHeader);
-  const dataRows = rows.slice(1);
-
-  const tags: string[] = [];
-  for (const r of dataRows) {
-    const record = rowToRecord(headers, r);
-    tags.push(...splitTags(record.mood_tags ?? record.mood_tag ?? ''));
-  }
-  return uniqueSorted(tags);
-})();
+export const moodTags: string[] = uniqueSorted(bakeries.flatMap((b) => b.moodTags));
 
 // Neighbourhoods as shown in the UI (derived from our existing parsing + postal code mapping)
 export const hoodTags: string[] = uniqueSorted(bakeries.map((b) => b.neighbourhood));
