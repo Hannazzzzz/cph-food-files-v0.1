@@ -36,7 +36,7 @@ function TagDropdown({
           variant="outline"
           size="sm"
           className={cn(
-            'rounded-full bg-accent text-accent-foreground border-2 border-transparent',
+            'rounded-none bg-accent text-accent-foreground border-2 border-transparent',
             'hover:ring-2 hover:ring-accent hover:ring-offset-2 hover:ring-offset-background',
             'focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background',
             selected && 'ring-2 ring-accent ring-offset-2 ring-offset-background',

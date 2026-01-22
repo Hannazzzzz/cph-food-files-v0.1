@@ -128,6 +128,15 @@ const BakeryMap = ({ selectedBakeryName }: BakeryMapProps) => {
         style={{ height: '100%', width: '100%' }}
         scrollWheelZoom={false}
         zoomControl={false}
+        whenReady={() => {
+          // Defensive: ensure the default (top-left) zoom control is removed,
+          // so only our explicit top-right ZoomControl remains.
+          const map = mapRef.current as any;
+          if (!map) return;
+          if (map.zoomControl) {
+            map.removeControl(map.zoomControl);
+          }
+        }}
       >
         <ZoomControl position="topright" />
         <TileLayer
