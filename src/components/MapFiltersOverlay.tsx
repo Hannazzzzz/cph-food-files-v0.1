@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -8,8 +8,14 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
-import { foodTags, hoodTags, moodTags } from '@/data/tags';
+import { bakeries } from '@/data/bakeries';
 import { X } from 'lucide-react';
+
+function uniqueSorted(values: Iterable<string>): string[] {
+  return Array.from(new Set(Array.from(values).map((v) => v.trim()).filter(Boolean))).sort((a, b) =>
+    a.localeCompare(b, undefined, { sensitivity: 'base' }),
+  );
+}
 
 type MapFiltersOverlayProps = {
   className?: string;
@@ -109,6 +115,11 @@ const MapFiltersOverlay = ({
   onSelectMoodTag,
   onSelectHoodTag,
 }: MapFiltersOverlayProps) => {
+  // Always derive options from the CSV-backed source of truth (`bakeries`).
+  const foodTags = useMemo(() => uniqueSorted(bakeries.flatMap((b) => b.foodTags)), []);
+  const moodTags = useMemo(() => uniqueSorted(bakeries.flatMap((b) => b.moodTags)), []);
+  const hoodTags = useMemo(() => uniqueSorted(bakeries.map((b) => b.neighbourhood)), []);
+
   const [selectedFood, setSelectedFood] = useState<Set<string>>(() => new Set());
   const [selectedMood, setSelectedMood] = useState<Set<string>>(() => new Set());
   const [selectedHood, setSelectedHood] = useState<Set<string>>(() => new Set());
