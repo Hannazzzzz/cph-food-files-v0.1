@@ -1,5 +1,5 @@
 name,keywords,food_tags,mood_tags,address,neighborhood,latitude,longitude,rating,reviews_count,price_level,phone,website,hours,permanently_closed,temporarily_closed,maps url,status
-Lille Fugl,Cafe,,,"Gammel Strand 48, 1202 København ",Indre By,55.6776012,12.5776634,4.4,92,,93 63 42 14,https://www.flerefugle.dk/lille-fugl,Closes soon · 8.00 pm · Opens 7.30 am Fri,No,No,"https://www.google.com/maps/place/Lille+Fugl/@55.6776042,12.5750831,16z/data=!3m1!4b1!4m6!3m5!1s0x465253007cc1c445:0x553596ebef4bd015!8m2!3d55.6776012!4d12.5776634!16s%2Fg%2F11vjrp6rdd?entry=ttu&g_ep=EgoyMDI2MDEyMC4wIKXMDSoASAFQAw%3D%3D",success
+Lille Fugl,Cafe,,,"Gammel Strand 48, 1202 København ",Indre By,55.6776012,12.5776634,4.4,92,,93 63 42 14,https://www.flerefugle.dk/lille-fugl,Closes soon · 8.00 pm · Opens 7.30 am Fri,No,Yes,"https://www.google.com/maps/place/Lille+Fugl/@55.6776042,12.5750831,16z/data=!3m1!4b1!4m6!3m5!1s0x465253007cc1c445:0x553596ebef4bd015!8m2!3d55.6776012!4d12.5776634!16s%2Fg%2F11vjrp6rdd?entry=ttu&g_ep=EgoyMDI2MDEyMC4wIKXMDSoASAFQAw%3D%3D",success
 Original Coffee,"the view
 2; pastries
 3; department store
@@ -88,4 +88,5 @@ Ard Bakery,"coffee
 9; buttery
 8; Bakery; sourdough
 9",,,"Peter Bangs Vej 95, 2000 Frederiksberg ",,55.678465,12.501709,4.4,223,,31 31 38 24,http://www.ardbakery.dk/,Closed · Opens 6.00 am Fri,No,No,https://www.google.com/maps/place/Ard+Bakery/data=!4m2!3m1!1s0x465253c30d306aa7:0x96cdb8507c16e76c,success
+
 
