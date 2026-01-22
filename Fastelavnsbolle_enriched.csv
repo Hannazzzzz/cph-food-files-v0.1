@@ -1,67 +1,90 @@
-name,keywords,address,latitude,longitude,rating,reviews_count,price_level,phone,website,hours,permanently_closed,description,original_tags,original_comment,url,status
-Leckerbaer,Cake shop,"Ryesgade 118, 2100 København Ø ",55.697754,12.5742417,4.6,241,,28 40 48 64,http://leckerbaer.dk/,,No,,,,https://www.google.com/maps/place/Leckerbaer/data=!4m2!3m1!1s0x465252fc9a472a3b:0x1c69782f50b04f89,success
-Andersen & Maillard,Coffee shop,"Antwerpengade 10, 2150 København ",55.7072013,12.5966835,4.4,561,,33 32 23 22,https://www.andersenmaillard.dk/,,No,,,,https://www.google.com/maps/place/Andersen+%26+Maillard/data=!4m2!3m1!1s0x46525340d60ad511:0xb0f67808cae024e9,success
-Collective Bakery,Bakery,"Nørrebrogade 176, 2200 København ",55.6967659,12.5455458,4.3,141,,31 36 75 33,https://www.collectivebakery.dk/,,No,,,,https://www.google.com/maps/place/Collective+Bakery/data=!4m2!3m1!1s0x4652537daeda7453:0x4b4a8ef15339e121,success
-Bageriet Benji,Pastry shop,"Mjølnerparken 52, 2200 København N ",55.7038803,12.5417881,4.5,190,,,https://www.earnest-eats.dk/projects-1/benji,,No,,,,https://www.google.com/maps/place/Bageriet+Benji/data=!4m2!3m1!1s0x465253a73dacd217:0x8f04631805fab283,success
-Sinne gas bageri,Bakery,"Ryesgade 63, 2100 København ",55.6945642,12.5705826,4.9,284,,,https://sinnegasbageri.dk/,,No,,,,https://www.google.com/maps/place/Sinne+gas+bageri/data=!4m2!3m1!1s0x465253e902130051:0x3f6f375e56801295,success
-La Cabra,Coffee roasters,"Århusgade 118X, 2150 København ",55.707163,12.5920549,4.5,43,,,https://lacabra.com/pages/nordhavn,,No,,,,https://www.google.com/maps/place/La+Cabra/data=!4m2!3m1!1s0x46525314a7b7ede7:0x3a4a1e0f4b65854f,success
-Skipper Bageri,"Bakery; pistachio croissant
-15; coffee
+name,keywords,food_tags,mood_tags,address,neighborhood,latitude,longitude,rating,reviews_count,price_level,phone,website,hours,permanently_closed,temporarily_closed,maps url,status
+Lille Fugl,Cafe,,,"Gammel Strand 48, 1202 København ",Indre By,55.6776012,12.5776634,4.4,92,,93 63 42 14,https://www.flerefugle.dk/lille-fugl,Closes soon · 8.00 pm · Opens 7.30 am Fri,No,No,"https://www.google.com/maps/place/Lille+Fugl/@55.6776042,12.5750831,16z/data=!3m1!4b1!4m6!3m5!1s0x465253007cc1c445:0x553596ebef4bd015!8m2!3d55.6776012!4d12.5776634!16s%2Fg%2F11vjrp6rdd?entry=ttu&g_ep=EgoyMDI2MDEyMC4wIKXMDSoASAFQAw%3D%3D",success
+Original Coffee,"the view
+2; pastries
+3; department store
+2; pictures
+2; Coffee shop",,,"Østergade 60, 1100 København K ",Indre By,55.6776042,12.5750831,3.8,60,,28 75 63 12,http://www.originalcoffee.dk/,Closes soon · 8.00 pm · Opens 10.00 am Fri,No,No,"https://www.google.com/maps/place/Original+Coffee+Illum+Rooftop/@55.6776042,12.5750831,16z/data=!4m14!1m7!3m6!1s0x465253007cc1c445:0x553596ebef4bd015!2sLille+Fugl!8m2!3d55.6776012!4d12.5776634!16s%2Fg%2F11vjrp6rdd!3m5!1s0x4652531738efffff:0xa5889022ec6d94c4!8m2!3d55.679095!4d12.579869!16s%2Fg%2F11wgrpbppf?entry=ttu&g_ep=EgoyMDI2MDEyMC4wIKXMDSoASAFQAw%3D%3D",success
+Leckerbaer,Cake shop,,,"Ryesgade 118, 2100 København Ø ",Østerbro,55.697751,12.576822,4.6,241,,28 40 48 64,http://leckerbaer.dk/,Closed · Opens 10.00 am Fri,No,No,https://www.google.com/maps/place/Leckerbaer/data=!4m2!3m1!1s0x465252fc9a472a3b:0x1c69782f50b04f89,success
+Andersen & Maillard,"cinnamon roll
+13; pistachio
+22; cube croissant
+21; bakery
+56; Coffee shop",,,"Antwerpengade 10, 2150 København ",,55.7072013,12.5966835,4.4,563,,33 32 23 22,https://www.andersenmaillard.dk/,Closed · Opens 7.00 am Fri,No,No,https://www.google.com/maps/place/Andersen+%26+Maillard/data=!4m2!3m1!1s0x46525340d60ad511:0xb0f67808cae024e9,success
+Collective Bakery,"coffee
+23; price
+5; sesame
+4; cheese
+6; Bakery",,,"Nørrebrogade 176, 2200 København ",Nørrebro,55.6967659,12.5455458,4.3,141,,31 36 75 33,https://www.collectivebakery.dk/,Closed · Opens 7.00 am Fri,No,No,https://www.google.com/maps/place/Collective+Bakery/data=!4m2!3m1!1s0x4652537daeda7453:0x4b4a8ef15339e121,success
+Bageriet Benji,"cardamom
+10; Pastry shop; filtered coffee
+6; takeaway
+7; buns
+8",,,"Mjølnerparken 52, 2200 København N ",Nørrebro,55.7038803,12.5417881,4.5,190,,,https://www.earnest-eats.dk/projects-1/benji,Closed · Opens 8.00 am Fri,No,No,https://www.google.com/maps/place/Bageriet+Benji/data=!4m2!3m1!1s0x465253a73dacd217:0x8f04631805fab283,success
+Sinne gas bageri,Bakery,,,"Ryesgade 63, 2100 København ",Østerbro,55.6945642,12.5705826,4.9,284,,,https://sinnegasbageri.dk/,Closed · Opens 8.00 am Fri,No,No,https://www.google.com/maps/place/Sinne+gas+bageri/data=!4m2!3m1!1s0x465253e902130051:0x3f6f375e56801295,success
+La Cabra,Coffee roasters,,,"Århusgade 118X, 2150 København ",,55.707163,12.5920549,4.4,44,,,https://lacabra.com/pages/nordhavn,Closed · Opens 7.30 am Fri,No,No,https://www.google.com/maps/place/La+Cabra/data=!4m2!3m1!1s0x46525314a7b7ede7:0x3a4a1e0f4b65854f,success
+Skipper Bageri,"coffee
 22; cinnamon buns
-10; selection
-7","Østerbrogade 103, 3. th, 2100 København ",55.7096286,12.5772439,4.6,253,,24 24 53 61,https://www.facebook.com/Skipper-bageri-107406865450827/,,No,,,,https://www.google.com/maps/place/Skipper+Bageri/data=!4m2!3m1!1s0x465253da34838ac5:0xab3822dff8c8f5fa,success
-DILLON,Bakery,"Tåsingegade 51, 2100 København ",55.7102606,12.5663434,4.7,73,,71 55 43 28,https://www.instagram.com/dillon.cph/,,No,,,,https://www.google.com/maps/place/DILLON/data=!4m2!3m1!1s0x46525306067ca7f5:0x47aaf7dcb857086f,success
-Rug Bakery,"Bakery; cinnamon bun
-48; hotel
-31; train station
-29; cardamom bun
-32","Tietgensgade 39, 1704 København ",55.6712708,12.567272,4.5,"1,003",,78 73 00 58,https://rugbakery.com/,,No,,,,https://www.google.com/maps/place/Rug+Bakery/data=!4m2!3m1!1s0x46525359463436c3:0x9c0a400a20eca83e,success
-Perron,"Bakery; experience
-4; brunch
+10; Bakery; selection
+7; pistachio croissant
+15",,,"Østerbrogade 103, 3. th, 2100 København ",Østerbro,55.7096286,12.5772439,4.6,253,,24 24 53 61,https://www.facebook.com/Skipper-bageri-107406865450827/,Closed · Opens 6.00 am Fri,No,No,https://www.google.com/maps/place/Skipper+Bageri/data=!4m2!3m1!1s0x465253da34838ac5:0xab3822dff8c8f5fa,success
+DILLON,"gelato
+14; pistachio
+8; Bakery; coffee
+11; cone
+7",,,"Tåsingegade 51, 2100 København ",Østerbro,55.7102606,12.5663434,4.7,74,,71 55 43 28,https://www.instagram.com/dillon.cph/,Closed · Opens 8.00 am Fri,No,No,https://www.google.com/maps/place/DILLON/data=!4m2!3m1!1s0x46525306067ca7f5:0x47aaf7dcb857086f,success
+Rug Bakery,Bakery,,,"Tietgensgade 39, 1704 København ",Vesterbro,55.6712708,12.567272,4.5,"1,005",,78 73 00 58,https://rugbakery.com/,Open · Closes 11.00 pm,No,No,https://www.google.com/maps/place/Rug+Bakery/data=!4m2!3m1!1s0x46525359463436c3:0x9c0a400a20eca83e,success
+Perron,"experience
+4; croissants
+5; brunch
 5; coffee
-9; croissants
-5","Otto Busses Vej 45, 2450 København ",55.6583954,12.5427843,4.0,126,,,https://www.perroncph.dk/,,No,,,,https://www.google.com/maps/place/Perron/data=!4m2!3m1!1s0x46525374332fc119:0xb6a2e77f1147712e,success
-Cakenhagen Vesterbrogade,"cafe
-6; danish pastry
-7; Patisserie; choice
-5; hot chocolate
-5","Vesterbrogade 1, 1620 København ",55.6751205,12.5666843,4.5,93,,88 70 00 00,https://www.nimb.dk/restaurant-bar/cakenhagen?utm_source=google&utm_medium=organic&utm_campaign=gbp-cakenhagen-vesterbrogade,,No,,,,https://www.google.com/maps/place/Cakenhagen+Vesterbrogade/data=!4m2!3m1!1s0x4652536a1363f95b:0x6e5ec14d6e846534,success
-Det Franske Konditori,Pastry shop,"H. C. Ørsteds Vej 44, 1879 Frederiksberg C ",55.6810722,12.5492381,4.5,92,,35 35 15 46,http://detfranskeconditori.dk/,,No,,,,https://www.google.com/maps/place/Det+Franske+Konditori/data=!4m2!3m1!1s0x465253a6f108ad7d:0xa951017679515b2f,success
-Hart,Bakery,"Julius Bloms Gade 32, 2200 København ",55.6952807,12.5440316,4.2,85,,,https://hartbageri.com/,,No,,,,https://www.google.com/maps/place/Hart/data=!4m2!3m1!1s0x4652530030fd8f4f:0x990da25bc38605ec,success
-Andersen Bakery,Bakery,"Thorshavnsgade 26, 2300 Amager Vest ",55.6672402,12.5785336,4.6,"2,627",,33 75 07 35,https://andersen-bakery-eu.dk/,,No,,,,https://www.google.com/maps/place/Andersen+Bakery/data=!4m2!3m1!1s0x4652530d731eb667:0x421b0fb5b128311,success
-Riviera,"Bakery; bun
+9; Bakery",,,"Otto Busses Vej 45, 2450 København ",Sydhavn,55.6583954,12.5427843,4.0,126,,,https://www.perroncph.dk/,,No,No,https://www.google.com/maps/place/Perron/data=!4m2!3m1!1s0x46525374332fc119:0xb6a2e77f1147712e,success
+Cakenhagen Vesterbrogade,Patisserie,,,"Vesterbrogade 1, 1620 København ",Vesterbro,55.6751205,12.5666843,4.5,93,,88 70 00 00,https://www.nimb.dk/restaurant-bar/cakenhagen?utm_source=google&utm_medium=organic&utm_campaign=gbp-cakenhagen-vesterbrogade,Closed · Opens 10.00 am Fri,No,No,https://www.google.com/maps/place/Cakenhagen+Vesterbrogade/data=!4m2!3m1!1s0x4652536a1363f95b:0x6e5ec14d6e846534,success
+Det Franske Konditori,"danish
+7; price
+6; Pastry shop; french
+3; croissant
+5",,,"H. C. Ørsteds Vej 44, 1879 Frederiksberg C ",Frederiksberg,55.6810722,12.5492381,4.5,92,,35 35 15 46,http://detfranskeconditori.dk/,Closed · Opens 6.00 am Fri,No,No,https://www.google.com/maps/place/Det+Franske+Konditori/data=!4m2!3m1!1s0x465253a6f108ad7d:0xa951017679515b2f,success
+Hart,Bakery,,,"Julius Bloms Gade 32, 2200 København ",Nørrebro,55.6952807,12.5440316,4.2,85,,,https://hartbageri.com/,Closed · Opens 7.30 am Fri,No,No,https://www.google.com/maps/place/Hart/data=!4m2!3m1!1s0x4652530030fd8f4f:0x990da25bc38605ec,success
+Andersen Bakery,"cardamom bun
+32; yuzu
+24; danish
+89; Bakery; rhubarb
+37",,,"Thorshavnsgade 26, 2300 Amager Vest ",Amager,55.6672402,12.5785336,4.6,"2,628",,33 75 07 35,https://andersen-bakery-eu.dk/,Closed · Opens 6.30 am Fri,No,No,https://www.google.com/maps/place/Andersen+Bakery/data=!4m2!3m1!1s0x4652530d731eb667:0x421b0fb5b128311,success
+Riviera,"bun
 9; café
-8; breakfast
-15; price
-15","Nansensgade 64, 1366 København K ",55.6836487,12.5654745,4.3,176,,,,,No,,,,https://www.google.com/maps/place/Riviera/data=!4m2!3m1!1s0x4652536bbaa4ac13:0x34e841e7c3cc40fb,success
-Maison d'Angleterre,Bakery,"Østergade 2, 1100 København K ",55.6803408,12.5847903,4.3,82,,78 79 51 87,https://www.dangleterre.com/en/maison-dangleterre?utm_source=maisonGMB&utm_medium=organic,,No,,,,https://www.google.com/maps/place/Maison+d'Angleterre/data=!4m2!3m1!1s0x46525300f88a9071:0x4b7db35f3b5ec14b,success
-Flere Fugle,Bakery,"Rentemestervej 57, 2400 København ",55.7073855,12.524697,4.3,677,,93 63 42 01,http://www.flerefugle.dk/,,No,,,,https://www.google.com/maps/place/Flere+Fugle/data=!4m2!3m1!1s0x465253d689f1f72f:0xed86676cfdfeb8ff,success
-Rondo,Pastry shop,"Sjællandsgade 7, 2200 København ",55.6932303,12.5522123,4.5,273,,55 55 09 90,http://www.rondo.dk/,,No,,,,https://www.google.com/maps/place/Rondo/data=!4m2!3m1!1s0x4652537ae0a512b3:0x72b66bc2215f7ca4,success
-Hart,"Bakery; cardamom
-13; cafe
-18; atmosphere
-8; croissant
-25","Refshalevej 159A, 1432 København ",55.6912475,12.6114625,4.6,290,,,https://hartbageri.com/,,No,,,,https://www.google.com/maps/place/Hart/data=!4m2!3m1!1s0x465253b36c793463:0x34b60e6a98842084,success
-Hart Bageri,Bakery,"Istedgade 61, 1650 København ",55.6690567,12.5532377,4.6,140,,,http://hartbageri.com/,,No,,,,https://www.google.com/maps/place/Hart+Bageri/data=!4m2!3m1!1s0x46525390d674bd49:0x4ca2fd380ff2429d,success
-Københavns Bageri,Pastry shop,"Flaskehalsen 22, 1799 København ",55.6646938,12.5354426,4.6,247,,,https://www.earnest-eats.dk/projects-1/koebenhavnsbageri,,No,,,,https://www.google.com/maps/place/K%C3%B8benhavns+Bageri/data=!4m2!3m1!1s0x4652532c32841b61:0x289933757748ada0,success
-Juno the bakery,Bakery,"Århusgade 48, 2100 København ",55.7061815,12.5818152,4.7,"3,644",,,https://www.junothebakery.com/,,No,,,,https://www.google.com/maps/place/Juno+the+bakery/data=!4m2!3m1!1s0x465252f035a89c17:0x11c1cda65903316,success
-Alice Ice Cream & Coffee,Coffee shop,"Markmandsgade 1, Amagerbrogade 5, 2300 København ",55.6684086,12.5970575,4.5,569,,,https://www.earnest-eats.dk/projects-1/alice-63gjd,,No,,,,https://www.google.com/maps/place/Alice+Ice+Cream+%26+Coffee/data=!4m2!3m1!1s0x4652533874b25553:0x24522c2aa3dffe0d,success
-Andersen Bakery,"Bakery; selection
-11; cinnamon buns
-14; almond croissant
-10; latte
-9","Ørestads Blvd. 49A, 2300 København ",55.636663,12.5828915,4.7,420,,33 75 07 35,https://andersen-bakery-eu.dk/,,No,,,,https://www.google.com/maps/place/Andersen+Bakery/data=!4m2!3m1!1s0x46525598ff0d609b:0x41a63611b0520691,success
-Format Café,Cafe,"Bredgade 68, 1260 København ",55.6868007,12.5931211,3.8,124,,40 99 88 10,http://formatcafe.dk/,,No,,,,https://www.google.com/maps/place/Format+Caf%C3%A9/data=!4m2!3m1!1s0x46525397450eeb39:0x1a000f3cecb71130,success
-Andersen & Maillard,"cube croissant
-78; almond croissant
-32; bakery
-107; cinnamon roll
-49; Coffee shop","Nørrebrogade 62, 2200 København N ",55.6903659,12.5551042,4.4,"1,933",,,https://www.andersenmaillard.dk/,,No,,,,https://www.google.com/maps/place/Andersen+%26+Maillard/data=!4m2!3m1!1s0x46525248586eef61:0x937ff35354fafcad,success
-Meyers Bageri,Pastry shop,"Jægersborggade 9, 2200 København ",55.691859,12.5449609,4.6,412,,25 10 11 34,https://meyers.dk/bageri/meyers-bagerier/meyers-bageri-jaegersborggade/,,No,,,,https://www.google.com/maps/place/Meyers+Bageri/data=!4m2!3m1!1s0x465253ad95201c67:0x5a4372488f3002af,success
-Daniali & Schiøtz Bageri,"Bakery; service
-6; coffee
-14; cinnamon roll
-7; sourdough
-5","Falkoner Alle 36, 2000 Frederiksberg ",55.6819882,12.5350209,4.5,263,,50 58 98 29,https://instagram.com/danialischioetz?igshid=MzRlODBiNWFlZA==,,No,,,,https://www.google.com/maps/place/Daniali+%26+Schi%C3%B8tz+Bageri/data=!4m2!3m1!1s0x465253bb0c39fbc9:0xd8893949ef4fd779,success
-Ard Bakery,Bakery,"Peter Bangs Vej 95, 2000 Frederiksberg ",55.678465,12.501709,4.4,223,,31 31 38 24,http://www.ardbakery.dk/,,No,,,,https://www.google.com/maps/place/Ard+Bakery/data=!4m2!3m1!1s0x465253c30d306aa7:0x96cdb8507c16e76c,success
-
+8; price
+15; breakfast
+15; Bakery",,,"Nansensgade 64, 1366 København K ",Indre By,55.6836487,12.5654745,4.3,176,,,,Closed · Opens 8.00 am Fri,No,No,https://www.google.com/maps/place/Riviera/data=!4m2!3m1!1s0x4652536bbaa4ac13:0x34e841e7c3cc40fb,success
+Maison d'Angleterre,"experience
+4; dessert
+9; Bakery; cafe
+5; atmosphere
+4",,,"Østergade 2, 1100 København K ",Indre By,55.6803408,12.5847903,4.3,82,,78 79 51 87,https://www.dangleterre.com/en/maison-dangleterre?utm_source=maisonGMB&utm_medium=organic,Closed · Opens 8.00 am Fri,No,No,https://www.google.com/maps/place/Maison+d'Angleterre/data=!4m2!3m1!1s0x46525300f88a9071:0x4b7db35f3b5ec14b,success
+Flere Fugle,Bakery,,,"Rentemestervej 57, 2400 København ",Nordvest,55.7073855,12.524697,4.3,677,,93 63 42 01,http://www.flerefugle.dk/,,No,No,https://www.google.com/maps/place/Flere+Fugle/data=!4m2!3m1!1s0x465253d689f1f72f:0xed86676cfdfeb8ff,success
+Rondo,"savoury
+7; Pastry shop; cheese
+11; buns
+15; sourdough
+9",,,"Sjællandsgade 7, 2200 København ",Nørrebro,55.6932303,12.5522123,4.5,273,,55 55 09 90,http://www.rondo.dk/,Closed · Opens 7.30 am Fri,No,No,https://www.google.com/maps/place/Rondo/data=!4m2!3m1!1s0x4652537ae0a512b3:0x72b66bc2215f7ca4,success
+Hart,Bakery,,,"Refshalevej 159A, 1432 København ",Indre By,55.6912475,12.6114625,4.6,290,,,https://hartbageri.com/,Closed · Opens 7.30 am Fri,No,No,https://www.google.com/maps/place/Hart/data=!4m2!3m1!1s0x465253b36c793463:0x34b60e6a98842084,success
+Hart Bageri,Bakery,,,"Istedgade 61, 1650 København ",Vesterbro,55.6690567,12.5532377,4.6,140,,,http://hartbageri.com/,Closed · Opens 7.30 am Fri,No,No,https://www.google.com/maps/place/Hart+Bageri/data=!4m2!3m1!1s0x46525390d674bd49:0x4ca2fd380ff2429d,success
+Københavns Bageri,Pastry shop,,,"Flaskehalsen 22, 1799 København ",Vesterbro,55.6646938,12.5354426,4.6,248,,,https://www.earnest-eats.dk/projects-1/koebenhavnsbageri,Closed · Opens 7.00 am Fri,No,No,https://www.google.com/maps/place/K%C3%B8benhavns+Bageri/data=!4m2!3m1!1s0x4652532c32841b61:0x289933757748ada0,success
+Juno the bakery,"cardamom bun
+372; queue
+192; almond croissant
+78; Bakery; cardamon
+108",,,"Århusgade 48, 2100 København ",Østerbro,55.7061815,12.5818152,4.7,"3,647",,,https://www.junothebakery.com/,Closed · Opens 7.30 am Fri,No,No,https://www.google.com/maps/place/Juno+the+bakery/data=!4m2!3m1!1s0x465252f035a89c17:0x11c1cda65903316,success
+Alice Ice Cream & Coffee,Coffee shop,,,"Markmandsgade 1, Amagerbrogade 5, 2300 København ",Amager,55.6684086,12.5970575,4.5,569,,,https://www.earnest-eats.dk/projects-1/alice-63gjd,Closed · Opens 8.00 am Fri,No,No,https://www.google.com/maps/place/Alice+Ice+Cream+%26+Coffee/data=!4m2!3m1!1s0x4652533874b25553:0x24522c2aa3dffe0d,success
+Andersen Bakery,Bakery,,,"Ørestads Blvd. 49A, 2300 København ",Amager,55.636663,12.5828915,4.7,421,,33 75 07 35,https://andersen-bakery-eu.dk/,Closed · Opens 7.00 am Fri,No,No,https://www.google.com/maps/place/Andersen+Bakery/data=!4m2!3m1!1s0x46525598ff0d609b:0x41a63611b0520691,success
+Andersen & Maillard,Coffee shop,,,"Nørrebrogade 62, 2200 København N ",Nørrebro,55.6903659,12.5551042,4.4,"1,933",,,https://www.andersenmaillard.dk/,Closed · Opens 7.00 am Fri,No,No,https://www.google.com/maps/place/Andersen+%26+Maillard/data=!4m2!3m1!1s0x46525248586eef61:0x937ff35354fafcad,success
+Meyers Bageri,"prices
+6; Pastry shop; cinnamon bun
+60; danish
+9; oven
+6",,,"Jægersborggade 9, 2200 København ",Nørrebro,55.691859,12.5449609,4.6,412,,25 10 11 34,https://meyers.dk/bageri/meyers-bagerier/meyers-bageri-jaegersborggade/,Closed · Opens 7.00 am Fri,No,No,https://www.google.com/maps/place/Meyers+Bageri/data=!4m2!3m1!1s0x465253ad95201c67:0x5a4372488f3002af,success
+Ard Bakery,"coffee
+5; croissant
+9; buttery
+8; Bakery; sourdough
+9",,,"Peter Bangs Vej 95, 2000 Frederiksberg ",,55.678465,12.501709,4.4,223,,31 31 38 24,http://www.ardbakery.dk/,Closed · Opens 6.00 am Fri,No,No,https://www.google.com/maps/place/Ard+Bakery/data=!4m2!3m1!1s0x465253c30d306aa7:0x96cdb8507c16e76c,success
