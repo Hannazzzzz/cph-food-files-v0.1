@@ -12,6 +12,7 @@ export interface Bakery {
   phone: string | null;
   latitude: number | null;
   longitude: number | null;
+  temporarilyClosed: boolean;
 }
 
 // Map postal codes to neighbourhood names based on official Danish postal code directory
@@ -180,7 +181,8 @@ export const bakeries: Bakery[] = (() => {
   return dataRows
     .map((r) => rowToRecord(headers, r))
     .filter((r) => (r.name ?? '').trim() !== '')
-    .filter((r) => isNo(r.permanently_closed) && isNo(r.temporarily_closed))
+     // Hide permanently closed places, but keep temporarily closed ones (shown as muted in UI)
+     .filter((r) => isNo(r.permanently_closed))
     .filter((r) => (r.status ?? '').trim() === '' || (r.status ?? '').trim().toLowerCase() === 'success')
     .map((r) => {
       const address = (r.address ?? '').trim();
@@ -197,6 +199,8 @@ export const bakeries: Bakery[] = (() => {
 
       const url = (r['maps_url'] ?? r['maps url'] ?? r['maps_url'] ?? '').trim();
 
+       const temporarilyClosed = !isNo(r.temporarily_closed ?? '');
+
       return {
         name: (r.name ?? '').trim(),
         address,
@@ -208,6 +212,7 @@ export const bakeries: Bakery[] = (() => {
         phone: (r.phone ?? '').trim() || null,
         latitude: toNumberOrNull(r.latitude ?? ''),
         longitude: toNumberOrNull(r.longitude ?? ''),
+         temporarilyClosed,
       } satisfies Bakery;
     })
     // If a row doesn't have a maps url, keep it out (otherwise clicking breaks)

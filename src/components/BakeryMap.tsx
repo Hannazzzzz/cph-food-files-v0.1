@@ -145,16 +145,25 @@ const BakeryMap = ({ selectedBakeryName }: BakeryMapProps) => {
                   href={bakery.website || bakery.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-semibold text-primary hover:text-accent"
+                  className={
+                    bakery.temporarilyClosed
+                      ? 'font-semibold text-muted-foreground hover:text-muted-foreground'
+                      : 'font-semibold text-primary hover:text-accent'
+                  }
                 >
                   {bakery.name}
+                  {bakery.temporarilyClosed ? ' (Temporarily Closed)' : ''}
                 </a>
                 <div className="mt-1">
                   <a
                     href={bakery.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs text-primary/80 hover:text-accent"
+                    className={
+                      bakery.temporarilyClosed
+                        ? 'text-xs text-muted-foreground hover:text-muted-foreground'
+                        : 'text-xs text-primary/80 hover:text-accent'
+                    }
                   >
                     View on Google Maps
                   </a>

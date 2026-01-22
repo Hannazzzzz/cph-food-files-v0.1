@@ -63,24 +63,34 @@ const BakeryTable = ({ onSelectBakery }: BakeryTableProps) => {
       </TableHeader>
       <TableBody>
         {sortedBakeries.map((bakery, index) => (
-          <TableRow key={index}>
+          <TableRow key={index} className={bakery.temporarilyClosed ? 'text-muted-foreground' : undefined}>
             <TableCell className="pl-0 text-left">
               {onSelectBakery ? (
                 <button
                   type="button"
                   onClick={() => onSelectBakery(bakery.name)}
-                  className="font-medium text-primary hover:text-accent"
+                  className={
+                    bakery.temporarilyClosed
+                      ? 'font-medium text-muted-foreground hover:text-muted-foreground'
+                      : 'font-medium text-primary hover:text-accent'
+                  }
                 >
                   {bakery.name}
+                  {bakery.temporarilyClosed ? ' (Temporarily Closed)' : ''}
                 </button>
               ) : (
                 <a
                   href={bakery.website || bakery.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-medium"
+                  className={
+                    bakery.temporarilyClosed
+                      ? 'font-medium text-muted-foreground hover:text-muted-foreground'
+                      : 'font-medium'
+                  }
                 >
                   {bakery.name}
+                  {bakery.temporarilyClosed ? ' (Temporarily Closed)' : ''}
                 </a>
               )}
             </TableCell>
