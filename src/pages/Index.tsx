@@ -56,6 +56,7 @@ const Index = () => {
       >
         <BakeryMap
           selectedBakeryName={selectedBakeryName}
+          bakeries={filteredBakeries}
           onSelectFoodTags={setSelectedFoodTags}
           onSelectMoodTags={setSelectedMoodTags}
           onSelectHoodTags={setSelectedHoodTags}
