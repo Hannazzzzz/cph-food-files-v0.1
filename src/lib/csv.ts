@@ -2,9 +2,10 @@
 // - quoted fields
 // - escaped quotes ("")
 // - newlines inside quoted fields
+// - configurable delimiter (comma by default, but can be semicolon, tab, etc.)
 //
 // Returns rows of raw string fields (no type conversion).
-export function parseCsv(csvText: string): string[][] {
+export function parseCsv(csvText: string, delimiter: string = ','): string[][] {
   const rows: string[][] = [];
 
   let row: string[] = [];
@@ -46,7 +47,7 @@ export function parseCsv(csvText: string): string[][] {
       continue;
     }
 
-    if (char === ',') {
+    if (char === delimiter) {
       pushField();
       continue;
     }
