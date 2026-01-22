@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { DivIcon, type Map as LeafletMap, type Marker as LeafletMarker } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { bakeries } from '@/data/bakeries';
+import MapFiltersOverlay from '@/components/MapFiltersOverlay';
 
 // Custom marker icon (colored using design tokens)
 const markerIcon = new DivIcon({
@@ -59,8 +60,9 @@ const BakeryMap = ({ selectedBakeryName }: BakeryMapProps) => {
   return (
     <div
       data-map-theme="cph-food-files"
-      className="w-full h-[400px] rounded-lg overflow-hidden"
+      className="relative w-full h-[400px] rounded-lg overflow-hidden"
     >
+      <MapFiltersOverlay />
       {/*
         Leaflet tiles are raster images, so we approximate a retro pale-yellow + pale-grey look
         via CSS filters (no change to map functionality).
