@@ -79,7 +79,10 @@ function TagDropdown({
                   e.preventDefault();
                   onToggle(tag);
                 }}
-                className={cn(selectedTags.has(tag) && 'font-semibold')}
+                className={cn(
+                  // Keep the pink highlight for selected items (no bold)
+                  selectedTags.has(tag) && 'bg-accent text-accent-foreground',
+                )}
               >
                 {tag}
               </DropdownMenuItem>
@@ -109,6 +112,9 @@ const MapFiltersOverlay = ({
   const [selectedFood, setSelectedFood] = useState<Set<string>>(() => new Set());
   const [selectedMood, setSelectedMood] = useState<Set<string>>(() => new Set());
   const [selectedHood, setSelectedHood] = useState<Set<string>>(() => new Set());
+
+  const hasAnySelection =
+    selectedFood.size > 0 || selectedMood.size > 0 || selectedHood.size > 0;
 
   const clearAll = () => {
     setSelectedFood(new Set());
@@ -189,19 +195,23 @@ const MapFiltersOverlay = ({
             }}
           />
 
-          <button
-            type="button"
-            onClick={clearAll}
-            aria-label="Clear all filters"
-            className={cn(
-              // bigger hit area, but visually just the X
-              'grid h-9 w-9 place-items-center rounded-none text-foreground/80',
-              'transition-colors hover:text-foreground',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
-            )}
-          >
-            <X className="h-4 w-4" aria-hidden="true" />
-          </button>
+          {hasAnySelection && (
+            <button
+              type="button"
+              onClick={clearAll}
+              aria-label="Clear all filters"
+              className={cn(
+                // bigger hit area, but visually just the X
+                'grid h-9 w-9 place-items-center rounded-none text-foreground/80',
+                'transition-colors hover:text-foreground',
+                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+                // Pull it slightly left so it tucks closer to the buttons
+                '-ml-1',
+              )}
+            >
+              <X className="h-4 w-4" aria-hidden="true" />
+            </button>
+          )}
         </div>
       </div>
     </div>
