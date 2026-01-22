@@ -17,17 +17,27 @@ type MapFiltersOverlayProps = {
   onSelectHoodTag?: (tag: string) => void;
 };
 
+type FilterVariant = 'food' | 'mood' | 'hood';
+
 function TagDropdown({
   label,
   tags,
   onSelect,
   selected,
+  variant,
 }: {
   label: string;
   tags: string[];
   onSelect?: (tag: string) => void;
   selected: boolean;
+  variant: FilterVariant;
 }) {
+  const variantClasses: Record<FilterVariant, string> = {
+    food: 'bg-food text-food-foreground hover:ring-food focus-visible:ring-food ring-food',
+    mood: 'bg-mood text-mood-foreground hover:ring-mood focus-visible:ring-mood ring-mood',
+    hood: 'bg-hood text-hood-foreground hover:ring-hood focus-visible:ring-hood ring-hood',
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -36,10 +46,11 @@ function TagDropdown({
           variant="outline"
           size="sm"
           className={cn(
-            'rounded-none bg-accent text-accent-foreground border-2 border-transparent',
-            'hover:ring-2 hover:ring-accent hover:ring-offset-2 hover:ring-offset-background',
-            'focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background',
-            selected && 'ring-2 ring-accent ring-offset-2 ring-offset-background',
+            'rounded-none border-2 border-transparent',
+            variantClasses[variant],
+            'hover:ring-2 hover:ring-offset-2 hover:ring-offset-background',
+            'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+            selected && 'ring-2 ring-offset-2 ring-offset-background',
           )}
         >
           <span className="tracking-wide">{label}</span>
@@ -102,6 +113,7 @@ const MapFiltersOverlay = ({
             label="FOOD"
             tags={foodTags}
             selected={selectedFood !== null}
+            variant="food"
             onSelect={(tag) => {
               if (tag === 'All') {
                 setSelectedFood(null);
@@ -116,6 +128,7 @@ const MapFiltersOverlay = ({
             label="MOOD"
             tags={moodTags}
             selected={selectedMood !== null}
+            variant="mood"
             onSelect={(tag) => {
               if (tag === 'All') {
                 setSelectedMood(null);
@@ -130,6 +143,7 @@ const MapFiltersOverlay = ({
             label="HOOD"
             tags={hoodTags}
             selected={selectedHood !== null}
+            variant="hood"
             onSelect={(tag) => {
               if (tag === 'All') {
                 setSelectedHood(null);
