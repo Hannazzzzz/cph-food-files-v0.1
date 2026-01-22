@@ -24,6 +24,17 @@
     --accent: 328 100% 54%;
     --accent-foreground: 0 0% 100%;
 
+    /* Map filter category colors */
+    /* FOOD: Deep Orange #FF4500 = hsl(16, 100%, 50%) */
+    --food: 16 100% 50%;
+    --food-foreground: 0 0% 100%;
+    /* MOOD: Purple #8B4789 = ~hsl(302, 32%, 41%) */
+    --mood: 302 32% 41%;
+    --mood-foreground: 0 0% 100%;
+    /* HOOD: Black */
+    --hood: 0 0% 0%;
+    --hood-foreground: 0 0% 100%;
+
     /* Marker hover/selected: Gold #FFD700 = hsl(51, 100%, 50%) */
     --marker-hover: 51 100% 50%;
     
@@ -65,6 +76,14 @@
     --primary-foreground: 0 0% 100%;
     --accent: 328 100% 54%;
     --accent-foreground: 0 0% 100%;
+
+    /* Map filter category colors */
+    --food: 16 100% 50%;
+    --food-foreground: 0 0% 100%;
+    --mood: 302 32% 41%;
+    --mood-foreground: 0 0% 100%;
+    --hood: 0 0% 0%;
+    --hood-foreground: 0 0% 100%;
 
     /* Marker hover/selected: Gold #FFD700 = hsl(51, 100%, 50%) */
     --marker-hover: 51 100% 50%;
