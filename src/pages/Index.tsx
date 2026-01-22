@@ -18,8 +18,6 @@ const Index = () => {
             <strong>Last updated:</strong> January 2026
             <br />
             <strong>Curated by:</strong> Hanna
-            <br />
-            <Link to="/about">About this website</Link>
           </p>
         </div>
       </header>
@@ -48,7 +46,8 @@ const Index = () => {
         <p className="text-meta m-0" style={{ color: 'hsl(0 0% 40%)' }}>
           <em>
             CPH Food Files | My answers to 'Hanna, where do you go for ...?'<br />
-            Only 5/5 recommended places according to me, updated when I feel like it. Information was correct at the time of posting. No further promises
+            Only 5/5 recommended places according to me, updated when I feel like it. Information was correct at the time of posting. No further promises.{' '}
+            <Link to="/about">More about this website</Link>
           </em>
         </p>
 
