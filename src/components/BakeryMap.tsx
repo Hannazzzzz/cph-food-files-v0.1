@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, ZoomControl } from 'react-leaflet';
+import { LayerGroup, MapContainer, Marker, Popup, TileLayer, ZoomControl } from 'react-leaflet';
 import { DivIcon, type Map as LeafletMap, type Marker as LeafletMarker } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import type { Bakery } from '@/data/bakeries';
@@ -54,6 +54,13 @@ const BakeryMap = ({
   const bakeriesWithCoords = useMemo(
     () => bakeries.filter((bakery) => bakery.latitude !== null && bakery.longitude !== null),
     [bakeries],
+  );
+
+  // Workaround: ensure Leaflet layers fully sync when the dataset shrinks/expands.
+  // (Some Leaflet layer edge-cases can leave stale markers visible.)
+  const markerLayerKey = useMemo(
+    () => bakeriesWithCoords.map((b) => b.name).sort((a, b) => a.localeCompare(b)).join('|'),
+    [bakeriesWithCoords],
   );
 
   useEffect(() => {
@@ -165,48 +172,50 @@ const BakeryMap = ({
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
           url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         />
-        {bakeriesWithCoords.map((bakery) => (
-          <Marker
-            key={bakery.name}
-            position={[bakery.latitude!, bakery.longitude!]}
-            icon={bakery.name === selectedBakeryName ? markerIconHover : markerIcon}
-            ref={(marker) => {
-              markerRefs.current[bakery.name] = marker;
-            }}
-          >
-            <Popup>
-              <div className="text-sm">
-                <a
-                  href={bakery.website || bakery.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={
-                    bakery.temporarilyClosed
-                      ? 'font-semibold text-muted-foreground hover:text-muted-foreground'
-                      : 'font-semibold text-primary hover:text-accent'
-                  }
-                >
-                  {bakery.name}
-                  {bakery.temporarilyClosed ? ' (Temporarily Closed)' : ''}
-                </a>
-                <div className="mt-1">
+        <LayerGroup key={markerLayerKey}>
+          {bakeriesWithCoords.map((bakery) => (
+            <Marker
+              key={bakery.name}
+              position={[bakery.latitude!, bakery.longitude!]}
+              icon={bakery.name === selectedBakeryName ? markerIconHover : markerIcon}
+              ref={(marker) => {
+                markerRefs.current[bakery.name] = marker;
+              }}
+            >
+              <Popup>
+                <div className="text-sm">
                   <a
-                    href={bakery.url}
+                    href={bakery.website || bakery.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={
                       bakery.temporarilyClosed
-                        ? 'text-xs text-muted-foreground hover:text-muted-foreground'
-                        : 'text-xs text-primary/80 hover:text-accent'
+                        ? 'font-semibold text-muted-foreground hover:text-muted-foreground'
+                        : 'font-semibold text-primary hover:text-accent'
                     }
                   >
-                    View on Google Maps
+                    {bakery.name}
+                    {bakery.temporarilyClosed ? ' (Temporarily Closed)' : ''}
                   </a>
+                  <div className="mt-1">
+                    <a
+                      href={bakery.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={
+                        bakery.temporarilyClosed
+                          ? 'text-xs text-muted-foreground hover:text-muted-foreground'
+                          : 'text-xs text-primary/80 hover:text-accent'
+                      }
+                    >
+                      View on Google Maps
+                    </a>
+                  </div>
                 </div>
-              </div>
-            </Popup>
-          </Marker>
-        ))}
+              </Popup>
+            </Marker>
+          ))}
+        </LayerGroup>
       </MapContainer>
     </div>
   );
