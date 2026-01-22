@@ -33,14 +33,23 @@ const markerIconHover = new DivIcon({
 
 type BakeryMapProps = {
   selectedBakeryName?: string | null;
+  onSelectFoodTags?: (tags: string[]) => void;
+  onSelectMoodTags?: (tags: string[]) => void;
+  onSelectHoodTags?: (tags: string[]) => void;
 };
 
-const BakeryMap = ({ selectedBakeryName }: BakeryMapProps) => {
+const BakeryMap = ({
+  selectedBakeryName,
+  onSelectFoodTags,
+  onSelectMoodTags,
+  onSelectHoodTags,
+}: BakeryMapProps) => {
   const mapRef = useRef<LeafletMap | null>(null);
   const markerRefs = useRef<Record<string, LeafletMarker | null>>({});
 
   const [selectedFoodTags, setSelectedFoodTags] = useState<string[]>([]);
   const [selectedMoodTags, setSelectedMoodTags] = useState<string[]>([]);
+  const [selectedHoodTags, setSelectedHoodTags] = useState<string[]>([]);
 
   const bakeriesWithCoords = useMemo(() => {
     const hasCoords = bakeries.filter(
@@ -58,9 +67,12 @@ const BakeryMap = ({ selectedBakeryName }: BakeryMapProps) => {
         bakery.moodTags.some((t) =>
           selectedMoodTags.some((s) => s.toLowerCase() === t.toLowerCase()),
         );
-      return matchesFood && matchesMood;
+      const matchesHood =
+        selectedHoodTags.length === 0 ||
+        selectedHoodTags.some((s) => s.toLowerCase() === bakery.neighbourhood.toLowerCase());
+      return matchesFood && matchesMood && matchesHood;
     });
-  }, [selectedFoodTags, selectedMoodTags]);
+  }, [selectedFoodTags, selectedMoodTags, selectedHoodTags]);
 
   useEffect(() => {
     if (!selectedBakeryName) return;
@@ -83,9 +95,15 @@ const BakeryMap = ({ selectedBakeryName }: BakeryMapProps) => {
       <MapFiltersOverlay
         onSelectFoodTag={(tags) => {
           setSelectedFoodTags(tags);
+          onSelectFoodTags?.(tags);
         }}
         onSelectMoodTag={(tags) => {
           setSelectedMoodTags(tags);
+          onSelectMoodTags?.(tags);
+        }}
+        onSelectHoodTag={(tags) => {
+          setSelectedHoodTags(tags);
+          onSelectHoodTags?.(tags);
         }}
       />
       {/*
