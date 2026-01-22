@@ -5,6 +5,8 @@ export interface Bakery {
   name: string;
   address: string;
   neighbourhood: string;
+  foodTags: string[];
+  moodTags: string[];
   rating: number | null;
   reviewsCount: number | null;
   url: string;
@@ -163,6 +165,13 @@ function rowToRecord(headers: string[], row: string[]) {
   return record;
 }
 
+function splitTags(value: string): string[] {
+  return (value ?? '')
+    .split(/[;,]+/g)
+    .map((t) => t.trim())
+    .filter(Boolean);
+}
+
 function isNo(value: string) {
   const v = (value ?? '').trim().toLowerCase();
   return v === '' || v === 'no' || v === 'false' || v === '0';
@@ -199,12 +208,17 @@ export const bakeries: Bakery[] = (() => {
 
       const url = (r['maps_url'] ?? r['maps url'] ?? r['maps_url'] ?? '').trim();
 
+      const foodTags = splitTags(r.food_tags ?? r.food_tag ?? '');
+      const moodTags = splitTags(r.mood_tags ?? r.mood_tag ?? '');
+
        const temporarilyClosed = !isNo(r.temporarily_closed ?? '');
 
       return {
         name: (r.name ?? '').trim(),
         address,
         neighbourhood,
+        foodTags,
+        moodTags,
         rating: parseRating((r.rating ?? '').trim()),
         reviewsCount: parseReviewsCount((r.reviews_count ?? '').trim()),
         url,

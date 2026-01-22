@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, ZoomControl } from 'react-leaflet';
 import { DivIcon, type Map as LeafletMap, type Marker as LeafletMarker } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -39,10 +39,24 @@ const BakeryMap = ({ selectedBakeryName }: BakeryMapProps) => {
   const mapRef = useRef<LeafletMap | null>(null);
   const markerRefs = useRef<Record<string, LeafletMarker | null>>({});
 
-  const bakeriesWithCoords = useMemo(
-    () => bakeries.filter((bakery) => bakery.latitude !== null && bakery.longitude !== null),
-    []
-  );
+  const [selectedFoodTag, setSelectedFoodTag] = useState<string | null>(null);
+  const [selectedMoodTag, setSelectedMoodTag] = useState<string | null>(null);
+
+  const bakeriesWithCoords = useMemo(() => {
+    const hasCoords = bakeries.filter(
+      (bakery) => bakery.latitude !== null && bakery.longitude !== null,
+    );
+
+    return hasCoords.filter((bakery) => {
+      const matchesFood =
+        !selectedFoodTag ||
+        bakery.foodTags.some((t) => t.toLowerCase() === selectedFoodTag.toLowerCase());
+      const matchesMood =
+        !selectedMoodTag ||
+        bakery.moodTags.some((t) => t.toLowerCase() === selectedMoodTag.toLowerCase());
+      return matchesFood && matchesMood;
+    });
+  }, [selectedFoodTag, selectedMoodTag]);
 
   useEffect(() => {
     if (!selectedBakeryName) return;
@@ -62,7 +76,14 @@ const BakeryMap = ({ selectedBakeryName }: BakeryMapProps) => {
       data-map-theme="cph-food-files"
       className="relative w-full h-[400px] rounded-lg overflow-hidden"
     >
-      <MapFiltersOverlay />
+      <MapFiltersOverlay
+        onSelectFoodTag={(tag) => {
+          setSelectedFoodTag(tag === 'All' ? null : tag);
+        }}
+        onSelectMoodTag={(tag) => {
+          setSelectedMoodTag(tag === 'All' ? null : tag);
+        }}
+      />
       {/*
         Leaflet tiles are raster images, so we approximate a retro pale-yellow + pale-grey look
         via CSS filters (no change to map functionality).
