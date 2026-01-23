@@ -51,7 +51,7 @@ Step 3: Wait for it to finish
 
 Step 4: Open the enriched CSV file
     - Default: "Favorite places_enriched.csv"
-    - Or: "Fastelavnsbolle_enriched.csv" (if you used that file)
+    - Or: "Favorite places_enriched.csv" (if you used that file)
     - Test: "Favorite places_test_results.csv" (or similar)
 
 

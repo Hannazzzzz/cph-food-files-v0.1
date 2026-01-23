@@ -6,7 +6,7 @@ function uniqueSorted(values: Iterable<string>): string[] {
   );
 }
 
-// Source of truth: Fastelavnsbolle_enriched.csv
+// Source of truth: Favorite places_enriched.csv
 // We derive tag options from the already CSV-parsed `bakeries` array to:
 // - guarantee dropdowns never go empty if CSV parsing nuances change
 // - avoid parsing the CSV multiple times

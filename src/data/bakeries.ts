@@ -1,4 +1,4 @@
-import enrichedCsv from '../../Fastelavnsbolle_enriched.csv?raw';
+import enrichedCsv from '../../Favorite places_enriched.csv?raw';
 import { parseCsv } from '@/lib/csv';
 
 export interface Bakery {
@@ -177,7 +177,7 @@ function isNo(value: string) {
   return v === '' || v === 'no' || v === 'false' || v === '0';
 }
 
-// Source of truth: Fastelavnsbolle_enriched.csv
+// Source of truth: Favorite places_enriched.csv
 export const bakeries: Bakery[] = (() => {
   // The CSV file uses semicolons as delimiters
   const rows = parseCsv(enrichedCsv, ';');
