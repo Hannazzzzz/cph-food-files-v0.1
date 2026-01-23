@@ -141,57 +141,74 @@ The scraper is designed with several key features:
 
 ## Contributing
 
-Contributions are welcome! Here are some ways you can help:
+**Technical contributions are welcome!** This project benefits from community input on code quality, performance, and features. However, the selection and curation of restaurants is maintained as a personal editorial decision.
 
-### Adding New Restaurants
+### What You Can Contribute
 
-1. Add a new line to `Fastelavnsbolle.csv` with:
-   - Restaurant name
-   - Google Maps URL
-   - Optional tags (comma-separated)
-   - Optional comment
+**✅ Code improvements:**
+- Bug fixes and error handling
+- Performance optimizations
+- UI/UX enhancements
+- Accessibility improvements
+- Test coverage
+- Documentation updates
 
-2. Run the scraper to enrich the data:
+**✅ New features:**
+- Filters and search functionality
+- Favorites/bookmarking system
+- Social sharing features
+- Mobile app development
+- Progressive Web App (PWA) features
+
+**✅ Scraper improvements:**
+- Support for additional data sources
+- Better error handling and retry logic
+- Rate limiting improvements
+- Support for other food categories
+- Geographic features (distance calculations, route planning)
+
+**❌ Restaurant curation:**
+The selection of which restaurants to include is a personal editorial decision. If you have a restaurant recommendation, feel free to reach out via the contact information on [hannazoonwordpress.com](https://hannazoonwordpress.com), but pull requests adding restaurants will not be accepted.
+
+### How to Contribute
+
+1. **Open an issue first** - For significant changes, please open an issue to discuss your idea before investing time in implementation. This helps ensure your contribution aligns with the project direction.
+
+2. **Fork and create a branch**:
    ```sh
-   python3 scripts/harvest_restaurants.py Fastelavnsbolle.csv
+   git clone https://github.com/YOUR_USERNAME/cph-food-files-v0.1.git
+   cd cph-food-files-v0.1
+   git checkout -b feature/your-feature-name
    ```
 
-3. Test locally with `npm run dev`
+3. **Make your changes** - Follow the existing code style and patterns.
 
-4. Submit a pull request with your changes
+4. **Test thoroughly** - Run `npm run lint` and `npm test` to ensure your changes don't break anything.
 
-### Improving the Frontend
+5. **Submit a pull request** - Provide a clear description of what your changes do and why they're valuable.
 
-- The UI is built with React components in `src/components/`
-- Styles use Tailwind CSS utility classes
-- shadcn-ui components provide accessible, customizable base components
-- The map implementation is in components using React Leaflet
+### Architecture Overview
 
-Feel free to:
-- Improve the UI/UX
-- Add new features (filters, search, favorites, etc.)
-- Fix bugs
-- Improve accessibility
-- Optimize performance
+Understanding these key aspects will help you contribute effectively:
 
-### Enhancing the Scraper
+**Frontend (src/):**
+- React 18 with TypeScript for type safety
+- Tailwind CSS for styling (utility-first approach)
+- shadcn-ui components for accessible, customizable UI elements
+- React Leaflet for map functionality
+- TanStack Query for data fetching and caching
 
-The scraper can be improved in many ways:
-- Add support for additional data sources
-- Improve error handling and retry logic
-- Add more geographic data (distance calculations, route planning, etc.)
-- Support for other food categories beyond fastelavnsboller
-- Rate limiting and politeness improvements
+**Data Pipeline (scripts/):**
+- Source data: `Fastelavnsbolle.csv` (manually curated)
+- Enriched data: `Fastelavnsbolle_enriched.csv` (auto-generated from Google Maps)
+- Python scraper that preserves manual tags while adding location data, hours, ratings, etc.
+- Idempotent design - can be run multiple times safely
 
-### Development Workflow
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Make your changes
-4. Test thoroughly
-5. Commit your changes (`git commit -m 'Add amazing feature'`)
-6. Push to your branch (`git push origin feature/amazing-feature`)
-7. Open a pull request
+**Key files:**
+- `src/components/` - Reusable React components
+- `src/pages/` - Page-level components
+- `scripts/harvest_restaurants.py` - Main data enrichment scraper
+- `Fastelavnsbolle.csv` - Source of truth for restaurant list
 
 ## License
 
