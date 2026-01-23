@@ -19,6 +19,9 @@ function uniqueSorted(values: Iterable<string>): string[] {
 
 type MapFiltersOverlayProps = {
   className?: string;
+  initialFoodTags?: string[];
+  initialMoodTags?: string[];
+  initialHoodTags?: string[];
   onSelectFoodTag?: (tags: string[]) => void;
   onSelectMoodTag?: (tags: string[]) => void;
   onSelectHoodTag?: (tags: string[]) => void;
@@ -111,6 +114,9 @@ function TagDropdown({
 
 const MapFiltersOverlay = ({
   className,
+  initialFoodTags,
+  initialMoodTags,
+  initialHoodTags,
   onSelectFoodTag,
   onSelectMoodTag,
   onSelectHoodTag,
@@ -120,9 +126,9 @@ const MapFiltersOverlay = ({
   const moodTags = useMemo(() => uniqueSorted(bakeries.flatMap((b) => b.moodTags)), []);
   const hoodTags = useMemo(() => uniqueSorted(bakeries.map((b) => b.neighbourhood)), []);
 
-  const [selectedFood, setSelectedFood] = useState<Set<string>>(() => new Set());
-  const [selectedMood, setSelectedMood] = useState<Set<string>>(() => new Set());
-  const [selectedHood, setSelectedHood] = useState<Set<string>>(() => new Set());
+  const [selectedFood, setSelectedFood] = useState<Set<string>>(() => new Set(initialFoodTags || []));
+  const [selectedMood, setSelectedMood] = useState<Set<string>>(() => new Set(initialMoodTags || []));
+  const [selectedHood, setSelectedHood] = useState<Set<string>>(() => new Set(initialHoodTags || []));
 
   const hasAnySelection =
     selectedFood.size > 0 || selectedMood.size > 0 || selectedHood.size > 0;
