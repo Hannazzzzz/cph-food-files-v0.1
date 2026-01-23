@@ -150,85 +150,92 @@ const MapFiltersOverlay = ({
         className,
       )}
     >
-      <div className="pointer-events-auto px-3 pt-3">
-        <div className="flex flex-wrap items-center gap-2">
-          <TagDropdown
-            label="FOOD"
-            tags={foodTags}
-            variant="food"
-            selectedTags={selectedFood}
-            onClear={() => {
-              setSelectedFood(new Set());
-              onSelectFoodTag?.([]);
-            }}
-            onToggle={(tag) => {
-              setSelectedFood((prev) => {
-                const next = new Set(prev);
-                if (next.has(tag)) next.delete(tag);
-                else next.add(tag);
-                onSelectFoodTag?.(Array.from(next));
-                return next;
-              });
-            }}
-          />
+      {/*
+        IMPORTANT: Keep the full-width top overlay area non-interactive so it doesn't
+        intercept clicks meant for Leaflet controls (e.g., the top-right zoom +).
+        Only the actual filter controls are pointer-events enabled.
+      */}
+      <div className="pointer-events-none px-3 pt-3">
+        <div className="pointer-events-auto w-fit max-w-full">
+          <div className="flex flex-wrap items-center gap-2">
+            <TagDropdown
+              label="FOOD"
+              tags={foodTags}
+              variant="food"
+              selectedTags={selectedFood}
+              onClear={() => {
+                setSelectedFood(new Set());
+                onSelectFoodTag?.([]);
+              }}
+              onToggle={(tag) => {
+                setSelectedFood((prev) => {
+                  const next = new Set(prev);
+                  if (next.has(tag)) next.delete(tag);
+                  else next.add(tag);
+                  onSelectFoodTag?.(Array.from(next));
+                  return next;
+                });
+              }}
+            />
 
-          <TagDropdown
-            label="MOOD"
-            tags={moodTags}
-            variant="mood"
-            selectedTags={selectedMood}
-            onClear={() => {
-              setSelectedMood(new Set());
-              onSelectMoodTag?.([]);
-            }}
-            onToggle={(tag) => {
-              setSelectedMood((prev) => {
-                const next = new Set(prev);
-                if (next.has(tag)) next.delete(tag);
-                else next.add(tag);
-                onSelectMoodTag?.(Array.from(next));
-                return next;
-              });
-            }}
-          />
+            <TagDropdown
+              label="MOOD"
+              tags={moodTags}
+              variant="mood"
+              selectedTags={selectedMood}
+              onClear={() => {
+                setSelectedMood(new Set());
+                onSelectMoodTag?.([]);
+              }}
+              onToggle={(tag) => {
+                setSelectedMood((prev) => {
+                  const next = new Set(prev);
+                  if (next.has(tag)) next.delete(tag);
+                  else next.add(tag);
+                  onSelectMoodTag?.(Array.from(next));
+                  return next;
+                });
+              }}
+            />
 
-          <TagDropdown
-            label="HOOD"
-            tags={hoodTags}
-            variant="hood"
-            selectedTags={selectedHood}
-            onClear={() => {
-              setSelectedHood(new Set());
-              onSelectHoodTag?.([]);
-            }}
-            onToggle={(tag) => {
-              setSelectedHood((prev) => {
-                const next = new Set(prev);
-                if (next.has(tag)) next.delete(tag);
-                else next.add(tag);
-                onSelectHoodTag?.(Array.from(next));
-                return next;
-              });
-            }}
-          />
+            <TagDropdown
+              label="HOOD"
+              tags={hoodTags}
+              variant="hood"
+              selectedTags={selectedHood}
+              onClear={() => {
+                setSelectedHood(new Set());
+                onSelectHoodTag?.([]);
+              }}
+              onToggle={(tag) => {
+                setSelectedHood((prev) => {
+                  const next = new Set(prev);
+                  if (next.has(tag)) next.delete(tag);
+                  else next.add(tag);
+                  onSelectHoodTag?.(Array.from(next));
+                  return next;
+                });
+              }}
+            />
 
-          {hasAnySelection && (
-            <button
-              type="button"
-              onClick={clearAll}
-              aria-label="Clear all filters"
-              className={cn(
-                // bigger hit area, but visually just the X
-                'grid h-9 w-9 place-items-center rounded-none text-foreground/80',
-                'transition-colors hover:text-foreground',
-                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
-                // Pull it slightly left so it tucks closer to the buttons
-                '-ml-1',
-              )}
-            >
-              <X className="h-4 w-4" aria-hidden="true" />
-            </button>
-          )}
+            {hasAnySelection && (
+              <button
+                type="button"
+                onClick={clearAll}
+                aria-label="Clear all filters"
+                className={cn(
+                  // bigger hit area, but visually just the X
+                  'grid h-9 w-9 place-items-center rounded-none text-foreground/80',
+                  'transition-colors hover:text-foreground',
+                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+                  // Pull it slightly left so it tucks closer to the buttons
+                  '-ml-1',
+                )}
+              >
+                <X className="h-4 w-4" aria-hidden="true" />
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>

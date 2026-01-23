@@ -114,6 +114,14 @@ const BakeryMap = ({
           opacity: 0.92;
         }
 
+        /*
+          Keep Leaflet controls above the top overlay area.
+          (Dropdown menus still render above everything via their own z-index.)
+        */
+        [data-map-theme="cph-food-files"] .leaflet-top.leaflet-right {
+          z-index: 1600;
+        }
+
         [data-map-theme="cph-food-files"] .cph-food-files-marker {
           background: transparent;
           border: 0;
