@@ -179,8 +179,8 @@ function isNo(value: string) {
 
 // Source of truth: Favorite places_enriched.csv
 export const bakeries: Bakery[] = (() => {
-  // The CSV file uses semicolons as delimiters
-  const rows = parseCsv(enrichedCsv, ';');
+  // The CSV file uses commas as delimiters
+  const rows = parseCsv(enrichedCsv, ',');
   if (rows.length === 0) return [];
 
   const headers = rows[0].map(normalizeHeader);
