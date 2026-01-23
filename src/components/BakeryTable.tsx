@@ -49,13 +49,19 @@ const BakeryTable = ({ onSelectBakery, bakeries = allBakeries }: BakeryTableProp
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead 
+          <TableHead
             className="pl-0 cursor-pointer hover:text-foreground select-none"
             onClick={() => handleSort('name')}
           >
             Name{getSortIndicator('name')}
           </TableHead>
-          <TableHead 
+          <TableHead>
+            Food
+          </TableHead>
+          <TableHead>
+            Mood
+          </TableHead>
+          <TableHead
             className="cursor-pointer hover:text-foreground select-none"
             onClick={() => handleSort('neighbourhood')}
           >
@@ -96,6 +102,8 @@ const BakeryTable = ({ onSelectBakery, bakeries = allBakeries }: BakeryTableProp
                 </a>
               )}
             </TableCell>
+            <TableCell>{bakery.foodTags.join(', ')}</TableCell>
+            <TableCell>{bakery.moodTags.join(', ')}</TableCell>
             <TableCell>{bakery.neighbourhood}</TableCell>
           </TableRow>
         ))}
