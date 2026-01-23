@@ -79,8 +79,8 @@ const BakeryTable = ({ onSelectBakery, bakeries = allBakeries }: BakeryTableProp
                   onClick={() => onSelectBakery(bakery.name)}
                   className={
                     bakery.temporarilyClosed
-                      ? 'font-medium text-muted-foreground hover:text-muted-foreground'
-                      : 'font-medium text-primary hover:text-accent'
+                      ? 'font-medium text-muted-foreground hover:text-muted-foreground text-left'
+                      : 'font-medium text-primary hover:text-accent text-left'
                   }
                 >
                   {bakery.name}
@@ -93,8 +93,8 @@ const BakeryTable = ({ onSelectBakery, bakeries = allBakeries }: BakeryTableProp
                   rel="noopener noreferrer"
                   className={
                     bakery.temporarilyClosed
-                      ? 'font-medium text-muted-foreground hover:text-muted-foreground'
-                      : 'font-medium'
+                      ? 'font-medium text-muted-foreground hover:text-muted-foreground text-left'
+                      : 'font-medium text-left'
                   }
                 >
                   {bakery.name}
