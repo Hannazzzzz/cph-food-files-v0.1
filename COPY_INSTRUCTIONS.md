@@ -53,8 +53,26 @@ These files/folders should NOT be copied:
 
 ## 🚀 After Copying
 
-1. Navigate to scripts folder: `cd scripts`
-2. Install dependencies: `pip install -r requirements.txt`
-3. Test the scraper: `./RUN_ME.sh`
-4. Check that `Fastelavnsbolle_enriched.csv` gets updated in root
-5. Rebuild website to see changes: `npm run dev`
+1. Install Python dependencies:
+   ```bash
+   pip3 install -r scripts/requirements.txt
+   ```
+
+2. Test the scraper (3 restaurants only):
+   ```bash
+   python3 scripts/test_run.py Fastelavnsbolle.csv
+   ```
+
+3. Run the full scraper:
+   ```bash
+   python3 scripts/harvest_restaurants.py Fastelavnsbolle.csv
+   ```
+
+4. The scraper will update `Fastelavnsbolle_enriched.csv` in the root directory
+
+5. Rebuild website to see changes:
+   ```bash
+   npm run dev
+   ```
+
+**Note:** Run these commands from the **root of the website repository** so the CSV file paths are correct.

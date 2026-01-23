@@ -80,21 +80,22 @@ This project includes a Python scraper to harvest restaurant data from Google Ma
 
 1. Install Python dependencies:
 ```sh
-cd scripts
-pip install -r requirements.txt
+pip3 install -r scripts/requirements.txt
 ```
 
 2. Run the scraper:
 ```sh
 # Quick test run (3 restaurants only)
-./RUN_ME.sh
+python3 scripts/test_run.py Fastelavnsbolle.csv
 
 # Full scraper
-python harvest_restaurants.py
+python3 scripts/harvest_restaurants.py Fastelavnsbolle.csv
 ```
 
 3. The scraper will update `Fastelavnsbolle_enriched.csv` in the root directory
 4. The website will automatically use the updated data on next build/refresh
+
+**Note:** Run these commands from the root directory of this repository.
 
 ### Scraper Files
 
