@@ -20,7 +20,7 @@ These files should already exist in the website repo root. Only copy if they're 
 
 ```
 From scraper repo root → To website repo root
-├── Fastelavnsbolle_enriched.csv  → Fastelavnsbolle_enriched.csv (already exists)
+├── Favorite places_enriched.csv  → Favorite places_enriched.csv (already exists)
 ├── Fastelavnsbolle.csv           → Fastelavnsbolle.csv (already exists)
 └── Favorite places.csv           → Favorite places.csv (copy if used by scraper)
 ```
@@ -68,7 +68,7 @@ These files/folders should NOT be copied:
    python3 scripts/harvest_restaurants.py Fastelavnsbolle.csv
    ```
 
-4. The scraper will update `Fastelavnsbolle_enriched.csv` in the root directory
+4. The scraper will update `Favorite places_enriched.csv` in the root directory
 
 5. Rebuild website to see changes:
    ```bash

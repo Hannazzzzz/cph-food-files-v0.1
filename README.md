@@ -81,7 +81,7 @@ The site will be available at `http://localhost:5173`
 ├── docs/                # Documentation files
 ├── public/              # Static assets
 ├── Fastelavnsbolle.csv  # Source data (manually curated)
-└── Fastelavnsbolle_enriched.csv  # Enriched data (auto-generated)
+└── Favorite places_enriched.csv  # Enriched data (auto-generated)
 ```
 
 ## Data Pipeline & Scraper
@@ -91,7 +91,7 @@ The project uses a two-stage data pipeline:
 1. **Manual Curation** (`Fastelavnsbolle.csv`)
    Hand-picked restaurants are added to this CSV with basic information: name, Google Maps URL, and optional tags/comments.
 
-2. **Automated Enrichment** (`Fastelavnsbolle_enriched.csv`)
+2. **Automated Enrichment** (`Favorite places_enriched.csv`)
    A Python scraper fetches additional details from Google Maps including:
    - Full address and postal code
    - Neighborhood/district (e.g., "Nørrebro", "Vesterbro")
@@ -116,7 +116,7 @@ python3 scripts/test_run.py Fastelavnsbolle.csv
 python3 scripts/harvest_restaurants.py Fastelavnsbolle.csv
 ```
 
-The scraper generates `Fastelavnsbolle_enriched.csv` which is automatically loaded by the website on the next build or page refresh.
+The scraper generates `Favorite places_enriched.csv` which is automatically loaded by the website on the next build or page refresh.
 
 **Important:** Always run scraper commands from the repository root directory.
 
@@ -200,7 +200,7 @@ Understanding these key aspects will help you contribute effectively:
 
 **Data Pipeline (scripts/):**
 - Source data: `Fastelavnsbolle.csv` (manually curated)
-- Enriched data: `Fastelavnsbolle_enriched.csv` (auto-generated from Google Maps)
+- Enriched data: `Favorite places_enriched.csv` (auto-generated from Google Maps)
 - Python scraper that preserves manual tags while adding location data, hours, ratings, etc.
 - Idempotent design - can be run multiple times safely
 
