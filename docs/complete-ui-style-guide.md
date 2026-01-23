@@ -359,14 +359,117 @@ CartoDB Positron: https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{
 
 ---
 
-## Future Considerations
+## Design Principles & Scalability Considerations
 
-- Tag system extensibility (easily add new filter categories)
-- Pagination design for large lists
-- Loading states and animations (keep minimal and functional)
-- Error states (use playful but clear messaging)
-- Print styles (if needed)
+### Density versus Legibility
+
+**Current approach:** The technical, dense layouts with minimal whitespace create a distinctive, sophisticated feel that aligns with the "playful OS terminal" concept.
+
+**Scaling considerations:**
+- **Whitespace review:** When the site scales to hundreds of restaurants, places, or tags, revisit spacing to prevent overwhelming users
+- **Test threshold:** Monitor user feedback and analytics at key milestones (50 places, 100 places, 200+ places)
+- **Breathing room:** Consider adding subtle spacing increments (e.g., 4px → 6px gaps) in high-density areas without losing the technical aesthetic
+- **Hard edges:** The "no rounded corners ever" rule creates strong brand identity, but test with real users over time for visual fatigue
+- **Balance point:** Dense is good; claustrophobic is not. The goal is "sophisticated software," not "overwhelming spreadsheet"
+
+### Brand Playfulness versus Usability
+
+**Personality:** The "spikey" personality through sharp edges, fluorescent accents, and monospace typography creates memorable brand differentiation.
+
+**Non-negotiable usability rules:**
+- **Functionality first:** When there's tension between aesthetics and usability, functionality always wins
+- **Navigation clarity:** Navigation elements must be immediately recognizable—avoid overly subtle or cryptic patterns
+- **Clickable affordances:** Interactive elements (buttons, links, filters) must have clear visual affordances:
+  - Sufficient contrast between states (default/hover/active)
+  - Minimum touch target size: 44×44px for mobile
+  - Clear hover states that appear within 100ms
+- **Readability:** Monospace can reduce reading speed—compensate with:
+  - Adequate line height (1.6 for body text)
+  - Sufficient font size (14px minimum for body)
+  - High contrast ratios (black on beige meets WCAG AA)
+- **Information hierarchy:** Use weight, size, and spacing to guide users—not just color
+
+### Responsive Design & Mobile Considerations
+
+**Desktop-first concern:** The "grid everywhere" approach works beautifully on large screens but can struggle on mobile devices.
+
+**Mobile-critical principles:**
+- **One-handed operation:** Core flows (filtering, browsing, map usage) must work comfortably one-handed on phones
+- **Simplified mobile layouts:**
+  - Collapse multi-column grids to single column on screens <768px
+  - Stack filter buttons in fewer rows (2-3 max visible, with scroll or collapse)
+  - Reduce map height on mobile to preserve list visibility (50/50 or 40/60 split)
+- **Touch-friendly spacing:**
+  - Increase filter button padding on mobile: 12px 20px (vs 8px 16px on desktop)
+  - Add more vertical gap between interactive elements: 12px minimum
+  - Ensure tap targets don't overlap or sit too close (<8px gap)
+- **Performance:**
+  - Lazy-load map tiles on mobile
+  - Consider pagination or infinite scroll for 50+ results on small screens
+  - Minimize DOM complexity in mobile grids
+- **Core mobile flows:**
+  1. Quick filter selection (dietary, neighborhood, cuisine)
+  2. Browse list with key info visible (name, tags, neighborhood)
+  3. View on map
+  4. Get details (full card or detail page)
+
+**Breakpoints:**
+- Mobile: <768px
+- Tablet: 768px–1024px
+- Desktop: >1024px
+
+### Tag & Filter Scalability
+
+**Current state:** Filter buttons use flexbox with wrap, supporting multiple rows. Future considerations mention "tag system extensibility."
+
+**Scalability design requirements:**
+
+**Visual overflow handling:**
+- **Horizontal wrapping:** Already supported—ensure it remains clean with 5+ rows of tags
+- **Category grouping:** As filter categories grow, group them visually:
+  ```
+  Cuisine: [tag] [tag] [tag]...
+  Dietary: [tag] [tag]...
+  Neighborhood: [tag] [tag] [tag] [tag]...
+  ```
+- **Collapse/expand sections:** For 10+ categories, allow users to collapse groups they don't need
+- **Grid stability:** Long tag names or many active filters shouldn't break the grid—test with:
+  - Very long tag names (15+ characters)
+  - 20+ active filters simultaneously
+  - Rapid selection/deselection
+
+**Future filtering features:**
+- **Multi-select behavior:** Already implied by current design—maintain this
+- **Tag relationships:** Some filters are mutually exclusive (e.g., "vegetarian" + "steakhouse")—design for conflicts:
+  - Show count of matching results per tag
+  - Disable/grey out incompatible tags when selection results in zero matches
+  - Or allow selection but show "0 results" message
+- **Search/autocomplete:** When tags exceed 50-75 total, add a search box to filter the filters
+- **Saved filter sets:** Power users may want to save combinations ("Vegetarian ramen in Nørrebro")
+- **URL state:** Filters should be URL-encodable for sharing ("?cuisine=ramen&diet=vegan&hood=norrebro")
+
+**Performance:**
+- Test filter performance with:
+  - 500+ restaurants
+  - 50+ total filter tags
+  - 10+ simultaneous active filters
+- Optimize filtering algorithm—should feel instant (<100ms)
+
+**Visual stress testing:**
+- Add 10 more cuisine types—does the grid still look intentional?
+- Add 5 new dietary filters—do rows become overwhelming?
+- What happens with 8 active filters—do they dominate the UI?
 
 ---
 
-**Last updated:** January 21, 2026
+## Future Considerations
+
+- Loading states and animations (keep minimal and functional)
+- Error states (use playful but clear messaging)
+- Print styles (if needed)
+- Dark mode variant (optional—may enhance the "terminal" aesthetic)
+- Advanced filtering (price range, rating, distance from location)
+
+---
+
+**Last updated:** January 23, 2026
