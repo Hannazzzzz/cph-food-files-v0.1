@@ -1,0 +1,117 @@
+RESTAURANT HARVESTER - SIMPLE INSTRUCTIONS
+===========================================
+
+This will automatically collect data for all 164 restaurants from your Google Maps links.
+
+WHAT YOU'LL GET:
+- A file called "restaurants_enriched.csv" with these columns:
+  * Name
+  * Keywords (from review mentions - e.g., "great coffee", "cozy atmosphere")
+  * Food Tags (for manual categorization - preserved on re-runs!)
+  * Mood Tags (for manual categorization - preserved on re-runs!)
+  * Address
+  * Neighborhood (auto-derived from postal code)
+  * Latitude & Longitude (coordinates)
+  * Rating
+  * Number of reviews
+  * Price level ($, $$, $$$, $$$$)
+  * Phone number
+  * Website
+  * Opening hours
+  * Permanently Closed (Yes/No)
+  * Temporarily Closed (Yes/No)
+  * Google Maps link
+
+TIME NEEDED: 10-15 minutes total (automatic)
+
+HOW TO RUN:
+-----------
+
+Step 0: Navigate to the project folder
+    cd "/Users/hannazoon/Documents/Restaurant Guide/cphfoodfiles-claude-automate-restaurant-harvesting-Ux75q"
+
+    Note: The quotes are important because of the space in "Restaurant Guide"
+
+Step 1: Install dependencies (first time only)
+    pip3 install selenium webdriver-manager
+
+Step 2: Run the script
+
+    For default file (Favorite places.csv):
+        python3 harvest_restaurants.py
+
+    For a different file (e.g., Fastelavnsbolle.csv):
+        python3 harvest_restaurants.py Fastelavnsbolle.csv
+
+    To test with just 3 restaurants first:
+        python3 test_run.py
+        python3 test_run.py Fastelavnsbolle.csv
+
+Step 3: Wait for it to finish
+
+Step 4: Open the enriched CSV file
+    - Default: "Favorite places_enriched.csv"
+    - Or: "Fastelavnsbolle_enriched.csv" (if you used that file)
+    - Test: "Favorite places_test_results.csv" (or similar)
+
+
+WHAT HAPPENS:
+-------------
+- Visits each Google Maps link automatically
+- Extracts all available information
+- Saves progress every 10 restaurants (in case it crashes)
+- Creates "restaurants_enriched.csv" when done
+- Logs everything to "harvest.log"
+
+
+TROUBLESHOOTING:
+---------------
+If you see "Chrome not found":
+  - Install Google Chrome browser first
+  - On Ubuntu: sudo apt install google-chrome-stable
+  - On Mac: brew install --cask google-chrome
+
+If it crashes:
+  - Just run it again, it will continue from where it stopped
+
+If a restaurant fails:
+  - It will skip it and continue with the next one
+  - Check "harvest.log" for details
+
+
+AFTER IT FINISHES:
+-----------------
+Open "restaurants_enriched.csv" in:
+- Excel
+- Google Sheets
+- Any spreadsheet program
+- Import to your website/database
+
+
+TAG PRESERVATION FEATURE:
+------------------------
+You can manually add food_tags and mood_tags to the CSV, and they will be
+preserved when you re-run the scraper!
+
+Example workflow:
+1. Run the scraper → creates enriched CSV with empty tag columns
+2. Open CSV and manually add tags:
+   - food_tags: "Bakery, Pastries, French"
+   - mood_tags: "Cozy, Morning, Casual"
+3. Save the CSV
+4. Run the scraper again → your tags are preserved, other data refreshed!
+
+This lets you:
+- Keep your manual categorizations
+- Update ratings, reviews, and other data regularly
+- Build your tag vocabulary over time
+- Never lose your tagging work
+
+
+TESTING:
+--------
+To test with just 3 restaurants (much faster):
+    python3 test_tag_logic.py     (tests tag preservation logic only)
+    python3 test_run.py Fastelavnsbolle.csv    (scrapes 3 restaurants)
+
+Done!
