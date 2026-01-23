@@ -1,111 +1,204 @@
-# Welcome to your Lovable project
+# CPH Food Files
 
-## Project info
+A curated guide to Copenhagen's best food spots, currently featuring bakeries serving fastelavnsboller for fastelavn 2026. The project combines manual curation with automated data enrichment to provide up-to-date information about restaurants and cafes in Copenhagen.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+**Live site**: [cphfoodfiles.dk](https://www.cphfoodfiles.dk/)
 
-## How can I edit this code?
+## About This Project
 
-There are several ways of editing your application.
+CPH Food Files is an interactive web application that helps people discover the best food spots in Copenhagen. The current focus is on bakeries serving fastelavnsboller (a traditional Danish Carnival pastry), but the architecture is designed to be extensible for other food categories.
 
-**Use Lovable**
+The site features:
+- Interactive map showing all locations using Leaflet
+- Detailed information about each bakery including addresses, opening hours, and ratings
+- Automatic data enrichment from Google Maps
+- Responsive design that works on all devices
+- Fast performance with modern web technologies
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+## Tech Stack
 
-Changes made via Lovable will be committed automatically to this repo.
+### Frontend
+- **React 18** - UI library
+- **TypeScript** - Type safety and better developer experience
+- **Vite** - Fast build tool and dev server
+- **React Router** - Client-side routing
+- **Tailwind CSS** - Utility-first CSS framework
+- **shadcn-ui** - High-quality, accessible UI components
+- **React Leaflet** - Interactive maps
+- **Lucide React** - Icon library
+- **TanStack Query** - Data fetching and caching
 
-**Use your preferred IDE**
+### Data Pipeline
+- **Python 3** - Scraper scripting
+- **Google Maps API** - Restaurant data source
+- **CSV** - Simple, version-controllable data format
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## Getting Started
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Prerequisites
+- Node.js 18+ and npm ([install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating))
+- Python 3.7+ (only needed if you want to run the data scraper)
 
-Follow these steps:
+### Installation
 
+1. Clone the repository:
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+git clone https://github.com/Hannazzzzz/cph-food-files-v0.1.git
+cd cph-food-files-v0.1
+```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+2. Install dependencies:
+```sh
+npm install
+```
 
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+3. Start the development server:
+```sh
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The site will be available at `http://localhost:5173`
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Available Scripts
 
-**Use GitHub Codespaces**
+- `npm run dev` - Start development server with hot reload
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build locally
+- `npm run lint` - Run ESLint
+- `npm test` - Run tests with Vitest
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Project Structure
 
-## What technologies are used for this project?
+```
+├── src/                  # Frontend source code
+│   ├── components/       # React components
+│   ├── pages/           # Page components
+│   └── main.tsx         # Application entry point
+├── scripts/             # Data scraper scripts
+│   ├── harvest_restaurants.py
+│   ├── test_run.py
+│   └── requirements.txt
+├── docs/                # Documentation files
+├── public/              # Static assets
+├── Fastelavnsbolle.csv  # Source data (manually curated)
+└── Fastelavnsbolle_enriched.csv  # Enriched data (auto-generated)
+```
 
-This project is built with:
+## Data Pipeline & Scraper
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+The project uses a two-stage data pipeline:
 
-## How can I deploy this project?
+1. **Manual Curation** (`Fastelavnsbolle.csv`)
+   Hand-picked restaurants are added to this CSV with basic information: name, Google Maps URL, and optional tags/comments.
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+2. **Automated Enrichment** (`Fastelavnsbolle_enriched.csv`)
+   A Python scraper fetches additional details from Google Maps including:
+   - Full address and postal code
+   - Neighborhood/district (e.g., "Nørrebro", "Vesterbro")
+   - Opening hours
+   - Star rating and review count
+   - Google Maps Place ID
+   - Geographic coordinates for map display
 
-## Can I connect a custom domain to my Lovable project?
+### Running the Scraper
 
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
-
-## Data Scraper
-
-This project includes a Python scraper to harvest restaurant data from Google Maps.
-
-### Setup
-
-1. Install Python dependencies:
+**Prerequisites:**
 ```sh
 pip3 install -r scripts/requirements.txt
 ```
 
-2. Run the scraper:
+**Usage:**
 ```sh
-# Quick test run (3 restaurants only)
+# Test run (processes only 3 restaurants for quick verification)
 python3 scripts/test_run.py Fastelavnsbolle.csv
 
-# Full scraper
+# Full scraper (processes all restaurants)
 python3 scripts/harvest_restaurants.py Fastelavnsbolle.csv
 ```
 
-3. The scraper will update `Fastelavnsbolle_enriched.csv` in the root directory
-4. The website will automatically use the updated data on next build/refresh
+The scraper generates `Fastelavnsbolle_enriched.csv` which is automatically loaded by the website on the next build or page refresh.
 
-**Note:** Run these commands from the root directory of this repository.
+**Important:** Always run scraper commands from the repository root directory.
 
-### Scraper Files
+### Scraper Architecture
 
-- `scripts/harvest_restaurants.py` - Main scraper script
-- `scripts/test_run.py` - Test script for 3 restaurants
-- `scripts/test_tag_logic.py` - Tests tag preservation logic
-- `scripts/RUN_ME.sh` - Quick run script
+The scraper is designed with several key features:
+- **Tag preservation** - Manually added tags in the source CSV are preserved during enrichment
+- **Idempotent operation** - Can be run multiple times safely; only updates changed data
+- **Error handling** - Continues processing even if individual restaurants fail
+- **Test mode** - Quick validation with `test_run.py` before running the full scraper
+
+**Scraper files:**
+- `scripts/harvest_restaurants.py` - Main scraper implementation
+- `scripts/test_run.py` - Quick test with 3 restaurants
+- `scripts/test_tag_logic.py` - Unit tests for tag preservation
+- `scripts/RUN_ME.sh` - Convenience wrapper script
 - `scripts/requirements.txt` - Python dependencies
-- `scripts/HOW_TO_RUN.txt` - Detailed instructions
+- `scripts/HOW_TO_RUN.txt` - Detailed usage instructions
 
-### Reference Materials
+**Reference materials:**
+- `docs/PostalcodesEnglish.pdf` - Copenhagen postal code mappings for neighborhood detection
 
-- `docs/PostalcodesEnglish.pdf` - Copenhagen postal code reference
+## Contributing
+
+Contributions are welcome! Here are some ways you can help:
+
+### Adding New Restaurants
+
+1. Add a new line to `Fastelavnsbolle.csv` with:
+   - Restaurant name
+   - Google Maps URL
+   - Optional tags (comma-separated)
+   - Optional comment
+
+2. Run the scraper to enrich the data:
+   ```sh
+   python3 scripts/harvest_restaurants.py Fastelavnsbolle.csv
+   ```
+
+3. Test locally with `npm run dev`
+
+4. Submit a pull request with your changes
+
+### Improving the Frontend
+
+- The UI is built with React components in `src/components/`
+- Styles use Tailwind CSS utility classes
+- shadcn-ui components provide accessible, customizable base components
+- The map implementation is in components using React Leaflet
+
+Feel free to:
+- Improve the UI/UX
+- Add new features (filters, search, favorites, etc.)
+- Fix bugs
+- Improve accessibility
+- Optimize performance
+
+### Enhancing the Scraper
+
+The scraper can be improved in many ways:
+- Add support for additional data sources
+- Improve error handling and retry logic
+- Add more geographic data (distance calculations, route planning, etc.)
+- Support for other food categories beyond fastelavnsboller
+- Rate limiting and politeness improvements
+
+### Development Workflow
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes
+4. Test thoroughly
+5. Commit your changes (`git commit -m 'Add amazing feature'`)
+6. Push to your branch (`git push origin feature/amazing-feature`)
+7. Open a pull request
+
+## License
+
+This project is open source and available for anyone to use, modify, and contribute to.
+
+## Credits
+
+Created and curated by [Hanna Zoon](https://hannazoonwordpress.com).
+
+Built with modern web technologies and a lot of love for Copenhagen's food scene.
