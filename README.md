@@ -71,3 +71,40 @@ Yes, you can!
 To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
 
 Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+
+## Data Scraper
+
+This project includes a Python scraper to harvest restaurant data from Google Maps.
+
+### Setup
+
+1. Install Python dependencies:
+```sh
+cd scripts
+pip install -r requirements.txt
+```
+
+2. Run the scraper:
+```sh
+# Quick test run (3 restaurants only)
+./RUN_ME.sh
+
+# Full scraper
+python harvest_restaurants.py
+```
+
+3. The scraper will update `Fastelavnsbolle_enriched.csv` in the root directory
+4. The website will automatically use the updated data on next build/refresh
+
+### Scraper Files
+
+- `scripts/harvest_restaurants.py` - Main scraper script
+- `scripts/test_run.py` - Test script for 3 restaurants
+- `scripts/test_tag_logic.py` - Tests tag preservation logic
+- `scripts/RUN_ME.sh` - Quick run script
+- `scripts/requirements.txt` - Python dependencies
+- `scripts/HOW_TO_RUN.txt` - Detailed instructions
+
+### Reference Materials
+
+- `docs/PostalcodesEnglish.pdf` - Copenhagen postal code reference
