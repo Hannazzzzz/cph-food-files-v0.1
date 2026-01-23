@@ -34,6 +34,9 @@ const markerIconHover = new DivIcon({
 type BakeryMapProps = {
   selectedBakeryName?: string | null;
   bakeries: Bakery[];
+  initialFoodTags?: string[];
+  initialMoodTags?: string[];
+  initialHoodTags?: string[];
   onSelectFoodTags?: (tags: string[]) => void;
   onSelectMoodTags?: (tags: string[]) => void;
   onSelectHoodTags?: (tags: string[]) => void;
@@ -42,6 +45,9 @@ type BakeryMapProps = {
 const BakeryMap = ({
   selectedBakeryName,
   bakeries,
+  initialFoodTags,
+  initialMoodTags,
+  initialHoodTags,
   onSelectFoodTags,
   onSelectMoodTags,
   onSelectHoodTags,
@@ -82,6 +88,9 @@ const BakeryMap = ({
       className="relative w-full h-[400px] rounded-lg overflow-hidden"
     >
       <MapFiltersOverlay
+        initialFoodTags={initialFoodTags}
+        initialMoodTags={initialMoodTags}
+        initialHoodTags={initialHoodTags}
         onSelectFoodTag={(tags) => {
           onSelectFoodTags?.(tags);
         }}

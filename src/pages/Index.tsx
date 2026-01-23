@@ -1,16 +1,25 @@
-import { useMemo, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import BakeryTable from '@/components/BakeryTable';
 import BakeryMap from '@/components/BakeryMap';
 import { bakeries } from '@/data/bakeries';
+import { filtersToSearchParams, searchParamsToFilters } from '@/lib/urlFilters';
 
 const Index = () => {
   const [selectedBakeryName, setSelectedBakeryName] = useState<string | null>(null);
   const mapSectionRef = useRef<HTMLDivElement | null>(null);
 
-  const [selectedFoodTags, setSelectedFoodTags] = useState<string[]>([]);
-  const [selectedMoodTags, setSelectedMoodTags] = useState<string[]>([]);
-  const [selectedHoodTags, setSelectedHoodTags] = useState<string[]>([]);
+  // Read URL parameters and initialize filter state
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialFilters = useMemo(
+    () => searchParamsToFilters(searchParams),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [] // Only run on mount
+  );
+
+  const [selectedFoodTags, setSelectedFoodTags] = useState<string[]>(initialFilters.food);
+  const [selectedMoodTags, setSelectedMoodTags] = useState<string[]>(initialFilters.mood);
+  const [selectedHoodTags, setSelectedHoodTags] = useState<string[]>(initialFilters.hood);
 
   const filteredBakeries = useMemo(() => {
     return bakeries.filter((bakery) => {
@@ -33,6 +42,24 @@ const Index = () => {
       return matchesFood && matchesMood && matchesHood;
     });
   }, [selectedFoodTags, selectedMoodTags, selectedHoodTags]);
+
+  // Sync filter state to URL (without page reload)
+  useEffect(() => {
+    const newParams = filtersToSearchParams(
+      selectedFoodTags,
+      selectedMoodTags,
+      selectedHoodTags
+    );
+
+    // Only update if params actually changed (avoid infinite loops)
+    const currentParams = searchParams.toString();
+    const newParamsStr = newParams.toString();
+
+    if (currentParams !== newParamsStr) {
+      // Use replace to avoid cluttering browser history
+      setSearchParams(newParams, { replace: true });
+    }
+  }, [selectedFoodTags, selectedMoodTags, selectedHoodTags, searchParams, setSearchParams]);
 
   return (
     <main className="w-full px-5 py-6">
@@ -57,6 +84,9 @@ const Index = () => {
         <BakeryMap
           selectedBakeryName={selectedBakeryName}
           bakeries={filteredBakeries}
+          initialFoodTags={selectedFoodTags}
+          initialMoodTags={selectedMoodTags}
+          initialHoodTags={selectedHoodTags}
           onSelectFoodTags={setSelectedFoodTags}
           onSelectMoodTags={setSelectedMoodTags}
           onSelectHoodTags={setSelectedHoodTags}
