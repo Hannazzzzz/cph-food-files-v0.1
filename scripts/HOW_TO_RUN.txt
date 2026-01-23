@@ -28,7 +28,7 @@ HOW TO RUN:
 -----------
 
 Step 0: Navigate to the project folder
-    cd "/Users/hannazoon/Documents/Restaurant Guide/cphfoodfiles-claude-automate-restaurant-harvesting-Ux75q"
+    cd "/Users/[username]/Documents/Restaurant Guide/cphfoodfiles-claude-automate-restaurant-harvesting-Ux75q"
 
     Note: The quotes are important because of the space in "Restaurant Guide"
 
