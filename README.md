@@ -168,7 +168,7 @@ The scraper is designed with several key features:
 - Geographic features (distance calculations, route planning)
 
 **❌ Restaurant curation:**
-The selection of which restaurants to include is a personal editorial decision. If you have a restaurant recommendation, feel free to reach out via the contact information on [hannazoonwordpress.com](https://hannazoonwordpress.com), but pull requests adding restaurants will not be accepted.
+The selection of which restaurants to include is a personal editorial decision. Pull requests adding restaurants will not be accepted.
 
 ### How to Contribute
 
