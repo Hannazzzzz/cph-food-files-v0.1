@@ -271,11 +271,21 @@ const BakeryMap = ({
         [data-map-theme="cph-food-files"] .cluster-popup-list {
           display: flex;
           flex-direction: column;
-          gap: 12px;
+          gap: 0;
         }
 
         [data-map-theme="cph-food-files"] .cluster-popup-item {
-          /* No background, just content */
+          padding: 8px 0;
+          border-bottom: 1px solid hsl(var(--border));
+        }
+
+        [data-map-theme="cph-food-files"] .cluster-popup-item:last-child {
+          border-bottom: none;
+          padding-bottom: 0;
+        }
+
+        [data-map-theme="cph-food-files"] .cluster-popup-item:first-child {
+          padding-top: 0;
         }
 
         [data-map-theme="cph-food-files"] .cluster-popup-item-name {
