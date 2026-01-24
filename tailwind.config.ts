@@ -51,6 +51,9 @@ export default {
           DEFAULT: "hsl(var(--hood))",
           foreground: "hsl(var(--hood-foreground))",
         },
+        gold: {
+          DEFAULT: "hsl(var(--marker-hover))",
+        },
         popover: {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
