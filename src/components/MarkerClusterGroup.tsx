@@ -8,6 +8,7 @@ import type { Bakery } from '@/data/bakeries';
 type MarkerClusterGroupProps = {
   bakeries: Bakery[];
   onBakeryClick?: (bakeryName: string) => void;
+  children?: React.ReactNode;
 };
 
 // Create a React Leaflet component for MarkerClusterGroup
@@ -31,7 +32,7 @@ const createClusterCustomIcon = (cluster: L.MarkerCluster) => {
 
 const MarkerClusterGroup = createPathComponent<
   L.MarkerClusterGroup,
-  MarkerClusterGroupProps
+  MarkerClusterGroupProps & { children?: React.ReactNode }
 >(
   ({ bakeries, onBakeryClick, ...options }, ctx) => {
     const clusterProps: L.MarkerClusterGroupOptions = {
