@@ -102,12 +102,13 @@ const MarkerClusterGroup = createPathComponent<
 
       const popup = L.popup({
         maxWidth: 300,
-        maxHeight: 300,
+        maxHeight: 250,
         autoPan: true,
-        autoPanPadding: L.point(20, 80),
-         // Nudge the popup down so it doesn't collide with the top overlay buttons.
-         // (We also raise the popup pane z-index in BakeryMap styles, but this helps visually.)
-         offset: L.point(0, 30),
+        autoPanPaddingTopLeft: L.point(20, 90),
+        autoPanPaddingBottomRight: L.point(20, 60),
+         // Position popup above the marker (negative offset) so it points to the cluster correctly.
+         // autoPan will reposition the map to avoid filter buttons if needed.
+         offset: L.point(0, -10),
         closeButton: true,
       })
         .setLatLng(cluster.getLatLng())
