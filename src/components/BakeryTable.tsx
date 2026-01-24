@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { HelpCircle } from 'lucide-react';
 import type { Bakery } from '@/data/bakeries';
 import { bakeries as allBakeries } from '@/data/bakeries';
 import {
@@ -9,7 +10,13 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { foodTagDefinitions, moodTagDefinitions } from '@/data/tagDefinitions';
 type SortColumn = 'name' | 'neighbourhood';
 type SortDirection = 'asc' | 'desc';
 
@@ -56,10 +63,42 @@ const BakeryTable = ({ onSelectBakery, bakeries = allBakeries }: BakeryTableProp
             Name{getSortIndicator('name')}
           </TableHead>
           <TableHead>
-            Food
+            <span className="inline-flex items-center gap-1">
+              Food
+              <TooltipProvider delayDuration={200}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <HelpCircle size={12} className="text-muted-foreground cursor-help" />
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom" className="max-w-xs text-left">
+                    <ul className="space-y-1.5 text-xs">
+                      {Object.entries(foodTagDefinitions).map(([tag, def]) => (
+                        <li key={tag}><strong>{tag}:</strong> {def}</li>
+                      ))}
+                    </ul>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </span>
           </TableHead>
           <TableHead>
-            Mood
+            <span className="inline-flex items-center gap-1">
+              Mood
+              <TooltipProvider delayDuration={200}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <HelpCircle size={12} className="text-muted-foreground cursor-help" />
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom" className="max-w-xs text-left">
+                    <ul className="space-y-1.5 text-xs">
+                      {Object.entries(moodTagDefinitions).map(([tag, def]) => (
+                        <li key={tag}><strong>{tag}:</strong> {def}</li>
+                      ))}
+                    </ul>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </span>
           </TableHead>
           <TableHead
             className="cursor-pointer hover:text-foreground select-none"
