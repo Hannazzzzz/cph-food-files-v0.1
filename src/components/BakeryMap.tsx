@@ -270,23 +270,23 @@ const BakeryMap = ({
         }
 
         [data-map-theme="cph-food-files"] .cluster-popup::-webkit-scrollbar-track {
-          background: hsl(var(--muted));
+          background: hsl(0 0% 90%);
           border-radius: 0;
         }
 
         [data-map-theme="cph-food-files"] .cluster-popup::-webkit-scrollbar-thumb {
-          background: hsl(var(--muted-foreground) / 0.3);
+          background: hsl(var(--mood));
           border-radius: 0;
         }
 
         [data-map-theme="cph-food-files"] .cluster-popup::-webkit-scrollbar-thumb:hover {
-          background: hsl(var(--muted-foreground) / 0.5);
+          background: hsl(var(--accent));
         }
 
         /* Firefox scrollbar styling */
         [data-map-theme="cph-food-files"] .cluster-popup {
           scrollbar-width: thin;
-          scrollbar-color: hsl(var(--muted-foreground) / 0.3) hsl(var(--muted));
+          scrollbar-color: hsl(var(--mood)) hsl(0 0% 90%);
         }
 
         [data-map-theme="cph-food-files"] .cluster-popup-header {
