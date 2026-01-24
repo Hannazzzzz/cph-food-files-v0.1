@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
+import { ArrowUp } from 'lucide-react';
 import BakeryTable from '@/components/BakeryTable';
 import BakeryMap from '@/components/BakeryMap';
 import { bakeries } from '@/data/bakeries';
@@ -114,17 +115,16 @@ const Index = () => {
           </em>
         </p>
 
-        <div className="mt-3 flex items-end justify-between">
-          <p className="text-label m-0">© 2026 CPH Food Files · Hanna Zoon</p>
-
-          <button
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="px-4 py-2 bg-gold text-black border border-black font-bold hover:bg-accent hover:text-white transition-colors"
-          >
-            ↑ Back to top
-          </button>
-        </div>
+        <p className="text-label mt-3">© 2026 CPH Food Files · Hanna Zoon</p>
       </footer>
+
+      <button
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        aria-label="Back to top"
+        className="fixed bottom-6 right-6 w-12 h-12 rounded-full bg-gold text-black flex items-center justify-center hover:bg-accent hover:text-white transition-colors shadow-lg"
+      >
+        <ArrowUp size={24} />
+      </button>
     </main>
   );
 };
