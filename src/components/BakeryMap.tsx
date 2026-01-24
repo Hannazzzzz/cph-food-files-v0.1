@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { LayerGroup, MapContainer, Marker, Popup, TileLayer, ZoomControl } from 'react-leaflet';
-import L, { DivIcon, LatLngBounds, type Map as LeafletMap, type Marker as LeafletMarker } from 'leaflet';
+import { DivIcon, LatLngBounds, type Map as LeafletMap, type Marker as LeafletMarker } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import type { Bakery } from '@/data/bakeries';
 import MapFiltersOverlay from '@/components/MapFiltersOverlay';
@@ -55,7 +55,6 @@ const BakeryMap = ({
 }: BakeryMapProps) => {
   const mapRef = useRef<LeafletMap | null>(null);
   const markerRefs = useRef<Record<string, LeafletMarker | null>>({});
-  const clusterGroupRef = useRef<L.MarkerClusterGroup | null>(null);
   const [clusterSelectedBakery, setClusterSelectedBakery] = useState<string | null>(null);
 
   // Single source of truth: `Index` decides which bakeries are currently in-scope.
@@ -82,32 +81,19 @@ const BakeryMap = ({
     const map = mapRef.current;
     if (!map) return;
 
-    const clusterGroup = clusterGroupRef.current;
+    // Zoom to level 16 where clustering is disabled
+    const targetZoom = 16;
 
-    const targetZoom = Math.max(map.getZoom(), 14);
-
-    // Open the appropriate popup (cluster or individual marker)
+    // Open popup after zoom completes
     const openPopup = () => {
+      // Wait a bit for cluster group to update after zoom
       setTimeout(() => {
         const m = markerRefs.current[bakeryToShow];
-        if (!m) return;
-
-        // Check if marker is in a cluster
-        if (clusterGroup) {
-          const visibleParent = clusterGroup.getVisibleParent(m);
-          if (visibleParent && visibleParent !== m) {
-            // Marker is in a cluster - fire clusterclick to open cluster popup
-            clusterGroup.fire('clusterclick', { layer: visibleParent });
-            return;
-          }
-        }
-
-        // Marker is not in a cluster, open its own popup
-        m.openPopup();
-      }, 100);
+        if (m) m.openPopup();
+      }, 150);
     };
 
-    if (map.getZoom() < 14) {
+    if (map.getZoom() < targetZoom) {
       // Zoom first, then open popup after animation completes
       const onMoveEnd = () => {
         map.off('moveend', onMoveEnd);
@@ -117,7 +103,7 @@ const BakeryMap = ({
       map.setView(marker.getLatLng(), targetZoom, { animate: true });
     } else {
       // Already at sufficient zoom
-      map.setView(marker.getLatLng(), targetZoom, { animate: true });
+      map.setView(marker.getLatLng(), map.getZoom(), { animate: true });
       openPopup();
     }
 
@@ -412,7 +398,6 @@ const BakeryMap = ({
         <MarkerClusterGroup
           bakeries={bakeriesWithCoords}
           onBakeryClick={(bakeryName) => setClusterSelectedBakery(bakeryName)}
-          onClusterGroupReady={(cg) => { clusterGroupRef.current = cg; }}
         >
           <LayerGroup key={markerLayerKey}>
             {bakeriesWithCoords.map((bakery) => (
