@@ -193,7 +193,6 @@ const BakeryMap = ({
           font-weight: 600;
           font-size: 10px;
           box-shadow: 0 1px 0 hsl(var(--border)), 0 2px 4px hsl(var(--foreground) / 0.18);
-          border: 1px solid hsl(var(--border));
           cursor: pointer;
           transition: all 0.2s ease;
         }
