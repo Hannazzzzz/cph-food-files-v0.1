@@ -266,34 +266,35 @@ const BakeryMap = ({
         [data-map-theme="cph-food-files"] .cluster-popup-list {
           display: flex;
           flex-direction: column;
-          gap: 8px;
+          gap: 12px;
         }
 
         [data-map-theme="cph-food-files"] .cluster-popup-item {
-          padding: 8px;
-          border-radius: 4px;
-          background: hsl(var(--background));
-          border: 1px solid hsl(var(--border));
-          transition: all 0.2s ease;
-        }
-
-        [data-map-theme="cph-food-files"] .cluster-popup-item:hover {
-          background: hsl(var(--accent) / 0.1);
-          border-color: hsl(var(--accent));
+          /* No background, just content */
         }
 
         [data-map-theme="cph-food-files"] .cluster-popup-item-name {
-          margin-bottom: 4px;
-          cursor: pointer;
+          margin-bottom: 2px;
         }
 
         [data-map-theme="cph-food-files"] .cluster-popup-item-name a {
           font-weight: 600;
-          font-size: 13px;
+          color: hsl(var(--primary));
+          text-decoration: none;
+        }
+
+        [data-map-theme="cph-food-files"] .cluster-popup-item-name a:hover {
+          color: hsl(var(--accent));
         }
 
         [data-map-theme="cph-food-files"] .cluster-popup-item-link a {
-          font-size: 11px;
+          font-size: 12px;
+          color: hsl(var(--primary) / 0.8);
+          text-decoration: none;
+        }
+
+        [data-map-theme="cph-food-files"] .cluster-popup-item-link a:hover {
+          color: hsl(var(--accent));
         }
 
         [data-map-theme="cph-food-files"] .cluster-popup-item a.temporarily-closed {
