@@ -15,6 +15,9 @@ const createClusterCustomIcon = (cluster: L.MarkerCluster) => {
   const count = cluster.getChildCount();
   const size = count < 10 ? 'small' : count < 100 ? 'medium' : 'large';
 
+  // Determine icon size based on count (only slightly bigger than 16px marker)
+  const iconSize = count < 10 ? 20 : count < 100 ? 24 : 28;
+
   return L.divIcon({
     html: `
       <div class="cluster-marker cluster-marker-${size}">
@@ -22,7 +25,7 @@ const createClusterCustomIcon = (cluster: L.MarkerCluster) => {
       </div>
     `,
     className: 'cph-food-files-cluster',
-    iconSize: L.point(40, 40),
+    iconSize: L.point(iconSize, iconSize),
   });
 };
 

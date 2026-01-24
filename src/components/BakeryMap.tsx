@@ -185,40 +185,40 @@ const BakeryMap = ({
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 40px;
-          height: 40px;
+          width: 24px;
+          height: 24px;
           border-radius: 50%;
           background: hsl(var(--accent));
           color: hsl(var(--accent-foreground));
           font-weight: 600;
-          font-size: 14px;
-          box-shadow: 0 2px 8px hsl(var(--foreground) / 0.2);
-          border: 2px solid hsl(var(--background));
+          font-size: 10px;
+          box-shadow: 0 1px 3px hsl(var(--foreground) / 0.2);
+          border: 1.5px solid hsl(var(--background));
           cursor: pointer;
           transition: all 0.2s ease;
         }
 
         [data-map-theme="cph-food-files"] .cluster-marker:hover {
           background: hsl(var(--marker-hover));
-          transform: scale(1.1);
+          transform: scale(1.15);
         }
 
         [data-map-theme="cph-food-files"] .cluster-marker-small {
-          width: 36px;
-          height: 36px;
-          font-size: 13px;
+          width: 20px;
+          height: 20px;
+          font-size: 9px;
         }
 
         [data-map-theme="cph-food-files"] .cluster-marker-medium {
-          width: 40px;
-          height: 40px;
-          font-size: 14px;
+          width: 24px;
+          height: 24px;
+          font-size: 10px;
         }
 
         [data-map-theme="cph-food-files"] .cluster-marker-large {
-          width: 44px;
-          height: 44px;
-          font-size: 15px;
+          width: 28px;
+          height: 28px;
+          font-size: 11px;
         }
 
         /* Cluster popup styles */
