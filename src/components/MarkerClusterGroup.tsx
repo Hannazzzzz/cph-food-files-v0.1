@@ -36,7 +36,8 @@ const MarkerClusterGroup = createPathComponent<
       showCoverageOnHover: false,
       zoomToBoundsOnClick: false,
       spiderfyOnMaxZoom: false,
-      maxClusterRadius: 50,
+      maxClusterRadius: 20, // Only cluster when markers significantly overlap
+      disableClusteringAtZoom: 16, // Disable clustering at high zoom levels
       iconCreateFunction: createClusterCustomIcon,
     };
 
