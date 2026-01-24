@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { LayerGroup, MapContainer, Marker, Popup, TileLayer, ZoomControl } from 'react-leaflet';
-import { DivIcon, type Map as LeafletMap, type Marker as LeafletMarker } from 'leaflet';
+import { DivIcon, LatLngBounds, type Map as LeafletMap, type Marker as LeafletMarker } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import type { Bakery } from '@/data/bakeries';
 import MapFiltersOverlay from '@/components/MapFiltersOverlay';
@@ -89,6 +89,36 @@ const BakeryMap = ({
       setClusterSelectedBakery(null);
     }
   }, [selectedBakeryName, clusterSelectedBakery]);
+
+  // Dynamic zoom: fit bounds when filters are applied, reset to default when cleared
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+
+    // Don't interfere if a bakery is selected
+    if (selectedBakeryName || clusterSelectedBakery) return;
+
+    // Check if any filters are active
+    const hasActiveFilters =
+      (initialFoodTags && initialFoodTags.length > 0) ||
+      (initialMoodTags && initialMoodTags.length > 0) ||
+      (initialHoodTags && initialHoodTags.length > 0);
+
+    if (hasActiveFilters && bakeriesWithCoords.length > 0) {
+      // Filters are active: zoom to fit all visible markers
+      const bounds = new LatLngBounds(
+        bakeriesWithCoords.map((b) => [b.latitude!, b.longitude!])
+      );
+      map.fitBounds(bounds, {
+        padding: [50, 50],
+        animate: true,
+        duration: 0.5,
+      });
+    } else if (!hasActiveFilters) {
+      // No filters: reset to default zoom and center
+      map.setView([55.6761, 12.5683], 13, { animate: true });
+    }
+  }, [bakeriesWithCoords, initialFoodTags, initialMoodTags, initialHoodTags, selectedBakeryName, clusterSelectedBakery]);
 
   return (
     <div
