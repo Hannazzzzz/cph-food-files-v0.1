@@ -8,6 +8,7 @@ import type { Bakery } from '@/data/bakeries';
 type MarkerClusterGroupProps = {
   bakeries: Bakery[];
   onBakeryClick?: (bakeryName: string) => void;
+  onClusterGroupReady?: (clusterGroup: L.MarkerClusterGroup) => void;
   children?: React.ReactNode;
 };
 
@@ -97,7 +98,7 @@ const MarkerClusterGroup = createPathComponent<
   MarkerClusterGroupProps & { children?: React.ReactNode }
 >(
   // Create instance
-  ({ bakeries, onBakeryClick, ...options }, ctx) => {
+  ({ bakeries, onBakeryClick, onClusterGroupReady, ...options }, ctx) => {
     const clusterProps: L.MarkerClusterGroupOptions = {
       ...options,
       showCoverageOnHover: false,
@@ -137,6 +138,11 @@ const MarkerClusterGroup = createPathComponent<
       popup.openOn(ctx.map);
       addClusterPopupClickHandlers(popup, onBakeryClick);
     });
+
+    // Notify parent that cluster group is ready
+    if (onClusterGroupReady) {
+      onClusterGroupReady(clusterGroup);
+    }
 
     return {
       instance: clusterGroup,

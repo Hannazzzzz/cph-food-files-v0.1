@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { LayerGroup, MapContainer, Marker, Popup, TileLayer, ZoomControl } from 'react-leaflet';
-import { DivIcon, LatLngBounds, type Map as LeafletMap, type Marker as LeafletMarker } from 'leaflet';
+import L, { DivIcon, LatLngBounds, type Map as LeafletMap, type Marker as LeafletMarker } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import type { Bakery } from '@/data/bakeries';
 import MapFiltersOverlay from '@/components/MapFiltersOverlay';
@@ -55,6 +55,7 @@ const BakeryMap = ({
 }: BakeryMapProps) => {
   const mapRef = useRef<LeafletMap | null>(null);
   const markerRefs = useRef<Record<string, LeafletMarker | null>>({});
+  const clusterGroupRef = useRef<L.MarkerClusterGroup | null>(null);
   const [clusterSelectedBakery, setClusterSelectedBakery] = useState<string | null>(null);
 
   // Single source of truth: `Index` decides which bakeries are currently in-scope.
@@ -81,13 +82,28 @@ const BakeryMap = ({
     const map = mapRef.current;
     if (!map) return;
 
+    const clusterGroup = clusterGroupRef.current;
+
     const targetZoom = Math.max(map.getZoom(), 14);
 
-    // Open popup after a delay to ensure map has settled
+    // Open the appropriate popup (cluster or individual marker)
     const openPopup = () => {
       setTimeout(() => {
         const m = markerRefs.current[bakeryToShow];
-        if (m) m.openPopup();
+        if (!m) return;
+
+        // Check if marker is in a cluster
+        if (clusterGroup) {
+          const visibleParent = clusterGroup.getVisibleParent(m);
+          if (visibleParent && visibleParent !== m) {
+            // Marker is in a cluster - fire clusterclick to open cluster popup
+            clusterGroup.fire('clusterclick', { layer: visibleParent });
+            return;
+          }
+        }
+
+        // Marker is not in a cluster, open its own popup
+        m.openPopup();
       }, 100);
     };
 
@@ -396,6 +412,7 @@ const BakeryMap = ({
         <MarkerClusterGroup
           bakeries={bakeriesWithCoords}
           onBakeryClick={(bakeryName) => setClusterSelectedBakery(bakeryName)}
+          onClusterGroupReady={(cg) => { clusterGroupRef.current = cg; }}
         >
           <LayerGroup key={markerLayerKey}>
             {bakeriesWithCoords.map((bakery) => (
