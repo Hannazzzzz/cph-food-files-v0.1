@@ -110,7 +110,7 @@ const BakeryMap = ({
         bakeriesWithCoords.map((b) => [b.latitude!, b.longitude!])
       );
       map.fitBounds(bounds, {
-        padding: [50, 50],
+        padding: [20, 20],
         animate: true,
         duration: 0.5,
       });
