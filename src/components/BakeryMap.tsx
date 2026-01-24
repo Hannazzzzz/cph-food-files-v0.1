@@ -57,9 +57,6 @@ const BakeryMap = ({
   const markerRefs = useRef<Record<string, LeafletMarker | null>>({});
   const [clusterSelectedBakery, setClusterSelectedBakery] = useState<string | null>(null);
 
-  // Track which bakery should show a popup (for passing to MarkerClusterGroup)
-  const [bakeryToShowPopup, setBakeryToShowPopup] = useState<string | null>(null);
-
   // Single source of truth: `Index` decides which bakeries are currently in-scope.
   // The map only additionally hides entries without coordinates.
   const bakeriesWithCoords = useMemo(
@@ -85,20 +82,27 @@ const BakeryMap = ({
     if (!map) return;
 
     const targetZoom = Math.max(map.getZoom(), 14);
-    const needsZoom = map.getZoom() < 14;
 
-    if (needsZoom) {
-      // Zoom first, then trigger popup after animation completes
+    // Open popup after a delay to ensure map has settled
+    const openPopup = () => {
+      setTimeout(() => {
+        const m = markerRefs.current[bakeryToShow];
+        if (m) m.openPopup();
+      }, 100);
+    };
+
+    if (map.getZoom() < 14) {
+      // Zoom first, then open popup after animation completes
       const onMoveEnd = () => {
         map.off('moveend', onMoveEnd);
-        setBakeryToShowPopup(bakeryToShow);
+        openPopup();
       };
       map.on('moveend', onMoveEnd);
       map.setView(marker.getLatLng(), targetZoom, { animate: true });
     } else {
-      // Already at sufficient zoom, trigger popup immediately
+      // Already at sufficient zoom
       map.setView(marker.getLatLng(), targetZoom, { animate: true });
-      setBakeryToShowPopup(bakeryToShow);
+      openPopup();
     }
 
     // Reset cluster selection after showing the marker
@@ -106,14 +110,6 @@ const BakeryMap = ({
       setClusterSelectedBakery(null);
     }
   }, [selectedBakeryName, clusterSelectedBakery]);
-
-  // Reset bakeryToShowPopup after it's been processed
-  useEffect(() => {
-    if (bakeryToShowPopup) {
-      const timer = setTimeout(() => setBakeryToShowPopup(null), 200);
-      return () => clearTimeout(timer);
-    }
-  }, [bakeryToShowPopup]);
 
   // Dynamic zoom: fit bounds when filters are applied
   useEffect(() => {
@@ -399,7 +395,6 @@ const BakeryMap = ({
         />
         <MarkerClusterGroup
           bakeries={bakeriesWithCoords}
-          selectedBakeryName={bakeryToShowPopup}
           onBakeryClick={(bakeryName) => setClusterSelectedBakery(bakeryName)}
         >
           <LayerGroup key={markerLayerKey}>

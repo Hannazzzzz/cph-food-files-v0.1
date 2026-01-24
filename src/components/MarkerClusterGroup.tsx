@@ -7,7 +7,6 @@ import type { Bakery } from '@/data/bakeries';
 
 type MarkerClusterGroupProps = {
   bakeries: Bakery[];
-  selectedBakeryName?: string | null;
   onBakeryClick?: (bakeryName: string) => void;
   children?: React.ReactNode;
 };
@@ -93,25 +92,6 @@ const addClusterPopupClickHandlers = (popup: L.Popup, onBakeryClick?: (name: str
   }, 0);
 };
 
-// Function to show popup for a specific bakery by name
-const showPopupForBakeryName = (
-  clusterGroup: L.MarkerClusterGroup,
-  bakeryName: string
-) => {
-  // Find the marker in the cluster group's layers
-  let targetMarker: L.Marker | null = null;
-  clusterGroup.eachLayer((layer) => {
-    if ((layer as any).options?.bakeryName === bakeryName) {
-      targetMarker = layer as L.Marker;
-    }
-  });
-
-  if (!targetMarker) return;
-
-  // Open the marker's popup directly, even if it's in a cluster
-  targetMarker.openPopup();
-};
-
 const MarkerClusterGroup = createPathComponent<
   L.MarkerClusterGroup,
   MarkerClusterGroupProps & { children?: React.ReactNode }
@@ -162,15 +142,6 @@ const MarkerClusterGroup = createPathComponent<
       instance: clusterGroup,
       context: { ...ctx, layerContainer: clusterGroup },
     };
-  },
-  // Update instance - called when props change
-  (instance, { selectedBakeryName }) => {
-    if (selectedBakeryName) {
-      // Small delay to ensure cluster group has updated after zoom
-      setTimeout(() => {
-        showPopupForBakeryName(instance, selectedBakeryName);
-      }, 100);
-    }
   }
 );
 
