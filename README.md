@@ -218,4 +218,4 @@ This project is open source and available for anyone to use, modify, and contrib
 
 Created and curated by [Hanna Zoon](https://hannazoonwordpress.com).
 
-Built with modern web technologies and a lot of love for Copenhagen's food scene.
+Built with Lovable.dev, Claude.ai and a lot of love for Copenhagen's food scene.
