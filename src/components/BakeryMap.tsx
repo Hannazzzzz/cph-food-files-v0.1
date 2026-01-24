@@ -187,6 +187,11 @@ const BakeryMap = ({
           border-radius: 0;
         }
 
+        /* Ensure popups appear above filter overlay */
+        [data-map-theme="cph-food-files"] .leaflet-popup {
+          z-index: 2000;
+        }
+
         [data-map-theme="cph-food-files"] .leaflet-popup-content a {
           color: hsl(var(--primary));
           text-decoration: none;
