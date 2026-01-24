@@ -1,6 +1,32 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { LayerGroup, MapContainer, Marker, Popup, TileLayer, ZoomControl } from 'react-leaflet';
+import { LayerGroup, MapContainer, Marker, Popup, TileLayer, ZoomControl, useMap } from 'react-leaflet';
 import { DivIcon, LatLngBounds, type Map as LeafletMap, type Marker as LeafletMarker } from 'leaflet';
+
+// Component to enable shift+scroll zoom
+function ShiftScrollZoom() {
+  const map = useMap();
+
+  useEffect(() => {
+    const container = map.getContainer();
+
+    const handleWheel = (e: WheelEvent) => {
+      if (e.shiftKey) {
+        e.preventDefault();
+        e.stopPropagation();
+        const delta = e.deltaY > 0 ? -1 : 1;
+        map.zoomIn(delta, { animate: true });
+      }
+    };
+
+    container.addEventListener('wheel', handleWheel, { passive: false });
+
+    return () => {
+      container.removeEventListener('wheel', handleWheel);
+    };
+  }, [map]);
+
+  return null;
+}
 import 'leaflet/dist/leaflet.css';
 import type { Bakery } from '@/data/bakeries';
 import MapFiltersOverlay from '@/components/MapFiltersOverlay';
@@ -379,6 +405,7 @@ const BakeryMap = ({
         zoom={13}
         style={{ height: '100%', width: '100%' }}
         scrollWheelZoom={false}
+        touchZoom={true}
         zoomControl={false}
         whenReady={() => {
           // Defensive: ensure the default (top-left) zoom control is removed,
@@ -390,6 +417,7 @@ const BakeryMap = ({
           }
         }}
       >
+        <ShiftScrollZoom />
         <ZoomControl position="topright" />
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
