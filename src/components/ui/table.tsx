@@ -15,7 +15,12 @@ const TableHeader = React.forwardRef<HTMLTableSectionElement, React.HTMLAttribut
   ({ className, ...props }, ref) => (
     <thead
       ref={ref}
-      className={cn("sticky top-0 bg-background z-10 [&_tr]:border-b", className)}
+      className={cn("[&_tr]:border-b bg-background", className)}
+      style={{
+        position: 'sticky',
+        top: 0,
+        zIndex: 10
+      }}
       {...props}
     />
   ),
