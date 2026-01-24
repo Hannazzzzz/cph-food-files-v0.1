@@ -188,8 +188,12 @@ const BakeryMap = ({
         }
 
         /* Ensure popups appear above filter overlay */
+        [data-map-theme="cph-food-files"] .leaflet-pane.leaflet-popup-pane {
+          z-index: 2200;
+        }
+
         [data-map-theme="cph-food-files"] .leaflet-popup {
-          z-index: 2000;
+          z-index: 2200;
         }
 
         [data-map-theme="cph-food-files"] .leaflet-popup-content a {
