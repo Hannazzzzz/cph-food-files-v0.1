@@ -8,7 +8,6 @@ import type { Bakery } from '@/data/bakeries';
 type MarkerClusterGroupProps = {
   bakeries: Bakery[];
   selectedBakeryName?: string | null;
-  markerRefs?: React.MutableRefObject<Record<string, L.Marker | null>>;
   onBakeryClick?: (bakeryName: string) => void;
   children?: React.ReactNode;
 };
@@ -94,46 +93,23 @@ const addClusterPopupClickHandlers = (popup: L.Popup, onBakeryClick?: (name: str
   }, 0);
 };
 
-// Function to show cluster popup for a specific marker
-const showClusterPopupForMarker = (
+// Function to show popup for a specific bakery by name
+const showPopupForBakeryName = (
   clusterGroup: L.MarkerClusterGroup,
-  marker: L.Marker,
-  bakeries: Bakery[],
-  map: L.Map,
-  onBakeryClick?: (name: string) => void
+  bakeryName: string
 ) => {
-  const visibleParent = clusterGroup.getVisibleParent(marker);
-  if (!visibleParent || visibleParent === marker) {
-    // Marker is not in a cluster, open its own popup
-    marker.openPopup();
-    return;
-  }
+  // Find the marker in the cluster group's layers
+  let targetMarker: L.Marker | null = null;
+  clusterGroup.eachLayer((layer) => {
+    if ((layer as any).options?.bakeryName === bakeryName) {
+      targetMarker = layer as L.Marker;
+    }
+  });
 
-  // Marker is in a cluster - show the cluster popup
-  const cluster = visibleParent as L.MarkerCluster;
-  const markers = cluster.getAllChildMarkers();
+  if (!targetMarker) return;
 
-  const clusterBakeries = markers
-    .map((m: any) => {
-      const bakeryName = m.options.bakeryName;
-      return bakeries.find((b) => b.name === bakeryName);
-    })
-    .filter((b): b is Bakery => b !== undefined);
-
-  const popup = L.popup({
-    maxWidth: 300,
-    maxHeight: 250,
-    autoPan: true,
-    autoPanPaddingTopLeft: L.point(20, 90),
-    autoPanPaddingBottomRight: L.point(20, 60),
-    offset: L.point(0, -10),
-    closeButton: true,
-  })
-    .setLatLng(cluster.getLatLng())
-    .setContent(createClusterPopupContent(clusterBakeries));
-
-  popup.openOn(map);
-  addClusterPopupClickHandlers(popup, onBakeryClick);
+  // Open the marker's popup directly, even if it's in a cluster
+  targetMarker.openPopup();
 };
 
 const MarkerClusterGroup = createPathComponent<
@@ -188,15 +164,12 @@ const MarkerClusterGroup = createPathComponent<
     };
   },
   // Update instance - called when props change
-  (instance, { bakeries, selectedBakeryName, markerRefs, onBakeryClick }, ctx) => {
-    if (selectedBakeryName && markerRefs?.current) {
-      const marker = markerRefs.current[selectedBakeryName];
-      if (marker) {
-        // Small delay to ensure cluster group has updated
-        setTimeout(() => {
-          showClusterPopupForMarker(instance, marker, bakeries, ctx.map, onBakeryClick);
-        }, 50);
-      }
+  (instance, { selectedBakeryName }) => {
+    if (selectedBakeryName) {
+      // Small delay to ensure cluster group has updated after zoom
+      setTimeout(() => {
+        showPopupForBakeryName(instance, selectedBakeryName);
+      }, 100);
     }
   }
 );

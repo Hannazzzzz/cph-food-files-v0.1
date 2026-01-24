@@ -400,7 +400,6 @@ const BakeryMap = ({
         <MarkerClusterGroup
           bakeries={bakeriesWithCoords}
           selectedBakeryName={bakeryToShowPopup}
-          markerRefs={markerRefs as any}
           onBakeryClick={(bakeryName) => setClusterSelectedBakery(bakeryName)}
         >
           <LayerGroup key={markerLayerKey}>
