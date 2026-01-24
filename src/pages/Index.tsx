@@ -114,14 +114,16 @@ const Index = () => {
           </em>
         </p>
 
-        <p className="text-label mt-3">© 2026 CPH Food Files · Hanna Zoon</p>
+        <div className="mt-3 flex items-end justify-between">
+          <p className="text-label m-0">© 2026 CPH Food Files · Hanna Zoon</p>
 
-        <button
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="mt-6 px-4 py-2 bg-gold text-black border border-black font-bold hover:bg-accent hover:text-white transition-colors"
-        >
-          ↑ Back to top
-        </button>
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="px-4 py-2 bg-gold text-black border border-black font-bold hover:bg-accent hover:text-white transition-colors"
+          >
+            ↑ Back to top
+          </button>
+        </div>
       </footer>
     </main>
   );
