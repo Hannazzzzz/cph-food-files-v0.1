@@ -11,7 +11,7 @@ export const foodTagDefinitions: Record<string, string> = {
 };
 
 export const moodTagDefinitions: Record<string, string> = {
-  "Al Fresco": "Eating outside is not only possible but recommended.",
+  "Al Fresco": "Eating outside is not only possible but recommended. Sometimes sitting outside is the only option.",
 };
 
 export const allTagDefinitions: Record<string, string> = {
