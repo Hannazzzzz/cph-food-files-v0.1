@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { LayerGroup, MapContainer, Marker, Popup, TileLayer, ZoomControl } from 'react-leaflet';
-import { DivIcon, LatLngBounds, type Map as LeafletMap, type Marker as LeafletMarker } from 'leaflet';
+import L, { DivIcon, LatLngBounds, type Map as LeafletMap, type Marker as LeafletMarker } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import type { Bakery } from '@/data/bakeries';
 import MapFiltersOverlay from '@/components/MapFiltersOverlay';
@@ -55,6 +55,7 @@ const BakeryMap = ({
 }: BakeryMapProps) => {
   const mapRef = useRef<LeafletMap | null>(null);
   const markerRefs = useRef<Record<string, LeafletMarker | null>>({});
+  const clusterGroupRef = useRef<L.MarkerClusterGroup | null>(null);
   const [clusterSelectedBakery, setClusterSelectedBakery] = useState<string | null>(null);
 
   // Single source of truth: `Index` decides which bakeries are currently in-scope.
@@ -81,22 +82,37 @@ const BakeryMap = ({
     const map = mapRef.current;
     if (!map) return;
 
-    const targetZoom = Math.max(map.getZoom(), 16);
-    const needsZoom = map.getZoom() < 16;
+    const clusterGroup = clusterGroupRef.current;
+
+    const openPopupForMarker = () => {
+      // Check if marker is inside a cluster
+      if (clusterGroup) {
+        const visibleParent = clusterGroup.getVisibleParent(marker as any);
+        if (visibleParent && visibleParent !== marker) {
+          // Marker is in a cluster - fire the cluster popup
+          clusterGroup.fire('clusterclick', { layer: visibleParent });
+          return;
+        }
+      }
+      // Marker is visible, open its popup
+      marker.openPopup();
+    };
+
+    const targetZoom = Math.max(map.getZoom(), 14);
+    const needsZoom = map.getZoom() < 14;
 
     if (needsZoom) {
-      // Zoom first to uncluster markers (clustering disabled at zoom 16+)
-      // Then open popup after zoom animation completes
+      // Zoom first, then open popup after animation completes
       const onMoveEnd = () => {
         map.off('moveend', onMoveEnd);
-        marker.openPopup();
+        openPopupForMarker();
       };
       map.on('moveend', onMoveEnd);
       map.setView(marker.getLatLng(), targetZoom, { animate: true });
     } else {
       // Already at sufficient zoom, open popup immediately
       map.setView(marker.getLatLng(), targetZoom, { animate: true });
-      marker.openPopup();
+      openPopupForMarker();
     }
 
     // Reset cluster selection after showing the marker
@@ -388,6 +404,7 @@ const BakeryMap = ({
           url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         />
         <MarkerClusterGroup
+          ref={clusterGroupRef as any}
           bakeries={bakeriesWithCoords}
           onBakeryClick={(bakeryName) => setClusterSelectedBakery(bakeryName)}
         >
