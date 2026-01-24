@@ -261,6 +261,32 @@ const BakeryMap = ({
         [data-map-theme="cph-food-files"] .cluster-popup {
           max-height: 400px;
           overflow-y: auto;
+          padding-right: 8px;
+        }
+
+        /* Custom scrollbar styling */
+        [data-map-theme="cph-food-files"] .cluster-popup::-webkit-scrollbar {
+          width: 8px;
+        }
+
+        [data-map-theme="cph-food-files"] .cluster-popup::-webkit-scrollbar-track {
+          background: hsl(var(--muted));
+          border-radius: 0;
+        }
+
+        [data-map-theme="cph-food-files"] .cluster-popup::-webkit-scrollbar-thumb {
+          background: hsl(var(--muted-foreground) / 0.3);
+          border-radius: 0;
+        }
+
+        [data-map-theme="cph-food-files"] .cluster-popup::-webkit-scrollbar-thumb:hover {
+          background: hsl(var(--muted-foreground) / 0.5);
+        }
+
+        /* Firefox scrollbar styling */
+        [data-map-theme="cph-food-files"] .cluster-popup {
+          scrollbar-width: thin;
+          scrollbar-color: hsl(var(--muted-foreground) / 0.3) hsl(var(--muted));
         }
 
         [data-map-theme="cph-food-files"] .cluster-popup-header {
