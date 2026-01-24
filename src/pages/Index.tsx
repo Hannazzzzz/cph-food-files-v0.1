@@ -8,6 +8,7 @@ import { filtersToSearchParams, searchParamsToFilters } from '@/lib/urlFilters';
 
 const Index = () => {
   const [selectedBakeryName, setSelectedBakeryName] = useState<string | null>(null);
+  const [showBackToTop, setShowBackToTop] = useState(false);
   const mapSectionRef = useRef<HTMLDivElement | null>(null);
 
   // Read URL parameters and initialize filter state
@@ -61,6 +62,22 @@ const Index = () => {
       setSearchParams(newParams, { replace: true });
     }
   }, [selectedFoodTags, selectedMoodTags, selectedHoodTags, searchParams, setSearchParams]);
+
+  // Show back-to-top button only when map is out of view
+  useEffect(() => {
+    const mapSection = mapSectionRef.current;
+    if (!mapSection) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setShowBackToTop(!entry.isIntersecting);
+      },
+      { threshold: 0 }
+    );
+
+    observer.observe(mapSection);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <main className="w-full px-5 py-6">
@@ -118,13 +135,15 @@ const Index = () => {
         <p className="text-label mt-3">© 2026 CPH Food Files · Hanna Zoon</p>
       </footer>
 
-      <button
-        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        aria-label="Back to top"
-        className="fixed bottom-6 right-6 w-12 h-12 rounded-full bg-gold text-black flex items-center justify-center hover:bg-accent hover:text-white transition-colors shadow-lg"
-      >
-        <ArrowUp size={24} />
-      </button>
+      {showBackToTop && (
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          aria-label="Back to top"
+          className="fixed bottom-6 right-6 w-12 h-12 rounded-full bg-gold text-black flex items-center justify-center hover:bg-accent hover:text-white transition-colors shadow-lg animate-fade-in"
+        >
+          <ArrowUp size={24} />
+        </button>
+      )}
     </main>
   );
 };
