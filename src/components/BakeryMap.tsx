@@ -78,11 +78,26 @@ const BakeryMap = ({
     const marker = markerRefs.current[bakeryToShow];
     if (!marker) return;
 
-    marker.openPopup();
     const map = mapRef.current;
     if (!map) return;
 
-    map.setView(marker.getLatLng(), Math.max(map.getZoom(), 14), { animate: true });
+    const targetZoom = Math.max(map.getZoom(), 16);
+    const needsZoom = map.getZoom() < 16;
+
+    if (needsZoom) {
+      // Zoom first to uncluster markers (clustering disabled at zoom 16+)
+      // Then open popup after zoom animation completes
+      const onMoveEnd = () => {
+        map.off('moveend', onMoveEnd);
+        marker.openPopup();
+      };
+      map.on('moveend', onMoveEnd);
+      map.setView(marker.getLatLng(), targetZoom, { animate: true });
+    } else {
+      // Already at sufficient zoom, open popup immediately
+      map.setView(marker.getLatLng(), targetZoom, { animate: true });
+      marker.openPopup();
+    }
 
     // Reset cluster selection after showing the marker
     if (clusterSelectedBakery) {
