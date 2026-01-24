@@ -1,0 +1,137 @@
+import { createPathComponent } from '@react-leaflet/core';
+import L from 'leaflet';
+import 'leaflet.markercluster';
+import 'leaflet.markercluster/dist/MarkerCluster.css';
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
+import type { Bakery } from '@/data/bakeries';
+
+type MarkerClusterGroupProps = {
+  bakeries: Bakery[];
+  onBakeryClick?: (bakeryName: string) => void;
+};
+
+// Create a React Leaflet component for MarkerClusterGroup
+const createClusterCustomIcon = (cluster: L.MarkerCluster) => {
+  const count = cluster.getChildCount();
+  const size = count < 10 ? 'small' : count < 100 ? 'medium' : 'large';
+
+  return L.divIcon({
+    html: `
+      <div class="cluster-marker cluster-marker-${size}">
+        <span>${count}</span>
+      </div>
+    `,
+    className: 'cph-food-files-cluster',
+    iconSize: L.point(40, 40),
+  });
+};
+
+const MarkerClusterGroup = createPathComponent<
+  L.MarkerClusterGroup,
+  MarkerClusterGroupProps
+>(
+  ({ bakeries, onBakeryClick, ...options }, ctx) => {
+    const clusterProps: L.MarkerClusterGroupOptions = {
+      ...options,
+      showCoverageOnHover: false,
+      zoomToBoundsOnClick: false,
+      spiderfyOnMaxZoom: false,
+      maxClusterRadius: 50,
+      iconCreateFunction: createClusterCustomIcon,
+    };
+
+    const clusterGroup = L.markerClusterGroup(clusterProps);
+
+    // Override cluster click to show popup list
+    clusterGroup.on('clusterclick', (event) => {
+      const cluster = event.layer as L.MarkerCluster;
+      const markers = cluster.getAllChildMarkers();
+
+      // Get bakery data for all markers in the cluster
+      const clusterBakeries = markers
+        .map((marker: any) => {
+          const bakeryName = marker.options.bakeryName;
+          return bakeries.find((b) => b.name === bakeryName);
+        })
+        .filter((b): b is Bakery => b !== undefined);
+
+      // Create popup content with list of bakeries
+      const popupContent = `
+        <div class="cluster-popup">
+          <div class="cluster-popup-header">
+            ${clusterBakeries.length} location${clusterBakeries.length !== 1 ? 's' : ''} here
+          </div>
+          <div class="cluster-popup-list">
+            ${clusterBakeries
+              .sort((a, b) => a.name.localeCompare(b.name))
+              .map(
+                (bakery) => `
+                <div class="cluster-popup-item" data-bakery-name="${bakery.name}">
+                  <div class="cluster-popup-item-name">
+                    <a
+                      href="${bakery.website || bakery.url}"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="${bakery.temporarilyClosed ? 'temporarily-closed' : ''}"
+                    >
+                      ${bakery.name}${bakery.temporarilyClosed ? ' (Temporarily Closed)' : ''}
+                    </a>
+                  </div>
+                  <div class="cluster-popup-item-link">
+                    <a
+                      href="${bakery.url}"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="${bakery.temporarilyClosed ? 'temporarily-closed' : ''}"
+                    >
+                      View on Google Maps
+                    </a>
+                  </div>
+                </div>
+              `
+              )
+              .join('')}
+          </div>
+        </div>
+      `;
+
+      const popup = L.popup({
+        maxWidth: 300,
+        maxHeight: 400,
+        autoPan: true,
+        closeButton: true,
+      })
+        .setLatLng(cluster.getLatLng())
+        .setContent(popupContent);
+
+      popup.openOn(ctx.map);
+
+      // Add click handlers to list items after popup is opened
+      setTimeout(() => {
+        const items = document.querySelectorAll('.cluster-popup-item');
+        items.forEach((item) => {
+          const clickableArea = item.querySelector('.cluster-popup-item-name');
+          if (clickableArea) {
+            clickableArea.addEventListener('click', (e) => {
+              // Only trigger if not clicking on link
+              if ((e.target as HTMLElement).tagName !== 'A') {
+                const bakeryName = (item as HTMLElement).dataset.bakeryName;
+                if (bakeryName && onBakeryClick) {
+                  onBakeryClick(bakeryName);
+                  popup.remove();
+                }
+              }
+            });
+          }
+        });
+      }, 0);
+    });
+
+    return {
+      instance: clusterGroup,
+      context: { ...ctx, layerContainer: clusterGroup },
+    };
+  }
+);
+
+export default MarkerClusterGroup;

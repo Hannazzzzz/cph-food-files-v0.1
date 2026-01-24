@@ -4,6 +4,7 @@ import { DivIcon, type Map as LeafletMap, type Marker as LeafletMarker } from 'l
 import 'leaflet/dist/leaflet.css';
 import type { Bakery } from '@/data/bakeries';
 import MapFiltersOverlay from '@/components/MapFiltersOverlay';
+import MarkerClusterGroup from '@/components/MarkerClusterGroup';
 
 // Custom marker icon (colored using design tokens)
 const markerIcon = new DivIcon({
@@ -54,6 +55,7 @@ const BakeryMap = ({
 }: BakeryMapProps) => {
   const mapRef = useRef<LeafletMap | null>(null);
   const markerRefs = useRef<Record<string, LeafletMarker | null>>({});
+  const [clusterSelectedBakery, setClusterSelectedBakery] = useState<string | null>(null);
 
   // Single source of truth: `Index` decides which bakeries are currently in-scope.
   // The map only additionally hides entries without coordinates.
@@ -70,9 +72,10 @@ const BakeryMap = ({
   );
 
   useEffect(() => {
-    if (!selectedBakeryName) return;
+    const bakeryToShow = selectedBakeryName || clusterSelectedBakery;
+    if (!bakeryToShow) return;
 
-    const marker = markerRefs.current[selectedBakeryName];
+    const marker = markerRefs.current[bakeryToShow];
     if (!marker) return;
 
     marker.openPopup();
@@ -80,7 +83,12 @@ const BakeryMap = ({
     if (!map) return;
 
     map.setView(marker.getLatLng(), Math.max(map.getZoom(), 14), { animate: true });
-  }, [selectedBakeryName]);
+
+    // Reset cluster selection after showing the marker
+    if (clusterSelectedBakery) {
+      setClusterSelectedBakery(null);
+    }
+  }, [selectedBakeryName, clusterSelectedBakery]);
 
   return (
     <div
@@ -166,6 +174,108 @@ const BakeryMap = ({
         [data-map-theme="cph-food-files"] .leaflet-control-attribution a {
           color: hsl(var(--muted-foreground));
         }
+
+        /* Cluster marker styles */
+        [data-map-theme="cph-food-files"] .cph-food-files-cluster {
+          background: transparent;
+          border: 0;
+        }
+
+        [data-map-theme="cph-food-files"] .cluster-marker {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background: hsl(var(--accent));
+          color: hsl(var(--accent-foreground));
+          font-weight: 600;
+          font-size: 14px;
+          box-shadow: 0 2px 8px hsl(var(--foreground) / 0.2);
+          border: 2px solid hsl(var(--background));
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        [data-map-theme="cph-food-files"] .cluster-marker:hover {
+          background: hsl(var(--marker-hover));
+          transform: scale(1.1);
+        }
+
+        [data-map-theme="cph-food-files"] .cluster-marker-small {
+          width: 36px;
+          height: 36px;
+          font-size: 13px;
+        }
+
+        [data-map-theme="cph-food-files"] .cluster-marker-medium {
+          width: 40px;
+          height: 40px;
+          font-size: 14px;
+        }
+
+        [data-map-theme="cph-food-files"] .cluster-marker-large {
+          width: 44px;
+          height: 44px;
+          font-size: 15px;
+        }
+
+        /* Cluster popup styles */
+        [data-map-theme="cph-food-files"] .cluster-popup {
+          max-height: 400px;
+          overflow-y: auto;
+        }
+
+        [data-map-theme="cph-food-files"] .cluster-popup-header {
+          font-weight: 600;
+          font-size: 14px;
+          margin-bottom: 8px;
+          padding-bottom: 8px;
+          border-bottom: 1px solid hsl(var(--border));
+          color: hsl(var(--foreground));
+        }
+
+        [data-map-theme="cph-food-files"] .cluster-popup-list {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+
+        [data-map-theme="cph-food-files"] .cluster-popup-item {
+          padding: 8px;
+          border-radius: 4px;
+          background: hsl(var(--background));
+          border: 1px solid hsl(var(--border));
+          transition: all 0.2s ease;
+        }
+
+        [data-map-theme="cph-food-files"] .cluster-popup-item:hover {
+          background: hsl(var(--accent) / 0.1);
+          border-color: hsl(var(--accent));
+        }
+
+        [data-map-theme="cph-food-files"] .cluster-popup-item-name {
+          margin-bottom: 4px;
+          cursor: pointer;
+        }
+
+        [data-map-theme="cph-food-files"] .cluster-popup-item-name a {
+          font-weight: 600;
+          font-size: 13px;
+        }
+
+        [data-map-theme="cph-food-files"] .cluster-popup-item-link a {
+          font-size: 11px;
+        }
+
+        [data-map-theme="cph-food-files"] .cluster-popup-item a.temporarily-closed {
+          color: hsl(var(--muted-foreground));
+        }
+
+        [data-map-theme="cph-food-files"] .cluster-popup-item a.temporarily-closed:hover {
+          color: hsl(var(--muted-foreground));
+        }
       `}</style>
       <MapContainer
         ref={mapRef as any}
@@ -189,50 +299,57 @@ const BakeryMap = ({
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
           url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         />
-        <LayerGroup key={markerLayerKey}>
-          {bakeriesWithCoords.map((bakery) => (
-            <Marker
-              key={bakery.name}
-              position={[bakery.latitude!, bakery.longitude!]}
-              icon={bakery.name === selectedBakeryName ? markerIconHover : markerIcon}
-              ref={(marker) => {
-                markerRefs.current[bakery.name] = marker;
-              }}
-            >
-              <Popup>
-                <div className="text-sm">
-                  <a
-                    href={bakery.website || bakery.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={
-                      bakery.temporarilyClosed
-                        ? 'font-semibold text-muted-foreground hover:text-muted-foreground'
-                        : 'font-semibold text-primary hover:text-accent'
-                    }
-                  >
-                    {bakery.name}
-                    {bakery.temporarilyClosed ? ' (Temporarily Closed)' : ''}
-                  </a>
-                  <div className="mt-1">
+        <MarkerClusterGroup
+          bakeries={bakeriesWithCoords}
+          onBakeryClick={(bakeryName) => setClusterSelectedBakery(bakeryName)}
+        >
+          <LayerGroup key={markerLayerKey}>
+            {bakeriesWithCoords.map((bakery) => (
+              <Marker
+                key={bakery.name}
+                position={[bakery.latitude!, bakery.longitude!]}
+                icon={bakery.name === selectedBakeryName ? markerIconHover : markerIcon}
+                ref={(marker) => {
+                  markerRefs.current[bakery.name] = marker;
+                }}
+                // @ts-ignore - Custom option for cluster identification
+                bakeryName={bakery.name}
+              >
+                <Popup>
+                  <div className="text-sm">
                     <a
-                      href={bakery.url}
+                      href={bakery.website || bakery.url}
                       target="_blank"
                       rel="noopener noreferrer"
                       className={
                         bakery.temporarilyClosed
-                          ? 'text-xs text-muted-foreground hover:text-muted-foreground'
-                          : 'text-xs text-primary/80 hover:text-accent'
+                          ? 'font-semibold text-muted-foreground hover:text-muted-foreground'
+                          : 'font-semibold text-primary hover:text-accent'
                       }
                     >
-                      View on Google Maps
+                      {bakery.name}
+                      {bakery.temporarilyClosed ? ' (Temporarily Closed)' : ''}
                     </a>
+                    <div className="mt-1">
+                      <a
+                        href={bakery.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={
+                          bakery.temporarilyClosed
+                            ? 'text-xs text-muted-foreground hover:text-muted-foreground'
+                            : 'text-xs text-primary/80 hover:text-accent'
+                        }
+                      >
+                        View on Google Maps
+                      </a>
+                    </div>
                   </div>
-                </div>
-              </Popup>
-            </Marker>
-          ))}
-        </LayerGroup>
+                </Popup>
+              </Marker>
+            ))}
+          </LayerGroup>
+        </MarkerClusterGroup>
       </MapContainer>
     </div>
   );
