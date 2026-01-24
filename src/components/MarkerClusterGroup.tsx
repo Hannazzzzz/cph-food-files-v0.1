@@ -7,6 +7,8 @@ import type { Bakery } from '@/data/bakeries';
 
 type MarkerClusterGroupProps = {
   bakeries: Bakery[];
+  selectedBakeryName?: string | null;
+  markerRefs?: React.MutableRefObject<Record<string, L.Marker | null>>;
   onBakeryClick?: (bakeryName: string) => void;
   children?: React.ReactNode;
 };
@@ -30,10 +32,115 @@ const createClusterCustomIcon = (cluster: L.MarkerCluster) => {
   });
 };
 
+// Helper function to create cluster popup content
+const createClusterPopupContent = (clusterBakeries: Bakery[]) => `
+  <div class="cluster-popup">
+    <div class="cluster-popup-header">
+      ${clusterBakeries.length} location${clusterBakeries.length !== 1 ? 's' : ''} here
+    </div>
+    <div class="cluster-popup-list">
+      ${clusterBakeries
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .map(
+          (bakery) => `
+          <div class="cluster-popup-item" data-bakery-name="${bakery.name}">
+            <div class="cluster-popup-item-name">
+              <a
+                href="${bakery.website || bakery.url}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="${bakery.temporarilyClosed ? 'temporarily-closed' : ''}"
+              >
+                ${bakery.name}${bakery.temporarilyClosed ? ' (Temporarily Closed)' : ''}
+              </a>
+            </div>
+            <div class="cluster-popup-item-link">
+              <a
+                href="${bakery.url}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="${bakery.temporarilyClosed ? 'temporarily-closed' : ''}"
+              >
+                View on Google Maps
+              </a>
+            </div>
+          </div>
+        `
+        )
+        .join('')}
+    </div>
+  </div>
+`;
+
+// Helper to add click handlers to cluster popup items
+const addClusterPopupClickHandlers = (popup: L.Popup, onBakeryClick?: (name: string) => void) => {
+  setTimeout(() => {
+    const items = document.querySelectorAll('.cluster-popup-item');
+    items.forEach((item) => {
+      const clickableArea = item.querySelector('.cluster-popup-item-name');
+      if (clickableArea) {
+        clickableArea.addEventListener('click', (e) => {
+          // Only trigger if not clicking on link
+          if ((e.target as HTMLElement).tagName !== 'A') {
+            const bakeryName = (item as HTMLElement).dataset.bakeryName;
+            if (bakeryName && onBakeryClick) {
+              onBakeryClick(bakeryName);
+              popup.remove();
+            }
+          }
+        });
+      }
+    });
+  }, 0);
+};
+
+// Function to show cluster popup for a specific marker
+const showClusterPopupForMarker = (
+  clusterGroup: L.MarkerClusterGroup,
+  marker: L.Marker,
+  bakeries: Bakery[],
+  map: L.Map,
+  onBakeryClick?: (name: string) => void
+) => {
+  const visibleParent = clusterGroup.getVisibleParent(marker);
+  if (!visibleParent || visibleParent === marker) {
+    // Marker is not in a cluster, open its own popup
+    marker.openPopup();
+    return;
+  }
+
+  // Marker is in a cluster - show the cluster popup
+  const cluster = visibleParent as L.MarkerCluster;
+  const markers = cluster.getAllChildMarkers();
+
+  const clusterBakeries = markers
+    .map((m: any) => {
+      const bakeryName = m.options.bakeryName;
+      return bakeries.find((b) => b.name === bakeryName);
+    })
+    .filter((b): b is Bakery => b !== undefined);
+
+  const popup = L.popup({
+    maxWidth: 300,
+    maxHeight: 250,
+    autoPan: true,
+    autoPanPaddingTopLeft: L.point(20, 90),
+    autoPanPaddingBottomRight: L.point(20, 60),
+    offset: L.point(0, -10),
+    closeButton: true,
+  })
+    .setLatLng(cluster.getLatLng())
+    .setContent(createClusterPopupContent(clusterBakeries));
+
+  popup.openOn(map);
+  addClusterPopupClickHandlers(popup, onBakeryClick);
+};
+
 const MarkerClusterGroup = createPathComponent<
   L.MarkerClusterGroup,
   MarkerClusterGroupProps & { children?: React.ReactNode }
 >(
+  // Create instance
   ({ bakeries, onBakeryClick, ...options }, ctx) => {
     const clusterProps: L.MarkerClusterGroupOptions = {
       ...options,
@@ -52,7 +159,6 @@ const MarkerClusterGroup = createPathComponent<
       const cluster = event.layer as L.MarkerCluster;
       const markers = cluster.getAllChildMarkers();
 
-      // Get bakery data for all markers in the cluster
       const clusterBakeries = markers
         .map((marker: any) => {
           const bakeryName = marker.options.bakeryName;
@@ -60,87 +166,38 @@ const MarkerClusterGroup = createPathComponent<
         })
         .filter((b): b is Bakery => b !== undefined);
 
-      // Create popup content with list of bakeries
-      const popupContent = `
-        <div class="cluster-popup">
-          <div class="cluster-popup-header">
-            ${clusterBakeries.length} location${clusterBakeries.length !== 1 ? 's' : ''} here
-          </div>
-          <div class="cluster-popup-list">
-            ${clusterBakeries
-              .sort((a, b) => a.name.localeCompare(b.name))
-              .map(
-                (bakery) => `
-                <div class="cluster-popup-item" data-bakery-name="${bakery.name}">
-                  <div class="cluster-popup-item-name">
-                    <a
-                      href="${bakery.website || bakery.url}"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="${bakery.temporarilyClosed ? 'temporarily-closed' : ''}"
-                    >
-                      ${bakery.name}${bakery.temporarilyClosed ? ' (Temporarily Closed)' : ''}
-                    </a>
-                  </div>
-                  <div class="cluster-popup-item-link">
-                    <a
-                      href="${bakery.url}"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="${bakery.temporarilyClosed ? 'temporarily-closed' : ''}"
-                    >
-                      View on Google Maps
-                    </a>
-                  </div>
-                </div>
-              `
-              )
-              .join('')}
-          </div>
-        </div>
-      `;
-
       const popup = L.popup({
         maxWidth: 300,
         maxHeight: 250,
         autoPan: true,
         autoPanPaddingTopLeft: L.point(20, 90),
         autoPanPaddingBottomRight: L.point(20, 60),
-         // Position popup above the marker (negative offset) so it points to the cluster correctly.
-         // autoPan will reposition the map to avoid filter buttons if needed.
-         offset: L.point(0, -10),
+        offset: L.point(0, -10),
         closeButton: true,
       })
         .setLatLng(cluster.getLatLng())
-        .setContent(popupContent);
+        .setContent(createClusterPopupContent(clusterBakeries));
 
       popup.openOn(ctx.map);
-
-      // Add click handlers to list items after popup is opened
-      setTimeout(() => {
-        const items = document.querySelectorAll('.cluster-popup-item');
-        items.forEach((item) => {
-          const clickableArea = item.querySelector('.cluster-popup-item-name');
-          if (clickableArea) {
-            clickableArea.addEventListener('click', (e) => {
-              // Only trigger if not clicking on link
-              if ((e.target as HTMLElement).tagName !== 'A') {
-                const bakeryName = (item as HTMLElement).dataset.bakeryName;
-                if (bakeryName && onBakeryClick) {
-                  onBakeryClick(bakeryName);
-                  popup.remove();
-                }
-              }
-            });
-          }
-        });
-      }, 0);
+      addClusterPopupClickHandlers(popup, onBakeryClick);
     });
 
     return {
       instance: clusterGroup,
       context: { ...ctx, layerContainer: clusterGroup },
     };
+  },
+  // Update instance - called when props change
+  (instance, { bakeries, selectedBakeryName, markerRefs, onBakeryClick }, ctx) => {
+    if (selectedBakeryName && markerRefs?.current) {
+      const marker = markerRefs.current[selectedBakeryName];
+      if (marker) {
+        // Small delay to ensure cluster group has updated
+        setTimeout(() => {
+          showClusterPopupForMarker(instance, marker, bakeries, ctx.map, onBakeryClick);
+        }, 50);
+      }
+    }
   }
 );
 
