@@ -90,7 +90,7 @@ const BakeryMap = ({
     }
   }, [selectedBakeryName, clusterSelectedBakery]);
 
-  // Dynamic zoom: fit bounds when filters are applied, reset to default when cleared
+  // Dynamic zoom: fit bounds when filters are applied
   useEffect(() => {
     const map = mapRef.current;
     if (!map) return;
@@ -114,10 +114,8 @@ const BakeryMap = ({
         animate: true,
         duration: 0.5,
       });
-    } else if (!hasActiveFilters) {
-      // No filters: reset to default zoom and center
-      map.setView([55.6761, 12.5683], 13, { animate: true });
     }
+    // When filters are cleared, maintain current zoom/position (no reset)
   }, [bakeriesWithCoords, initialFoodTags, initialMoodTags, initialHoodTags, selectedBakeryName, clusterSelectedBakery]);
 
   return (
