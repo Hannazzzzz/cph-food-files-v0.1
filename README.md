@@ -30,7 +30,7 @@ The site features:
 
 ### Data Pipeline
 - **Python 3** - Scraper scripting
-- **Google Maps API** - Restaurant data source
+- **Google Maps website** - Restaurant data source
 - **CSV** - Simple, version-controllable data format
 
 ## Getting Started
