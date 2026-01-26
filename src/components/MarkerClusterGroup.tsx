@@ -33,22 +33,23 @@ const createClusterCustomIcon = (cluster: L.MarkerCluster) => {
 
 // Helper function to create cluster popup content
 const createClusterPopupContent = (clusterBakeries: Bakery[]) => `
-  <div class="cluster-popup">
-    <div class="cluster-popup-header">
+  <div class="cluster-popup" role="dialog" aria-label="${clusterBakeries.length} bakeries at this location">
+    <div class="cluster-popup-header" id="cluster-popup-title">
       ${clusterBakeries.length} location${clusterBakeries.length !== 1 ? 's' : ''} here
     </div>
-    <div class="cluster-popup-list">
+    <ul class="cluster-popup-list" role="list" aria-labelledby="cluster-popup-title">
       ${clusterBakeries
         .sort((a, b) => a.name.localeCompare(b.name))
         .map(
           (bakery) => `
-          <div class="cluster-popup-item" data-bakery-name="${bakery.name}">
+          <li class="cluster-popup-item" data-bakery-name="${bakery.name}" role="listitem">
             <div class="cluster-popup-item-name">
               <a
                 href="${bakery.website || bakery.url}"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="${bakery.temporarilyClosed ? 'temporarily-closed' : ''}"
+                aria-label="${bakery.name}${bakery.temporarilyClosed ? ', temporarily closed' : ''}, opens in new tab"
               >
                 ${bakery.name}${bakery.temporarilyClosed ? ' (Temporarily Closed)' : ''}
               </a>
@@ -59,15 +60,16 @@ const createClusterPopupContent = (clusterBakeries: Bakery[]) => `
                 target="_blank"
                 rel="noopener noreferrer"
                 class="${bakery.temporarilyClosed ? 'temporarily-closed' : ''}"
+                aria-label="View ${bakery.name} on Google Maps, opens in new tab"
               >
                 View on Google Maps
               </a>
             </div>
-          </div>
+          </li>
         `
         )
         .join('')}
-    </div>
+    </ul>
   </div>
 `;
 

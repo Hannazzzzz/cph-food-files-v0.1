@@ -81,6 +81,14 @@ const Index = () => {
 
   return (
     <main className="w-full px-5 py-6">
+      {/* Skip link for keyboard users to bypass the map */}
+      <a
+        href="#places-list"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[9999] focus:bg-background focus:px-4 focus:py-2 focus:border focus:border-foreground"
+      >
+        Skip to places list
+      </a>
+
       <header className="flex items-start justify-between gap-6">
         <h1 className="site-title m-0 text-left leading-tight">CPH Food Files</h1>
 
@@ -111,8 +119,18 @@ const Index = () => {
         />
       </section>
 
-      <section className="mt-6" aria-label="Places list">
+      <section id="places-list" className="mt-6" aria-label="Places list">
         <h2 className="m-0 mb-3 text-left">Places ({filteredBakeries.length})</h2>
+
+        {/* Screen reader announcement for filter changes */}
+        <div
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+          className="sr-only"
+        >
+          Showing {filteredBakeries.length} {filteredBakeries.length === 1 ? 'place' : 'places'}
+        </div>
 
         <BakeryTable
           bakeries={filteredBakeries}

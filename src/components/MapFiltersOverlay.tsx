@@ -55,6 +55,21 @@ function TagDropdown({
       'bg-hood text-hood-foreground border-transparent hover:bg-background hover:text-foreground hover:border-hood focus-visible:bg-background focus-visible:text-foreground focus-visible:border-hood',
   };
 
+  const variantLabels: Record<FilterVariant, string> = {
+    food: 'Filter by food type',
+    mood: 'Filter by mood/atmosphere',
+    hood: 'Filter by neighbourhood',
+  };
+
+  const getButtonAriaLabel = () => {
+    const baseLabel = variantLabels[variant];
+    if (selectedTags.size === 0) {
+      return `${baseLabel}, no filters selected`;
+    }
+    const selectedList = Array.from(selectedTags).join(', ');
+    return `${baseLabel}, ${selectedTags.size} selected: ${selectedList}`;
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -67,14 +82,18 @@ function TagDropdown({
             variantClasses[variant],
             selectedTags.size > 0 && 'bg-background text-foreground',
           )}
+          aria-label={getButtonAriaLabel()}
         >
-          <span className="tracking-wide">{label}</span>
+          <span className="tracking-wide" aria-hidden="true">{label}</span>
         </Button>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
         align="start"
         className="z-[2000] max-h-[50vh] w-56 overflow-auto bg-popover"
+        role="listbox"
+        aria-label={`${label} filter options`}
+        aria-multiselectable="true"
       >
         {tags.length === 0 ? (
           <DropdownMenuItem disabled>(No tags)</DropdownMenuItem>
@@ -92,6 +111,8 @@ function TagDropdown({
                   // Keep the pink highlight for selected items (no bold)
                   selectedTags.has(tag) && 'bg-accent text-accent-foreground',
                 )}
+                role="option"
+                aria-selected={selectedTags.has(tag)}
               >
                 {tag}
               </DropdownMenuItem>
@@ -102,6 +123,8 @@ function TagDropdown({
                 e.preventDefault();
                 onClear();
               }}
+              role="option"
+              aria-selected={selectedTags.size === 0}
             >
               All
             </DropdownMenuItem>

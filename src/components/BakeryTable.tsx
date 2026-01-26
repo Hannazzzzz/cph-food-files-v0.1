@@ -52,6 +52,18 @@ const BakeryTable = ({ onSelectBakery, bakeries = allBakeries }: BakeryTableProp
     return sortDirection === 'asc' ? ' ↑' : ' ↓';
   };
 
+  const getAriaSort = (column: SortColumn): 'ascending' | 'descending' | 'none' => {
+    if (sortColumn !== column) return 'none';
+    return sortDirection === 'asc' ? 'ascending' : 'descending';
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent, column: SortColumn) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleSort(column);
+    }
+  };
+
   return (
     <Table>
       <TableHeader>
@@ -59,6 +71,11 @@ const BakeryTable = ({ onSelectBakery, bakeries = allBakeries }: BakeryTableProp
           <TableHead
             className="pl-0 cursor-pointer hover:text-foreground select-none"
             onClick={() => handleSort('name')}
+            onKeyDown={(e) => handleKeyDown(e, 'name')}
+            tabIndex={0}
+            role="columnheader"
+            aria-sort={getAriaSort('name')}
+            aria-label={`Sort by name, currently ${getAriaSort('name') === 'none' ? 'not sorted' : `sorted ${getAriaSort('name')}`}`}
           >
             Name{getSortIndicator('name')}
           </TableHead>
@@ -68,7 +85,13 @@ const BakeryTable = ({ onSelectBakery, bakeries = allBakeries }: BakeryTableProp
               <TooltipProvider delayDuration={200}>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <HelpCircle size={12} className="text-muted-foreground cursor-help" />
+                    <button
+                      type="button"
+                      aria-label="Food tag definitions"
+                      className="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-sm"
+                    >
+                      <HelpCircle size={12} className="text-muted-foreground" aria-hidden="true" />
+                    </button>
                   </TooltipTrigger>
                   <TooltipContent side="bottom" className="max-w-xs text-left">
                     <ul className="space-y-1.5 text-xs">
@@ -87,7 +110,13 @@ const BakeryTable = ({ onSelectBakery, bakeries = allBakeries }: BakeryTableProp
               <TooltipProvider delayDuration={200}>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <HelpCircle size={12} className="text-muted-foreground cursor-help" />
+                    <button
+                      type="button"
+                      aria-label="Mood tag definitions"
+                      className="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-sm"
+                    >
+                      <HelpCircle size={12} className="text-muted-foreground" aria-hidden="true" />
+                    </button>
                   </TooltipTrigger>
                   <TooltipContent side="bottom" className="max-w-xs text-left">
                     <ul className="space-y-1.5 text-xs">
@@ -103,6 +132,11 @@ const BakeryTable = ({ onSelectBakery, bakeries = allBakeries }: BakeryTableProp
           <TableHead
             className="cursor-pointer hover:text-foreground select-none"
             onClick={() => handleSort('neighbourhood')}
+            onKeyDown={(e) => handleKeyDown(e, 'neighbourhood')}
+            tabIndex={0}
+            role="columnheader"
+            aria-sort={getAriaSort('neighbourhood')}
+            aria-label={`Sort by neighbourhood, currently ${getAriaSort('neighbourhood') === 'none' ? 'not sorted' : `sorted ${getAriaSort('neighbourhood')}`}`}
           >
             Neighbourhood{getSortIndicator('neighbourhood')}
           </TableHead>
