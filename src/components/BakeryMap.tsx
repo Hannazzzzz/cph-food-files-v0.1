@@ -351,6 +351,9 @@ const BakeryMap = ({
           display: flex;
           flex-direction: column;
           gap: 0;
+          list-style: none;
+          margin: 0;
+          padding: 0;
         }
 
         [data-map-theme="cph-food-files"] .cluster-popup-item {
