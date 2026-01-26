@@ -14,9 +14,6 @@ const About = () => {
       >
         CPH Food Files
       </h1>
-      <p className="text-meta" style={{ marginBottom: '20px' }}>
-        <em>✦ Fastelavnsboller i København ✦</em>
-      </p>
       <hr style={{ borderColor: 'black', borderWidth: '2px' }} />
       
       <p style={{ margin: '20px 0' }}>
