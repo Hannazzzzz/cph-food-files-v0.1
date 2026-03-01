@@ -26,6 +26,7 @@ print("=" * 60)
 print()
 
 harvester = RestaurantHarvester(headless=True)
+harvester._load_existing_tags(output_file)
 results = []
 
 try:
