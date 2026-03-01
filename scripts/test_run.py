@@ -39,6 +39,13 @@ try:
 
         print(f"[{idx}/3] Processing: {name}...")
         data = harvester.harvest_restaurant(name, url)
+
+        # Preserve tags from input row if present
+        if row.get('food_tags', '').strip():
+            data['food_tags'] = row['food_tags'].strip()
+        if row.get('mood_tags', '').strip():
+            data['mood_tags'] = row['mood_tags'].strip()
+
         results.append(data)
 
         # Save after each restaurant (safer in case of crashes)
