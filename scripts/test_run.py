@@ -13,7 +13,7 @@ else:
     input_file = 'Favorite places.csv'  # Default
 
 # Read first 3 restaurants
-with open(input_file, 'r', encoding='utf-8') as f:
+with open(input_file, 'r', encoding='utf-8-sig') as f:
     reader = csv.DictReader(f)
     restaurants = list(reader)[:3]  # First 3 only
 
@@ -30,8 +30,8 @@ results = []
 
 try:
     for idx, row in enumerate(restaurants, 1):
-        name = row.get('Title', '').strip()
-        url = row.get('URL', '').strip()
+        name = (row.get('Title') or row.get('name') or '').strip()
+        url = (row.get('URL') or row.get('maps url') or '').strip()
 
         if not name or not url:
             continue
@@ -55,8 +55,13 @@ try:
         print()
 
     print("=" * 60)
-    print("✓ Test complete!")
-    print(f"Results saved to: {os.path.abspath(output_file)}")
+    if results:
+        print("✓ Test complete!")
+        print(f"Results saved to: {os.path.abspath(output_file)}")
+    else:
+        print("⚠ No results collected.")
+        print("Check that your CSV has 'Title' and 'URL' columns (Google Maps export format).")
+        print(f"Columns found: {list(restaurants[0].keys()) if restaurants else 'none - file may be empty'}")
     print("=" * 60)
 
 finally:
