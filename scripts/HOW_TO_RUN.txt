@@ -1,10 +1,10 @@
 RESTAURANT HARVESTER - SIMPLE INSTRUCTIONS
 ===========================================
 
-This will automatically collect data for all 164 restaurants from your Google Maps links.
+This will automatically collect data for all restaurants from your Google Maps links.
 
 WHAT YOU'LL GET:
-- A file called "restaurants_enriched.csv" with these columns:
+- A file called "Favorite_places_march_2026_enriched.csv" with these columns:
   * Name
   * Keywords (from review mentions - e.g., "great coffee", "cozy atmosphere")
   * Food Tags (for manual categorization - preserved on re-runs!)
@@ -24,35 +24,47 @@ WHAT YOU'LL GET:
 
 TIME NEEDED: 10-15 minutes total (automatic)
 
+
+GETTING THE FILES (do this first, or when updating):
+-----------------------------------------------------
+
+To find your Mac username, open Terminal and type: whoami
+Your folder path will be: /Users/YOUR_USERNAME/Documents/Restaurant Guide/
+
+1. Download the latest Python script:
+   - Go to: https://github.com/Hannazzzzz/cph-food-files-v0.1
+   - Navigate to: scripts/harvest_restaurants.py
+   - Click the download icon (or open Raw, then File > Save As)
+   - Save it to your Restaurant Guide folder (see path above)
+
+2. Place your CSV file in the same folder:
+   - Make sure your CSV file is in your Restaurant Guide folder
+   - Note the exact filename — you'll need it in Step 2 below
+
+
 HOW TO RUN:
 -----------
 
 Step 0: Navigate to the project folder
-    cd "/Users/[username]/Documents/Restaurant Guide/cphfoodfiles-claude-automate-restaurant-harvesting-Ux75q"
+    cd "/Users/YOUR_USERNAME/Documents/Restaurant Guide"
 
+    Replace YOUR_USERNAME with your Mac username (run: whoami to check)
     Note: The quotes are important because of the space in "Restaurant Guide"
 
 Step 1: Install dependencies (first time only)
     pip3 install selenium webdriver-manager
 
 Step 2: Run the script
-
-    For default file (Favorite places.csv):
-        python3 harvest_restaurants.py
-
-    For a different file (e.g., Fastelavnsbolle.csv):
-        python3 harvest_restaurants.py Fastelavnsbolle.csv
+    python3 harvest_restaurants.py "Favorite_places_march_2026.csv"
 
     To test with just 3 restaurants first:
-        python3 test_run.py
-        python3 test_run.py Fastelavnsbolle.csv
+        python3 test_run.py "Favorite_places_march_2026.csv"
 
 Step 3: Wait for it to finish
 
 Step 4: Open the enriched CSV file
-    - Default: "Favorite places_enriched.csv"
-    - Or: "Favorite places_enriched.csv" (if you used that file)
-    - Test: "Favorite places_test_results.csv" (or similar)
+    - Output file: "Favorite_places_march_2026_enriched.csv"
+    - Open it in Excel, Google Sheets, or any spreadsheet program
 
 
 WHAT HAPPENS:
@@ -60,7 +72,6 @@ WHAT HAPPENS:
 - Visits each Google Maps link automatically
 - Extracts all available information
 - Saves progress every 10 restaurants (in case it crashes)
-- Creates "restaurants_enriched.csv" when done
 - Logs everything to "harvest.log"
 
 
@@ -68,7 +79,6 @@ TROUBLESHOOTING:
 ---------------
 If you see "Chrome not found":
   - Install Google Chrome browser first
-  - On Ubuntu: sudo apt install google-chrome-stable
   - On Mac: brew install --cask google-chrome
 
 If it crashes:
@@ -77,15 +87,6 @@ If it crashes:
 If a restaurant fails:
   - It will skip it and continue with the next one
   - Check "harvest.log" for details
-
-
-AFTER IT FINISHES:
------------------
-Open "restaurants_enriched.csv" in:
-- Excel
-- Google Sheets
-- Any spreadsheet program
-- Import to your website/database
 
 
 TAG PRESERVATION FEATURE:
@@ -111,7 +112,7 @@ This lets you:
 TESTING:
 --------
 To test with just 3 restaurants (much faster):
-    python3 test_tag_logic.py     (tests tag preservation logic only)
-    python3 test_run.py Fastelavnsbolle.csv    (scrapes 3 restaurants)
+    python3 test_tag_logic.py                                (tests tag preservation logic only)
+    python3 test_run.py "Favorite_places_march_2026.csv"    (scrapes 3 restaurants)
 
 Done!
