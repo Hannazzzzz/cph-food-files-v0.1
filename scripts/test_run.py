@@ -2,6 +2,7 @@
 """Quick test - process first 3 restaurants only"""
 
 import csv
+import os
 import sys
 from harvest_restaurants import RestaurantHarvester
 
@@ -50,12 +51,12 @@ try:
             writer.writeheader()
             writer.writerows(results)
 
-        print(f"    ✓ Done (saved to {output_file})")
+        print(f"    ✓ Done (saved to {os.path.abspath(output_file)})")
         print()
 
     print("=" * 60)
     print("✓ Test complete!")
-    print(f"Results saved to: {output_file}")
+    print(f"Results saved to: {os.path.abspath(output_file)}")
     print("=" * 60)
 
 finally:
