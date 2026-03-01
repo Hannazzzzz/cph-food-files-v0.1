@@ -545,14 +545,14 @@ def main():
 
     logging.info("Starting Restaurant Harvester")
     logging.info(f"Input: {input_file}")
-    logging.info(f"Output: {output_file}")
+    logging.info(f"Output: {os.path.abspath(output_file)}")
 
     harvester = RestaurantHarvester(headless=True)
 
     try:
         results = harvester.process_csv(input_file, output_file)
         logging.info(f"Successfully processed {len(results)} restaurants")
-        logging.info(f"Results saved to {output_file}")
+        logging.info(f"Results saved to {os.path.abspath(output_file)}")
     except Exception as e:
         logging.error(f"Fatal error: {str(e)}")
         raise
