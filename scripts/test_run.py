@@ -43,7 +43,7 @@ try:
         # Save after each restaurant (safer in case of crashes)
         fieldnames = ['name', 'keywords', 'food_tags', 'mood_tags', 'address', 'neighborhood',
                      'latitude', 'longitude', 'rating', 'reviews_count', 'price_level',
-                     'phone', 'website', 'hours', 'permanently_closed',
+                     'phone', 'website', 'hours', 'permanently_closed', 'temporarily_closed',
                      'maps url', 'status']
 
         with open(output_file, 'w', encoding='utf-8', newline='') as f:
