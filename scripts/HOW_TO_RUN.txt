@@ -32,11 +32,11 @@ GETTING THE FILES (do this first, or when updating):
    - Go to: https://github.com/Hannazzzzz/cph-food-files-v0.1
    - Navigate to: scripts/harvest_restaurants.py
    - Click the download icon (or open Raw, then File > Save As)
-   - Save it to: /Users/[username]/Documents/Restaurant Guide/
+   - Save it to: /Users/hannazoon/Documents/Restaurant Guide/
 
 2. Place your CSV file in the same folder:
    - Make sure your file "Favorite_places_march_2026.csv" is in:
-     /Users/[username]/Documents/Restaurant Guide/
+     /Users/hannazoon/Documents/Restaurant Guide/
    - If you're starting fresh, export your Google Maps list as a CSV
      and rename it to Favorite_places_march_2026.csv before placing it there
 
@@ -45,7 +45,7 @@ HOW TO RUN:
 -----------
 
 Step 0: Navigate to the project folder
-    cd "/Users/[username]/Documents/Restaurant Guide"
+    cd "/Users/hannazoon/Documents/Restaurant Guide"
 
     Note: The quotes are important because of the space in "Restaurant Guide"
 
