@@ -94,7 +94,7 @@ const Index = () => {
 
         <div className="text-right">
           <p className="m-0">
-            <strong>Last updated:</strong> January 2026
+            <strong>Last updated:</strong> 1 March 2026
             <br />
             <strong>Curated by:</strong> Hanna
           </p>
