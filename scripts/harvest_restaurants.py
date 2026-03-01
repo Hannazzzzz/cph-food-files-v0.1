@@ -481,8 +481,8 @@ class RestaurantHarvester:
 
         # Process each restaurant
         for idx, row in enumerate(restaurants, 1):
-            name = row.get('Title', '').strip()
-            url = row.get('URL', '').strip()
+            name = (row.get('Title') or row.get('name') or '').strip()
+            url = (row.get('URL') or row.get('maps url') or '').strip()
 
             if not name or not url:
                 logging.warning(f"Skipping row {idx}: missing name or URL")
@@ -537,8 +537,11 @@ def main():
         input_file = 'Favorite places.csv'  # Default
 
     # Create output filename based on input filename
-    base_name = input_file.replace('.csv', '')
-    output_file = f'{base_name}_enriched.csv'
+    if input_file.endswith('_enriched.csv'):
+        output_file = input_file  # write back to the same file
+    else:
+        base_name = input_file.replace('.csv', '')
+        output_file = f'{base_name}_enriched.csv'
 
     logging.info("Starting Restaurant Harvester")
     logging.info(f"Input: {input_file}")
