@@ -34,6 +34,28 @@ from harvest_restaurants import (
     load_existing_tags, save_results, OUTPUT_FIELDS, sniff_delimiter,
 )
 
+EXCLUSIONS_FILE = 'exclusions.csv'
+
+
+def load_exclusions(path=None):
+    """Place IDs that must never appear on the site (see exclusions.csv)."""
+    path = path or EXCLUSIONS_FILE
+    ids = set()
+    if os.path.exists(path):
+        for row in read_places_csv(path):
+            pid = extract_place_id(get_name_and_url(row)[1])
+            if pid:
+                ids.add(pid)
+    return ids
+
+
+def apply_exclusions(rows, excluded_ids):
+    kept, dropped = [], []
+    for r in rows:
+        pid = extract_place_id(get_name_and_url(r)[1])
+        (dropped if pid in excluded_ids else kept).append(r)
+    return kept, dropped
+
 
 def read_takeout(path, list_name='Favorite places'):
     """Return rows from a Takeout zip or a plain CSV file."""
@@ -98,6 +120,12 @@ def main():
 
     takeout_rows = read_takeout(takeout_path, list_name)
     enriched_rows = read_places_csv(enriched_path) if os.path.exists(enriched_path) else []
+
+    excluded_ids = load_exclusions()
+    takeout_rows, excl_t = apply_exclusions(takeout_rows, excluded_ids)
+    enriched_rows, excl_e = apply_exclusions(enriched_rows, excluded_ids)
+    for r in excl_t + excl_e:
+        print(f"  EXCLUDED (see exclusions.csv): {get_name_and_url(r)[0]}")
 
     new, removed, kept = diff_places(takeout_rows, enriched_rows)
 

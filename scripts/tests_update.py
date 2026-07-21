@@ -88,5 +88,22 @@ class TestTakeoutZip(unittest.TestCase):
         os.remove(path)
 
 
+class TestExclusions(unittest.TestCase):
+    def test_excluded_place_dropped_from_both_sides(self):
+        import update_from_takeout as u
+        excluded = {'0x47b1deadbeef0001:0x47b1deadbeef0001'}
+        bad_url = "https://www.google.com/maps/place/H/data=!4m2!3m1!1s0x47b1deadbeef0001:0x47b1deadbeef0001"
+        takeout = [takeout_row('Kept', 'aaa1'), {'Title': 'Hamburg Hotel', 'URL': bad_url}]
+        kept, dropped = u.apply_exclusions(takeout, excluded)
+        self.assertEqual(len(kept), 1)
+        self.assertEqual(dropped[0]['Title'], 'Hamburg Hotel')
+
+    def test_load_exclusions_from_repo_file(self):
+        import os
+        import update_from_takeout as u
+        ids = u.load_exclusions(os.path.join('..', 'exclusions.csv'))
+        self.assertIn('0x47b18ee6c4967e71:0xc408324e92fc05dc', ids)
+
+
 if __name__ == '__main__':
     unittest.main(verbosity=1)
