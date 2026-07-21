@@ -94,7 +94,12 @@ const Index = () => {
 
         <div className="text-right">
           <p className="m-0">
-            <strong>Last updated:</strong> 1 March 2026
+            <strong>Last updated:</strong>{" "}
+            {new Date(__DATA_LAST_UPDATED__).toLocaleDateString("en-GB", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })}
             <br />
             <strong>Curated by:</strong> Hanna
           </p>
