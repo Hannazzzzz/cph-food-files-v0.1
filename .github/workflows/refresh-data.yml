@@ -10,6 +10,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   refresh:
@@ -69,4 +70,9 @@ jobs:
           git config user.name "data-refresh-bot"
           git config user.email "actions@github.com"
           git add "Favorite places_enriched.csv"
-          git diff --cached --quiet && echo "No changes." || (git commit -m "Automated data refresh $(date -u +%F)" && git push)
+          git diff --cached --quiet && echo "No changes." || (git commit -m "Automated data refresh $(date -u +%F)" && git push && echo "PUSHED=1" >> $GITHUB_ENV)
+      - name: Trigger site deploy
+        if: github.event_name != 'push' && env.PUSHED == '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy.yml --ref main

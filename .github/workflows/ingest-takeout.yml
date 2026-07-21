@@ -1,0 +1,104 @@
+name: Ingest Takeout upload
+
+on:
+  push:
+    branches: [main]
+    paths: ['takeout/**', '!takeout/README.md']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+  actions: write
+
+concurrency:
+  group: data-updates
+  cancel-in-progress: false
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Find uploaded file
+        id: find
+        run: |
+          FILE=$(ls -t takeout/*.csv takeout/*.zip 2>/dev/null | head -1 || true)
+          if [ -z "$FILE" ]; then
+            echo "No takeout file found - nothing to do."
+            echo "file=" >> "$GITHUB_OUTPUT"
+          else
+            echo "Processing: $FILE"
+            echo "file=$FILE" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/setup-python@v5
+        if: steps.find.outputs.file != ''
+        with:
+          python-version: '3.11'
+      - run: pip install selenium webdriver-manager
+        if: steps.find.outputs.file != ''
+      - name: Update data (diff, scrape new places, apply removals)
+        if: steps.find.outputs.file != ''
+        run: |
+          python3 scripts/update_from_takeout.py "${{ steps.find.outputs.file }}" "Favorite places_enriched.csv" --new-only | tee ingest_summary.txt
+      - name: Validate result
+        if: steps.find.outputs.file != ''
+        run: |
+          python3 - << 'EOF'
+          import sys
+          sys.path.insert(0, 'scripts')
+          from harvest_restaurants import read_places_csv
+          rows = read_places_csv('Favorite places_enriched.csv')
+          total = len(rows)
+          errors = sum(1 for r in rows if not (r.get('status') or 'success').startswith('success'))
+          print(f"{total} places, {errors} errors")
+          if total < 100:
+              sys.exit(f"Only {total} rows - refusing to commit a truncated file.")
+          if errors / max(total, 1) > 0.15:
+              sys.exit(f"{errors}/{total} errors - refusing to commit a bad run.")
+          EOF
+      - name: Commit result and remove processed upload
+        if: steps.find.outputs.file != ''
+        run: |
+          git config user.name "takeout-ingest-bot"
+          git config user.email "actions@github.com"
+          git rm -q takeout/*.csv takeout/*.zip 2>/dev/null || true
+          git checkout -- takeout/README.md 2>/dev/null || true
+          git add "Favorite places_enriched.csv"
+          git commit -m "Monthly list update from Takeout ($(date -u +%F))" || echo "No data changes"
+          git push
+      - name: Open issue for untagged new places
+        if: steps.find.outputs.file != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - << 'EOF' > untagged.txt
+          import sys
+          sys.path.insert(0, 'scripts')
+          from harvest_restaurants import read_places_csv
+          rows = read_places_csv('Favorite places_enriched.csv')
+          for r in rows:
+              if not (r.get('food_tags') or '').strip() and (r.get('status') or '').startswith('success'):
+                  print(f"- [ ] {r['name']} ({r.get('neighborhood','')})")
+          EOF
+          if [ -s untagged.txt ]; then
+            {
+              echo "These new places are live but need food/mood tags to show up in the filters."
+              echo "Edit \"Favorite places_enriched.csv\" (food_tags and mood_tags columns), or ask Claude."
+              echo ""
+              cat untagged.txt
+              echo ""
+              echo "Run summary:"
+              echo '```'
+              grep -E "NEW|REMOVED|Done:|Permanently" ingest_summary.txt || true
+              echo '```'
+            } > issue_body.md
+            gh issue create --title "New places need tags ($(date -u +%F))" --body-file issue_body.md || true
+          else
+            echo "All places tagged - no issue needed."
+          fi
+      - name: Trigger site deploy
+        if: steps.find.outputs.file != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy.yml --ref main
