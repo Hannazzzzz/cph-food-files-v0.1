@@ -182,5 +182,34 @@ class TestSaveResults(unittest.TestCase):
         os.remove(path)
 
 
+
+class TestDenmarkFilter(unittest.TestCase):
+    def setUp(self):
+        from harvest_restaurants import is_in_denmark
+        self.f = is_in_denmark
+
+    def test_copenhagen_kept(self):
+        self.assertTrue(self.f('55.6776', '12.5776', 'Gammel Strand 48, 1202 København'))
+
+    def test_bornholm_kept(self):
+        self.assertTrue(self.f('55.10', '14.70', 'Havnegade 1, 3700 Rønne'))
+
+    def test_hamburg_excluded_by_country(self):
+        self.assertFalse(self.f('53.5533', '10.0094', 'Steintorweg 15, 20099 Hamburg, Germany'))
+
+    def test_paris_excluded_by_coords_even_without_country(self):
+        self.assertFalse(self.f('48.8566', '2.3522', 'Rue de Rivoli 1, 75001 Paris'))
+
+    def test_malmo_excluded_by_country_despite_coords_in_box(self):
+        # Malmo is inside Denmark's lat/lon bounding box - country name catches it
+        self.assertFalse(self.f('55.6050', '13.0038', 'Stortorget 1, 211 22 Malmö, Sweden'))
+
+    def test_danish_address_ending_in_city_not_excluded(self):
+        self.assertTrue(self.f('', '', 'Refshalevej 159A, Copenhagen'))
+
+    def test_missing_everything_kept(self):
+        self.assertTrue(self.f('', '', ''))
+
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)

@@ -88,6 +88,44 @@ POSTAL_CODE_NEIGHBORHOODS = [
     (range(2930, 2931), "Klampenborg"),
 ]
 
+# Denmark geography guard: the site is Copenhagen-only, so anything that
+# geolocates or addresses outside Denmark is excluded automatically.
+# Bounding box covers all of Denmark incl. Bornholm.
+DK_LAT = (54.4, 57.9)
+DK_LON = (7.9, 15.3)
+NON_DK_COUNTRIES = {
+    'germany', 'sweden', 'norway', 'france', 'spain', 'italy', 'netherlands',
+    'the netherlands', 'belgium', 'poland', 'austria', 'switzerland',
+    'portugal', 'united kingdom', 'uk', 'england', 'scotland', 'ireland',
+    'czechia', 'czech republic', 'hungary', 'greece', 'croatia', 'finland',
+    'iceland', 'estonia', 'latvia', 'lithuania', 'luxembourg', 'slovakia',
+    'slovenia', 'romania', 'bulgaria', 'turkey', 'japan', 'usa',
+    'united states', 'canada', 'australia', 'new zealand',
+}
+
+
+def is_in_denmark(latitude, longitude, address):
+    """Return False if a place is clearly outside Denmark.
+
+    Two independent signals:
+    1. The address ends in a known non-Danish country name
+       (Google includes the country only for foreign places).
+    2. The coordinates fall outside Denmark's bounding box.
+    When neither signal fires (e.g. missing data), the place is kept.
+    """
+    if address:
+        last = address.split(',')[-1].strip().lower().rstrip('.')
+        if last in NON_DK_COUNTRIES:
+            return False
+    try:
+        lat, lon = float(latitude), float(longitude)
+        if not (DK_LAT[0] <= lat <= DK_LAT[1] and DK_LON[0] <= lon <= DK_LON[1]):
+            return False
+    except (TypeError, ValueError):
+        pass
+    return True
+
+
 # ---------------------------------------------------------------------------
 # Pure helper functions (unit-testable without a browser)
 # ---------------------------------------------------------------------------
@@ -405,9 +443,13 @@ class RestaurantHarvester:
                 if not any(core):
                     raise RuntimeError(
                         "no data extracted - consent wall or page structure change?")
-            logging.info(f"OK: {name}"
-                         + (" [PERMANENTLY CLOSED]" if perm == 'Yes' else "")
-                         + (" [temporarily closed]" if temp == 'Yes' else ""))
+            if not is_in_denmark(data['latitude'], data['longitude'], data['address']):
+                data['status'] = 'excluded: outside Denmark'
+                logging.warning(f"EXCLUDED (outside Denmark): {name} - {data['address']}")
+            else:
+                logging.info(f"OK: {name}"
+                             + (" [PERMANENTLY CLOSED]" if perm == 'Yes' else "")
+                             + (" [temporarily closed]" if temp == 'Yes' else ""))
         except Exception as e:
             logging.error(f"FAIL: {name}: {e}")
             data['status'] = f'error: {e}'
@@ -434,8 +476,8 @@ class RestaurantHarvester:
             logging.info(f"[{idx}/{total}] {name}")
             data = self.harvest_restaurant(name, url)
 
-            # Retry once on failure
-            if data['status'] != 'success':
+            # Retry once on failure (exclusions are deliberate, not failures)
+            if data['status'] != 'success' and not data['status'].startswith('excluded'):
                 logging.info(f"  retrying {name} ...")
                 time.sleep(4)
                 data = self.harvest_restaurant(name, url)
@@ -446,7 +488,7 @@ class RestaurantHarvester:
             if row.get('mood_tags', '').strip():
                 data['mood_tags'] = row['mood_tags'].strip()
 
-            if data['status'] != 'success':
+            if data['status'] != 'success' and not data['status'].startswith('excluded'):
                 failures += 1
                 if idx <= 3:
                     first_three_failures += 1
@@ -462,11 +504,13 @@ class RestaurantHarvester:
         save_results(results, output_file)
 
         ok = sum(1 for r in results if r['status'] == 'success')
+        excluded = sum(1 for r in results if r['status'].startswith('excluded'))
         perm = sum(1 for r in results if r['permanently_closed'] == 'Yes')
         temp = sum(1 for r in results if r['temporarily_closed'] == 'Yes')
         logging.info("=" * 50)
         logging.info(f"SUMMARY: {ok}/{len(results)} succeeded, {failures} failed, "
-                     f"{perm} permanently closed, {temp} temporarily closed")
+                     f"{perm} permanently closed, {temp} temporarily closed, "
+                     f"{excluded} excluded (outside Denmark)")
         if failures:
             failed_names = [r['name'] for r in results if r['status'] != 'success']
             logging.info("Failed: " + ", ".join(failed_names))

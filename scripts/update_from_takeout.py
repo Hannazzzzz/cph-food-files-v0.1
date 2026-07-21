@@ -180,6 +180,9 @@ def main():
                 data['food_tags'] = row['food_tags']
             if not data['mood_tags'] and row.get('mood_tags'):
                 data['mood_tags'] = row['mood_tags']
+            if (data.get('status') or '').startswith('excluded'):
+                print(f"  EXCLUDED (outside Denmark, not added): {name}")
+                continue
             results.append(enriched_row_from_scrape(data))
             save_results(sorted(results, key=lambda r: r['name'].lower()), enriched_path)
     finally:
