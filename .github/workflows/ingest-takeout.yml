@@ -67,6 +67,7 @@ jobs:
           git checkout -- takeout/README.md 2>/dev/null || true
           git add "Favorite places_enriched.csv"
           git commit -m "Monthly list update from Takeout ($(date -u +%F))" || echo "No data changes"
+          git pull --rebase -X theirs origin main
           git push
       - name: Open issue for untagged new places
         if: steps.find.outputs.file != ''
