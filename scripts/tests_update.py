@@ -101,7 +101,8 @@ class TestExclusions(unittest.TestCase):
     def test_load_exclusions_from_repo_file(self):
         import os
         import update_from_takeout as u
-        ids = u.load_exclusions(os.path.join('..', 'exclusions.csv'))
+        here = os.path.dirname(os.path.abspath(__file__))
+        ids = u.load_exclusions(os.path.join(here, '..', 'exclusions.csv'))
         self.assertIn('0x47b18ee6c4967e71:0xc408324e92fc05dc', ids)
 
 
