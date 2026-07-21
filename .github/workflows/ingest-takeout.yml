@@ -62,7 +62,8 @@ jobs:
         run: |
           git config user.name "takeout-ingest-bot"
           git config user.email "actions@github.com"
-          git rm -q takeout/*.csv takeout/*.zip 2>/dev/null || true
+          rm -f ingest_summary.txt untagged.txt issue_body.md *.backup-*
+          git rm -q --ignore-unmatch "takeout/*.csv" "takeout/*.zip"
           git checkout -- takeout/README.md 2>/dev/null || true
           git add "Favorite places_enriched.csv"
           git commit -m "Monthly list update from Takeout ($(date -u +%F))" || echo "No data changes"
