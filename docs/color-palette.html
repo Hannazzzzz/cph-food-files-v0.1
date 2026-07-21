@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPH Food Files - Color Palette</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            padding: 40px;
+            background: #f5f5f5;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+        .palette {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+        }
+        .swatch {
+            background: white;
+            padding: 0;
+            border: 1px solid #000;
+        }
+        .color-box {
+            height: 120px;
+            border-bottom: 1px solid #000;
+        }
+        .color-info {
+            padding: 15px;
+        }
+        .color-name {
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        .color-hex {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 4px;
+        }
+        .color-rgb {
+            font-size: 12px;
+            color: #999;
+        }
+        .usage {
+            margin-top: 40px;
+            max-width: 800px;
+            background: white;
+            padding: 20px;
+            border: 1px solid #000;
+        }
+        .usage h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        .usage-item {
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>CPH Food Files - Color Palette (VPRO Reference)</h1>
+
+    <div class="palette">
+        <div class="swatch">
+            <div class="color-box" style="background: #FF1493;"></div>
+            <div class="color-info">
+                <div class="color-name">Electric Pink</div>
+                <div class="color-hex">#FF1493</div>
+                <div class="color-rgb">RGB(255, 20, 147)</div>
+            </div>
+        </div>
+
+        <div class="swatch">
+            <div class="color-box" style="background: #FF4500;"></div>
+            <div class="color-info">
+                <div class="color-name">Deep Orange</div>
+                <div class="color-hex">#FF4500</div>
+                <div class="color-rgb">RGB(255, 69, 0)</div>
+            </div>
+        </div>
+
+        <div class="swatch">
+            <div class="color-box" style="background: #FFD700;"></div>
+            <div class="color-info">
+                <div class="color-name">Gold</div>
+                <div class="color-hex">#FFD700</div>
+                <div class="color-rgb">RGB(255, 215, 0)</div>
+            </div>
+        </div>
+
+        <div class="swatch">
+            <div class="color-box" style="background: #8B4789;"></div>
+            <div class="color-info">
+                <div class="color-name">Purple</div>
+                <div class="color-hex">#8B4789</div>
+                <div class="color-rgb">RGB(139, 71, 137)</div>
+            </div>
+        </div>
+
+        <div class="swatch">
+            <div class="color-box" style="background: #00CED1;"></div>
+            <div class="color-info">
+                <div class="color-name">Cyan</div>
+                <div class="color-hex">#00CED1</div>
+                <div class="color-rgb">RGB(0, 206, 209)</div>
+            </div>
+        </div>
+
+        <div class="swatch">
+            <div class="color-box" style="background: #1E90FF;"></div>
+            <div class="color-info">
+                <div class="color-name">Blue</div>
+                <div class="color-hex">#1E90FF</div>
+                <div class="color-rgb">RGB(30, 144, 255)</div>
+            </div>
+        </div>
+
+        <div class="swatch">
+            <div class="color-box" style="background: #000000;"></div>
+            <div class="color-info">
+                <div class="color-name">Black</div>
+                <div class="color-hex">#000000</div>
+                <div class="color-rgb">RGB(0, 0, 0)</div>
+            </div>
+        </div>
+
+        <div class="swatch">
+            <div class="color-box" style="background: #F5F5DC;"></div>
+            <div class="color-info">
+                <div class="color-name">Beige/Cream</div>
+                <div class="color-hex">#F5F5DC</div>
+                <div class="color-rgb">RGB(245, 245, 220)</div>
+            </div>
+        </div>
+
+        <div class="swatch">
+            <div class="color-box" style="background: #8B7355;"></div>
+            <div class="color-info">
+                <div class="color-name">Brown</div>
+                <div class="color-hex">#8B7355</div>
+                <div class="color-rgb">RGB(139, 115, 85)</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="usage">
+        <h2>Recommended Usage (based on Design Direction)</h2>
+        <div class="usage-item"><strong>Electric Pink (#FF1493):</strong> Active filter buttons, selected states, interactive highlights</div>
+        <div class="usage-item"><strong>Deep Orange (#FF4500):</strong> Secondary interactive elements, hover states</div>
+        <div class="usage-item"><strong>Black (#000000):</strong> Text, borders, card outlines (1px thin borders)</div>
+        <div class="usage-item"><strong>Beige/Cream (#F5F5DC):</strong> Main background, "workstation grey" base</div>
+        <div class="usage-item"><strong>Purple, Cyan, Blue, Gold:</strong> Accent colors for tags, categories, or decorative elements</div>
+        <div class="usage-item"><strong>Brown:</strong> Subtle accents or secondary text</div>
+    </div>
+</body>
+</html>
