@@ -11,6 +11,7 @@ on:
 permissions:
   contents: write
   actions: write
+  issues: write
 
 jobs:
   refresh:
@@ -39,6 +40,9 @@ jobs:
           if ok == 0:
               sys.exit("Probe failed - Google Maps not reachable from this runner. Aborting, no changes made.")
           EOF
+      - name: Snapshot data before refresh (for change report)
+        if: github.event_name != 'push'
+        run: cp "Favorite places_enriched.csv" /tmp/before_refresh.csv
       - name: Full refresh
         if: github.event_name != 'push'
         run: |
@@ -73,6 +77,19 @@ jobs:
           # Rebase onto any commits pushed while the (long) scrape ran; on
           # conflict in the data file, the freshly scraped version wins.
           git diff --cached --quiet && echo "No changes." || (git commit -m "Automated data refresh $(date -u +%F)" && git pull --rebase -X theirs origin main && git push && echo "PUSHED=1" >> $GITHUB_ENV)
+      - name: Email Hanna about closure changes (via GitHub issue)
+        if: github.event_name != 'push' && env.PUSHED == '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 scripts/report_changes.py /tmp/before_refresh.csv "Favorite places_enriched.csv" > closure_changes.md
+          if [ -s closure_changes.md ]; then
+            echo "" >> closure_changes.md
+            echo "_Automatic weekly refresh. Closed places are hidden from the site automatically; nothing to do unless something looks wrong._" >> closure_changes.md
+            gh issue create --title "Closure changes on cphfoodfiles.dk ($(date -u +%F))" --body-file closure_changes.md
+          else
+            echo "No closure changes - no notification."
+          fi
       - name: Trigger site deploy
         if: github.event_name != 'push' && env.PUSHED == '1'
         env:

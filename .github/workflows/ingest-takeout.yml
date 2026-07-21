@@ -37,6 +37,9 @@ jobs:
           python-version: '3.11'
       - run: pip install selenium webdriver-manager
         if: steps.find.outputs.file != ''
+      - name: Snapshot data before update (for change report)
+        if: steps.find.outputs.file != ''
+        run: cp "Favorite places_enriched.csv" /tmp/before_update.csv || true
       - name: Update data (diff, scrape new places, apply removals)
         if: steps.find.outputs.file != ''
         run: |
@@ -98,6 +101,19 @@ jobs:
             gh issue create --title "New places need tags ($(date -u +%F))" --body-file issue_body.md || true
           else
             echo "All places tagged - no issue needed."
+          fi
+      - name: Email Hanna about closure changes (via GitHub issue)
+        if: steps.find.outputs.file != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -f /tmp/before_update.csv ]; then
+            python3 scripts/report_changes.py /tmp/before_update.csv "Favorite places_enriched.csv" > closure_changes.md
+            if [ -s closure_changes.md ]; then
+              echo "" >> closure_changes.md
+              echo "_From the monthly Takeout update. Closed places are hidden from the site automatically._" >> closure_changes.md
+              gh issue create --title "Closure changes on cphfoodfiles.dk ($(date -u +%F))" --body-file closure_changes.md || true
+            fi
           fi
       - name: Trigger site deploy
         if: steps.find.outputs.file != ''
