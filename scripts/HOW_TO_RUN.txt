@@ -1,118 +1,58 @@
-RESTAURANT HARVESTER - SIMPLE INSTRUCTIONS
-===========================================
+RESTAURANT HARVESTER v2 - SIMPLE INSTRUCTIONS
+=============================================
 
-This will automatically collect data for all restaurants from your Google Maps links.
+WHAT IT DOES
+Visits each Google Maps link in your CSV and writes an enriched CSV with:
+address, neighbourhood (from postal code), coordinates, rating, review
+count, price level, phone, website, opening status, and whether the place
+is permanently or temporarily closed.
 
-WHAT YOU'LL GET:
-- A file called "Favorite_places_march_2026_enriched.csv" with these columns:
-  * Name
-  * Keywords (from review mentions - e.g., "great coffee", "cozy atmosphere")
-  * Food Tags (for manual categorization - preserved on re-runs!)
-  * Mood Tags (for manual categorization - preserved on re-runs!)
-  * Address
-  * Neighborhood (auto-derived from postal code)
-  * Latitude & Longitude (coordinates)
-  * Rating
-  * Number of reviews
-  * Price level ($, $$, $$$, $$$$)
-  * Phone number
-  * Website
-  * Opening hours
-  * Permanently Closed (Yes/No)
-  * Temporarily Closed (Yes/No)
-  * Google Maps link
+WHAT IT ACCEPTS AS INPUT
+- A Google Takeout export (Title,Note,URL,... columns), OR
+- A previous enriched CSV (re-scrapes and refreshes every place).
+Comma or semicolon delimited, with or without Excel quirks - it copes.
 
-TIME NEEDED: 10-15 minutes total (automatic)
+MANUAL TAGS ARE SAFE
+food_tags and mood_tags you added by hand are preserved on every re-run,
+matched by the Google place ID (so renames and duplicate names are fine).
 
+HOW TO RUN (Mac)
+1. Open Terminal
+2. cd ~/Documents/"Restaurant Guide"        (or wherever your CSV lives)
+3. ./RUN_ME.sh "Favorite_places_march_2026.csv"
 
-GETTING THE FILES (do this first, or when updating):
------------------------------------------------------
+   Or directly:
+   python3 harvest_restaurants.py "Favorite_places_march_2026.csv"
 
-To find your Mac username, open Terminal and type: whoami
-Your folder path will be: /Users/YOUR_USERNAME/Documents/Restaurant Guide/
+   Quick test with only the first 3 places:
+   python3 test_run.py "Favorite_places_march_2026.csv"
+   (writes to *_test_results.csv, leaves your real data alone)
 
-1. Download the latest Python script:
-   - Go to: https://github.com/Hannazzzzz/cph-food-files-v0.1
-   - Navigate to: scripts/harvest_restaurants.py
-   - Click the download icon (or open Raw, then File > Save As)
-   - Save it to your Restaurant Guide folder (see path above)
+   Limit a full run:
+   python3 harvest_restaurants.py "input.csv" --limit=10
 
-2. Place your CSV file in the same folder:
-   - Make sure your CSV file is in your Restaurant Guide folder
-   - Note the exact filename — you'll need it in Step 2 below
+OUTPUT
+- input "X.csv"           -> output "X_enriched.csv"
+- input "X_enriched.csv"  -> refreshed in place
+- Output is always comma-delimited UTF-8 (what the website expects).
+  If you edit it in Excel, save as CSV UTF-8 - but the scraper copes
+  either way.
 
+RELIABILITY
+- One failing place never stops the run: it's recorded as an error in the
+  status column and the run continues. Re-run the same command to retry.
+- If the FIRST 3 places all fail, the run aborts - that means something
+  systemic (usually a Google consent wall or page redesign). Check
+  harvest.log and tell Claude.
+- Progress is saved after every single place, so interrupting is safe.
+- At the end you get a summary: succeeded / failed / permanently closed /
+  temporarily closed.
 
-HOW TO RUN:
------------
+TESTING WITHOUT A BROWSER
+python3 tests_offline.py    (21 unit tests, no network needed)
 
-Step 0: Navigate to the project folder
-    cd "/Users/YOUR_USERNAME/Documents/Restaurant Guide"
-
-    Replace YOUR_USERNAME with your Mac username (run: whoami to check)
-    Note: The quotes are important because of the space in "Restaurant Guide"
-
-Step 1: Install dependencies (first time only)
-    pip3 install selenium webdriver-manager
-
-Step 2: Run the script
-    python3 harvest_restaurants.py "Favorite_places_march_2026.csv"
-
-    To test with just 3 restaurants first:
-        python3 test_run.py "Favorite_places_march_2026.csv"
-
-Step 3: Wait for it to finish
-
-Step 4: Open the enriched CSV file
-    - Output file: "Favorite_places_march_2026_enriched.csv"
-    - Open it in Excel, Google Sheets, or any spreadsheet program
-
-
-WHAT HAPPENS:
--------------
-- Visits each Google Maps link automatically
-- Extracts all available information
-- Saves progress every 10 restaurants (in case it crashes)
-- Logs everything to "harvest.log"
-
-
-TROUBLESHOOTING:
----------------
-If you see "Chrome not found":
-  - Install Google Chrome browser first
-  - On Mac: brew install --cask google-chrome
-
-If it crashes:
-  - Just run it again, it will continue from where it stopped
-
-If a restaurant fails:
-  - It will skip it and continue with the next one
-  - Check "harvest.log" for details
-
-
-TAG PRESERVATION FEATURE:
-------------------------
-You can manually add food_tags and mood_tags to the CSV, and they will be
-preserved when you re-run the scraper!
-
-Example workflow:
-1. Run the scraper → creates enriched CSV with empty tag columns
-2. Open CSV and manually add tags:
-   - food_tags: "Bakery, Pastries, French"
-   - mood_tags: "Cozy, Morning, Casual"
-3. Save the CSV
-4. Run the scraper again → your tags are preserved, other data refreshed!
-
-This lets you:
-- Keep your manual categorizations
-- Update ratings, reviews, and other data regularly
-- Build your tag vocabulary over time
-- Never lose your tagging work
-
-
-TESTING:
---------
-To test with just 3 restaurants (much faster):
-    python3 test_tag_logic.py                                (tests tag preservation logic only)
-    python3 test_run.py "Favorite_places_march_2026.csv"    (scrapes 3 restaurants)
-
-Done!
+TROUBLESHOOTING
+"Chrome not found"  -> install Google Chrome
+Everything fails    -> check harvest.log, likely consent wall; re-run once
+A place fails       -> its row has status "error: ..."; re-run to retry;
+                       successful rows keep their data and tags either way

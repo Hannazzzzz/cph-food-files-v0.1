@@ -1,0 +1,72 @@
+name: Weekly data refresh (closures, ratings, hours)
+
+on:
+  schedule:
+    - cron: '0 5 * * 1'   # Mondays 05:00 UTC
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/refresh-data.yml']  # probe run when this file changes
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install selenium webdriver-manager
+      - name: Probe scrape (3 places) to verify Google Maps is reachable
+        working-directory: .
+        run: |
+          python3 scripts/test_run.py "Favorite places_enriched.csv"
+          echo "--- probe results ---"
+          cat "Favorite places_enriched_test_results.csv"
+      - name: Validate probe
+        run: |
+          python3 - << 'EOF'
+          import csv, sys
+          sys.path.insert(0, 'scripts')
+          from harvest_restaurants import read_places_csv
+          rows = read_places_csv('Favorite places_enriched_test_results.csv')
+          ok = sum(1 for r in rows if r.get('status') == 'success')
+          print(f"probe: {ok}/{len(rows)} succeeded")
+          if ok == 0:
+              sys.exit("Probe failed - Google Maps not reachable from this runner. Aborting, no changes made.")
+          EOF
+      - name: Full refresh
+        if: github.event_name != 'push'
+        run: |
+          rm -f "Favorite places_enriched_test_results.csv"
+          python3 scripts/harvest_restaurants.py "Favorite places_enriched.csv"
+      - name: Validate full refresh (abort if suspicious)
+        if: github.event_name != 'push'
+        run: |
+          python3 - << 'EOF'
+          import sys
+          sys.path.insert(0, 'scripts')
+          from harvest_restaurants import read_places_csv
+          rows = read_places_csv('Favorite places_enriched.csv')
+          total = len(rows)
+          errors = sum(1 for r in rows if not (r.get('status') or 'success').startswith('success'))
+          perm = sum(1 for r in rows if r.get('permanently_closed') == 'Yes')
+          print(f"{total} places, {errors} errors, {perm} permanently closed")
+          if total < 100:
+              sys.exit(f"Only {total} rows - refusing to commit a truncated file.")
+          if errors / total > 0.15:
+              sys.exit(f"{errors}/{total} errors (>15%) - refusing to commit a bad run.")
+          if perm / total > 0.2:
+              sys.exit(f"{perm}/{total} flagged permanently closed (>20%) - looks wrong, refusing to commit.")
+          EOF
+      - name: Commit and push if changed
+        if: github.event_name != 'push'
+        run: |
+          rm -f "Favorite places_enriched_test_results.csv" harvest.log
+          git config user.name "data-refresh-bot"
+          git config user.email "actions@github.com"
+          git add "Favorite places_enriched.csv"
+          git diff --cached --quiet && echo "No changes." || (git commit -m "Automated data refresh $(date -u +%F)" && git push)

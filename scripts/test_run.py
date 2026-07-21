@@ -1,76 +1,23 @@
 #!/usr/bin/env python3
-"""Quick test - process first 3 restaurants only"""
+"""Quick test - process only the first 3 places of a CSV.
 
-import csv
-import os
+Usage: python3 test_run.py "Favorite_places_march_2026.csv"
+Writes to <input>_test_results.csv so your real enriched file is untouched.
+"""
 import sys
 from harvest_restaurants import RestaurantHarvester
 
-# Allow specifying input file as command-line argument
-if len(sys.argv) > 1:
-    input_file = sys.argv[1]
-else:
-    input_file = 'Favorite places.csv'  # Default
-
-# Read first 3 restaurants
-with open(input_file, 'r', encoding='utf-8-sig') as f:
-    reader = csv.DictReader(f)
-    restaurants = list(reader)[:3]  # First 3 only
-
-base_name = input_file.replace('.csv', '')
-output_file = f'{base_name}_test_results.csv'
+input_file = sys.argv[1] if len(sys.argv) > 1 else 'Favorite places.csv'
+output_file = input_file.replace('.csv', '') + '_test_results.csv'
 
 print("=" * 60)
-print(f"TEST RUN - Processing 3 restaurants from {input_file}")
+print(f"TEST RUN - first 3 places from {input_file}")
 print("=" * 60)
-print()
 
 harvester = RestaurantHarvester(headless=True)
-harvester._load_existing_tags(output_file)
-results = []
-
 try:
-    for idx, row in enumerate(restaurants, 1):
-        name = (row.get('Title') or row.get('name') or '').strip()
-        url = (row.get('URL') or row.get('maps url') or '').strip()
-
-        if not name or not url:
-            continue
-
-        print(f"[{idx}/3] Processing: {name}...")
-        data = harvester.harvest_restaurant(name, url)
-
-        # Preserve tags from input row if present
-        if row.get('food_tags', '').strip():
-            data['food_tags'] = row['food_tags'].strip()
-        if row.get('mood_tags', '').strip():
-            data['mood_tags'] = row['mood_tags'].strip()
-
-        results.append(data)
-
-        # Save after each restaurant (safer in case of crashes)
-        fieldnames = ['name', 'keywords', 'food_tags', 'mood_tags', 'address', 'neighborhood',
-                     'latitude', 'longitude', 'rating', 'reviews_count', 'price_level',
-                     'phone', 'website', 'hours', 'permanently_closed', 'temporarily_closed',
-                     'maps url', 'status']
-
-        with open(output_file, 'w', encoding='utf-8', newline='') as f:
-            writer = csv.DictWriter(f, fieldnames=fieldnames)
-            writer.writeheader()
-            writer.writerows(results)
-
-        print(f"    ✓ Done (saved to {os.path.abspath(output_file)})")
-        print()
-
-    print("=" * 60)
-    if results:
-        print("✓ Test complete!")
-        print(f"Results saved to: {os.path.abspath(output_file)}")
-    else:
-        print("⚠ No results collected.")
-        print("Check that your CSV has 'Title' and 'URL' columns (Google Maps export format).")
-        print(f"Columns found: {list(restaurants[0].keys()) if restaurants else 'none - file may be empty'}")
-    print("=" * 60)
-
+    results = harvester.process_csv(input_file, output_file, limit=3)
+    print(f"\nDone: {sum(1 for r in results if r['status'] == 'success')}/3 succeeded")
+    print(f"Results in: {output_file}")
 finally:
     harvester.close()
