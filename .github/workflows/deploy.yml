@@ -26,6 +26,8 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run build
+        env:
+          VITE_CARTO_API_KEY: ${{ secrets.CARTO_API_KEY }}
       - name: SPA fallback (404 -> index)
         run: cp dist/index.html dist/404.html
       - uses: actions/upload-pages-artifact@v3
