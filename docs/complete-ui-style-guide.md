@@ -8,7 +8,7 @@
 - Scandinavian minimalism with "spikey" personality
 - Monospace typography throughout
 - Thin-bordered grids and hard edges (no rounded corners)
-- High-contrast fluorescent accents on neutral backgrounds
+- High-contrast fluorescent accents on a bright white background
 - Technical, dense layouts that feel like sophisticated software
 
 ---
@@ -20,45 +20,54 @@
 **Electric Pink**
 - Hex: `#FF1493`
 - RGB: `(255, 20, 147)`
-- Usage: Active states, selected filters, interactive highlights, map markers
+- Usage: FOOD filter button (white text) and the base of the FOOD tag colour family (violet to pink)
 
 **Deep Orange**
 - Hex: `#FF4500`
 - RGB: `(255, 69, 0)`
-- Usage: Hover states, secondary interactive elements
+- Usage: Hover and active accent (replaced pink for this so it does not clash with FOOD), link hover, popup borders
 
 **Black**
 - Hex: `#000000`
 - RGB: `(0, 0, 0)`
 - Usage: Text, borders, card outlines, dividers (1px)
 
-**Beige/Cream**
-- Hex: `#F5F5DC`
-- RGB: `(245, 245, 220)`
-- Usage: Page background, "workstation grey" base
+**White**
+- Hex: `#FFFFFF`
+- RGB: `(255, 255, 255)`
+- Usage: Page background, cards, popovers
+
+**Light Grey**
+- Hex: `#F2F2F2`
+- RGB: `(242, 242, 242)`
+- Usage: Table row hover, map placeholder background
 
 ### Accent Colors
 
 **Gold**
 - Hex: `#FFD700`
 - RGB: `(255, 215, 0)`
+- Usage: All map pins and clusters
 
-**Purple**
-- Hex: `#8B4789`
-- RGB: `(139, 71, 137)`
+**Dark Purple**
+- Hex: `#2E1A6B`
+- RGB: `(46, 26, 107)`
+- Usage: MOOD filter button (white text)
 
-**Cyan**
-- Hex: `#00CED1`
-- RGB: `(0, 206, 209)`
+**Orange**
+- Hex: `#FF8A00`
+- RGB: `(255, 138, 0)`
+- Usage: HOOD filter button (black text)
+
+**Sky Blue**
+- Hex: `#00B3E1`
+- RGB: `(0, 179, 225)`
+- Usage: Signup "Send" button
 
 **Blue**
 - Hex: `#1E90FF`
 - RGB: `(30, 144, 255)`
 - Usage: Default link color
-
-**Brown**
-- Hex: `#8B7355`
-- RGB: `(139, 115, 85)`
 
 **Dark Grey**
 - Hex: `#666666`
@@ -69,6 +78,21 @@
 - Hex: `#FFFFFF`
 - RGB: `(255, 255, 255)`
 - Usage: Card backgrounds, popup text on dark backgrounds
+
+### Tag Colours
+
+Every filter tag has its own colour, inside a family per category. The values live in `src/lib/tagColours.ts`.
+
+| Category | Family | Examples |
+|----------|--------|----------|
+| FOOD | Violet to pink | coffee `#8047DD`, new nordic `#FF1493`, danish `#FF366B`, for thought `#B0B0B0` (grey) |
+| MOOD | Orange to yellow | restaurant `#FF4400`, cafe `#FF925C`, cinema `#FFC600`, music `#FFFB8F` |
+| HOOD | Green to azure | albertslund `#00C261`, nørrebro `#00BBC2`, vesterbro `#0088C2`, nordhavn `#519160` |
+
+- Tags are shown as chips with a 1px black outline, lowercase text, and the same colours in the table and in the filter dropdowns. Selected dropdown items get a thicker black outline.
+- Chip text is black or white, whichever has the higher contrast on the chip colour.
+- A tag without an assigned colour falls back to its category colour (FOOD pink, MOOD dark purple, HOOD orange). Add the new tag to `src/lib/tagColours.ts` and pick a colour that stays clearly different from its neighbours in the family.
+- Avoid dark blue in the FOOD and MOOD families. Avoid murky brown and olive tones in all families.
 
 ---
 
@@ -138,7 +162,7 @@ font-family: 'Space Mono', 'Courier New', monospace;
 
 **Links**
 - Default color: #1E90FF (blue)
-- Hover color: #FF1493 (electric pink)
+- Hover color: #FF4500 (deep orange)
 - Text decoration: none
 - Font weight: inherit
 
@@ -161,7 +185,7 @@ font-family: 'Space Mono', 'Courier New', monospace;
 - Avoid using italic style—monospace italics are hard to read
 - Use bold (700) sparingly—only for headings and emphasis
 - Maintain consistent line height (1.6) for body text
-- Interactive elements use electric pink (#FF1493) for active/selected states
+- Interactive elements use deep orange (#FF4500) for hover and active accents
 
 ---
 
@@ -170,24 +194,23 @@ font-family: 'Space Mono', 'Courier New', monospace;
 ### Filter Buttons
 
 **Default State:**
-- Background: #FFFFFF (white)
-- Border: 1px solid #000000 (black)
-- Text color: #000000 (black)
+- Background: the category colour: FOOD #FF1493 (white text), MOOD #2E1A6B (white text), HOOD #FF8A00 (black text)
+- Border: 1px solid #000000 (black), the same outline as the tag chips
 - Padding: 8px 16px
 - Font size: 13px
 - Border radius: 0 (hard edges)
 - Text transform: lowercase
 - Letter spacing: 0.5px
 
-**Hover State:**
+**Hover / Focus State:**
 - Background: #FFFFFF (white)
-- Border: 2px solid #FF4500 (deep orange)
+- Border: 1px solid #000000 (black)
 - Text color: #000000 (black)
 
-**Active/Selected State:**
-- Background: #FF1493 (electric pink) or #FF4500 (deep orange)
-- Border: 2px solid #FF1493 (electric pink) or #FF4500 (deep orange)
-- Text color: #FFFFFF (white)
+**Active/Selected State (a filter is applied):**
+- Background: #FFFFFF (white)
+- Border: 1px solid #000000 (black)
+- Text color: #000000 (black)
 
 **Layout:**
 - Use flexbox with wrap enabled
@@ -214,18 +237,18 @@ CartoDB Positron: https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{
 
 **Map Container:**
 - Border: 1px solid #000000 (black)
-- Background: #F5F5DC (beige/cream)
+- Background: #F2F2F2 (light grey, visible while tiles load)
+- Tiles are shown in greyscale with slightly raised contrast, so the gold pins stand out
 
 **Markers:**
-- Default color: #FF1493 (electric pink)
-- Hover color: #FF4500 (deep orange)
-- Shape: Simple pin or circle
-- Icon: Custom SVG or font icon if needed
+- Default color: #FFD700 (gold), including clusters
+- Selected and hovered: black outline and slightly larger
+- Shape: Simple circle
 
 **Popups:**
 - Background: #000000 (black) or dark grey (#333333)
 - Text color: #FFFFFF (white)
-- Border: 2-3px solid #FF1493 (electric pink) or #FF4500 (deep orange)
+- Border: 2-3px solid #FF4500 (deep orange)
 - Border radius: 0 (hard edges)
 - Drop shadow: 4px 4px 0px rgba(0,0,0,0.3) for "stacked window" effect
 - Padding: 12px 16px
@@ -233,7 +256,7 @@ CartoDB Positron: https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{
 
 **Popup Close Button:**
 - Color: #FFFFFF (white)
-- Hover: #FF1493 (electric pink)
+- Hover: #FF4500 (deep orange)
 
 ### Restaurant Cards/List Items
 
@@ -245,7 +268,7 @@ CartoDB Positron: https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{
 - Margin bottom: 12px
 
 **Hover State:**
-- Border: 2px solid #FF1493 (electric pink) or #FF4500 (deep orange)
+- Border: 2px solid #FF4500 (deep orange)
 
 **Card Content:**
 - Restaurant name: 16px, bold (700), black
@@ -260,7 +283,7 @@ CartoDB Positron: https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{
 - Background: #FFFFFF (white)
 
 **Table Headers:**
-- Background: #F5F5DC (beige/cream)
+- Background: #FFFFFF (white)
 - Border bottom: 1px solid #000000 (black)
 - Font size: 13px
 - Font weight: 700 (bold)
@@ -273,8 +296,11 @@ CartoDB Positron: https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{
 - Padding: 12px
 - Font size: 13px
 
+**Tag cells:**
+- Food, mood and neighbourhood values are tag chips in their own colours (see Tag Colours)
+
 **Hover State:**
-- Background: #F5F5DC (beige/cream)
+- Background: #F2F2F2 (light grey)
 
 ### Dividers
 
@@ -285,7 +311,7 @@ CartoDB Positron: https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{
 ### Containers/Sections
 
 **Main Container:**
-- Background: #F5F5DC (beige/cream)
+- Background: #FFFFFF (white)
 - Max width: 1200px
 - Padding: 40px 20px
 
@@ -323,8 +349,9 @@ CartoDB Positron: https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{
 
 - Minimum font size: 12px
 - Body text minimum: 14px for comfortable reading
-- High contrast: black text on beige background (WCAG AA compliant)
-- Links: blue (#1E90FF) provides sufficient contrast against beige
+- High contrast: black text on white background (WCAG AA compliant)
+- Links: blue (#1E90FF) on white
+- White text on FOOD pink is about 3.6:1, below the 4.5:1 AA target for small text. Kept by design choice; chip text elsewhere switches between black and white for best contrast
 - Interactive elements have clear hover/active states
 - Never use light grey text on light backgrounds
 
@@ -339,7 +366,11 @@ CartoDB Positron: https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{
   --color-pink: #FF1493;
   --color-orange: #FF4500;
   --color-black: #000000;
-  --color-beige: #F5F5DC;
+  --color-grey-light: #F2F2F2;
+  --color-gold: #FFD700;
+  --color-purple: #2E1A6B;
+  --color-hood-orange: #FF8A00;
+  --color-sky: #00B3E1;
   --color-white: #FFFFFF;
   --color-blue: #1E90FF;
   --color-grey: #666666;
@@ -386,7 +417,7 @@ CartoDB Positron: https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{
 - **Readability:** Monospace can reduce reading speed—compensate with:
   - Adequate line height (1.6 for body text)
   - Sufficient font size (14px minimum for body)
-  - High contrast ratios (black on beige meets WCAG AA)
+  - High contrast ratios (black on white meets WCAG AA)
 - **Information hierarchy:** Use weight, size, and spacing to guide users—not just color
 
 ### Responsive Design & Mobile Considerations
@@ -472,4 +503,4 @@ CartoDB Positron: https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{
 
 ---
 
-**Last updated:** January 23, 2026
+**Last updated:** November 8, 2026
