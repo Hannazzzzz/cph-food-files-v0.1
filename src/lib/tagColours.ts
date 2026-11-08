@@ -1,5 +1,5 @@
 // One colour per tag, grouped by filter category.
-// FOOD runs violet to pink, MOOD runs orange to yellow, HOOD runs green to azure.
+// FOOD runs violet to pink, MOOD runs cyan to blue to indigo, HOOD runs orange to yellow.
 // Built in OKLCH (FOOD) with a minimum pairwise CIEDE2000 distance of about 9.
 
 const FOOD: Record<string, string> = {
@@ -34,36 +34,36 @@ const FOOD: Record<string, string> = {
 };
 
 const MOOD: Record<string, string> = {
-  'restaurant': '#FF4400',
-  'cafe': '#FF925C',
-  'bar': '#FF7D29',
-  'bakery': '#FFC28F',
-  'al fresco': '#FF8500',
-  'take away': '#FFBB5C',
-  'museum': '#FFB429',
-  'hotel': '#FFDF8F',
-  'cinema': '#FFC600',
-  'shop': '#FFE55C',
-  'rooftop': '#FFEA29',
-  'music': '#FFFB8F'
+  'restaurant': '#00C7C7',
+  'cafe': '#0078B8',
+  'bar': '#5B67C2',
+  'bakery': '#3CBBF9',
+  'al fresco': '#458CFB',
+  'take away': '#25E8F6',
+  'museum': '#00569A',
+  'hotel': '#96A7FF',
+  'cinema': '#1A99DA',
+  'shop': '#3C35CB',
+  'rooftop': '#00C2E2',
+  'music': '#73B1FF'
 };
 
 const HOOD: Record<string, string> = {
-  'albertslund': '#00C261',
-  'amager': '#7AFFC6',
-  'frederiksberg': '#06EF99',
-  'gentofte': '#AFFDE6',
-  'holmen': '#00C295',
-  'indre by': '#7AFFE9',
-  'ishøj': '#06EFD7',
-  'nordvest': '#AFFDFA',
-  'nørrebro': '#00BBC2',
-  'refshaleøen': '#7AF2FF',
-  'sydhavn': '#06C8EF',
-  'vanløse': '#AFEBFD',
-  'vesterbro': '#0088C2',
-  'østerbro': '#7ACEFF',
-  'nordhavn': '#519160'
+  'albertslund': '#E76346',
+  'amager': '#FE9E0E',
+  'frederiksberg': '#FFF8B6',
+  'gentofte': '#FDD5B8',
+  'holmen': '#FFEF62',
+  'indre by': '#F1840B',
+  'ishøj': '#DFCE22',
+  'nordhavn': '#E06D00',
+  'nordvest': '#DDB200',
+  'nørrebro': '#F97B43',
+  'refshaleøen': '#FFDA7D',
+  'sydhavn': '#F55600',
+  'vanløse': '#F2DBB1',
+  'vesterbro': '#FFD2C7',
+  'østerbro': '#FFBE2B'
 };
 
 export type TagCategory = 'food' | 'mood' | 'hood';
