@@ -6,6 +6,227 @@
 
 @layer base {
   :root {
+    /* Bright white background */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 0%;
+    
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 0%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 0%;
+    
+    /* Link blue #1E90FF = hsl(210, 100%, 56%) */
+    --primary: 210 100% 56%;
+    --primary-foreground: 0 0% 100%;
+    
+    /* Deep orange for active states and link hover #FF4500 = hsl(16, 100%, 50%) */
+    --accent: 16 100% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    /* Map filter category colors */
+    /* FOOD: Electric Pink #FF1493 = hsl(328, 100%, 54%) */
+    --food: 328 100% 54%;
+    --food-foreground: 0 0% 100%;
+    /* MOOD: Gold #FFD700 = hsl(51, 100%, 50%) */
+    --mood: 51 100% 50%;
+    --mood-foreground: 0 0% 0%;
+    /* HOOD: Cyan #00CED1 = hsl(181, 100%, 41%) */
+    --hood: 181 100% 41%;
+    --hood-foreground: 0 0% 0%;
+
+    /* Map pins: Gold #FFD700. Selected/hovered pins add a black outline. */
+    --marker: 51 100% 50%;
+    --marker-hover: 51 100% 50%;
+    
+    --secondary: 0 0% 92%;
+    --secondary-foreground: 0 0% 0%;
+    
+    /* Secondary text #666666 = hsl(0, 0%, 40%) */
+    --muted: 0 0% 95%;
+    --muted-foreground: 0 0% 40%;
+    
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --border: 0 0% 0%;
+    --input: 0 0% 92%;
+    --ring: 210 100% 56%;
+    
+    --radius: 0px;
+    
+    /* Sidebar */
+    --sidebar-background: 0 0% 96%;
+    --sidebar-foreground: 0 0% 0%;
+    --sidebar-primary: 210 100% 56%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 16 100% 50%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 0 0% 0%;
+    --sidebar-ring: 210 100% 56%;
+  }
+
+  .dark {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 0%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 0%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 0%;
+    --primary: 210 100% 56%;
+    --primary-foreground: 0 0% 100%;
+    --accent: 16 100% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    /* Map filter category colors */
+    /* FOOD: Electric Pink, MOOD: Gold, HOOD: Cyan */
+    --food: 328 100% 54%;
+    --food-foreground: 0 0% 100%;
+    --mood: 51 100% 50%;
+    --mood-foreground: 0 0% 0%;
+    --hood: 181 100% 41%;
+    --hood-foreground: 0 0% 0%;
+
+    --marker: 51 100% 50%;
+    --marker-hover: 51 100% 50%;
+    --secondary: 0 0% 92%;
+    --secondary-foreground: 0 0% 0%;
+    --muted: 0 0% 95%;
+    --muted-foreground: 0 0% 40%;
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 0%;
+    --input: 0 0% 92%;
+    --ring: 210 100% 56%;
+    --sidebar-background: 0 0% 96%;
+    --sidebar-foreground: 0 0% 0%;
+    --sidebar-primary: 210 100% 56%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 16 100% 50%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 0 0% 0%;
+    --sidebar-ring: 210 100% 56%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Space Mono', 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* Headings */
+  h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: hsl(0 0% 0%);
+  }
+
+  h2 {
+    font-size: 1.125rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: hsl(0 0% 0%);
+  }
+
+  h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: hsl(0 0% 0%);
+  }
+
+  /* Links per style guide */
+  a {
+    color: hsl(210 100% 56%);
+    text-decoration: none;
+  }
+  
+  a:visited {
+    color: hsl(210 100% 56%);
+  }
+  
+  a:hover {
+    color: hsl(16 100% 50%);
+    text-decoration: none;
+  }
+  
+  /* Logo/Site title class */
+  .site-title {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: hsl(0 0% 0%);
+  }
+
+  /* Small text / meta */
+  .text-meta {
+    font-size: 0.8125rem;
+    line-height: 1.5;
+  }
+
+  /* Tiny text / labels */
+  .text-label {
+    font-size: 0.75rem;
+    color: hsl(0 0% 40%);
+  }
+
+  /* Section labels */
+  .section-label {
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* Tags / filter buttons */
+  .tag {
+    font-size: 0.8125rem;
+    letter-spacing: 0.5px;
+    text-transform: lowercase;
+  }
+
+  /* Coloured tag chips (FOOD pink, MOOD gold, HOOD cyan) */
+  .tag-chip {
+    display: inline-block;
+    padding: 1px 6px;
+    margin: 0 4px 2px 0;
+    border: 1px solid hsl(var(--border));
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    text-transform: lowercase;
+    line-height: 1.5;
+  }
+  .tag-chip-food { background: hsl(var(--food)); color: hsl(var(--food-foreground)); }
+  .tag-chip-mood { background: hsl(var(--mood)); color: hsl(var(--mood-foreground)); }
+  .tag-chip-hood { background: hsl(var(--hood)); color: hsl(var(--hood-foreground)); }
+
+  /* Screen reader only - visually hidden but accessible */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CPH Food Files - Typography Style Guide */
+
+@layer base {
+  :root {
     /* Beige/cream background per style guide */
     --background: 45 33% 91%;
     --foreground: 0 0% 0%;
