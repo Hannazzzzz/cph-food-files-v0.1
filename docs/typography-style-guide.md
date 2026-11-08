@@ -68,7 +68,7 @@ font-family: 'Space Mono', 'Courier New', monospace;
 
 ### Links
 - **Default color:** #1E90FF (blue)
-- **Hover color:** #FF1493 (electric pink)
+- **Hover color:** #FF4500 (deep orange)
 - **Text decoration:** underline
 - **Font weight:** inherit
 
@@ -92,12 +92,12 @@ font-family: 'Space Mono', 'Courier New', monospace;
 - **Primary text:** #000000 (black)
 - **Secondary text:** #666666 (dark grey)
 - **Link default:** #1E90FF (blue)
-- **Link hover:** #FF1493 (electric pink)
-- **Active/selected state:** #FF1493 (electric pink)
+- **Link hover:** #FF4500 (deep orange)
+- **Active/selected state:** white background with a 1px black outline (filters), deep orange (#FF4500) for hover accents
 
 ### Background
-- **Page background:** #F5F5DC (beige/cream)
-- **Card/container background:** #FFFFFF (white) or #F5F5DC (beige/cream)
+- **Page background:** #FFFFFF (white)
+- **Card/container background:** #FFFFFF (white) or #F2F2F2 (light grey)
 
 ---
 
@@ -109,7 +109,7 @@ font-family: 'Space Mono', 'Courier New', monospace;
 - Use bold (700) sparingly—only for headings and emphasis
 - Maintain consistent line height (1.6) for body text
 - Links should always be underlined for clarity
-- Interactive elements (buttons, filters) use electric pink (#FF1493) for active/selected states
+- Filter buttons use their category colour (FOOD pink, MOOD dark purple, HOOD orange); hover and active accents use deep orange (#FF4500)
 
 ---
 
@@ -117,6 +117,6 @@ font-family: 'Space Mono', 'Courier New', monospace;
 
 - Minimum font size: 12px
 - Body text minimum: 14px for comfortable reading
-- High contrast: black text on beige background (WCAG AA compliant)
-- Links: blue provides sufficient contrast against beige
+- High contrast: black text on white background (WCAG AA compliant)
+- Links: blue provides sufficient contrast against white
 - Never use light grey text on light backgrounds
