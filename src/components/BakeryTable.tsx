@@ -175,9 +175,19 @@ const BakeryTable = ({ onSelectBakery, bakeries = allBakeries }: BakeryTableProp
                 </a>
               )}
             </TableCell>
-            <TableCell>{bakery.foodTags.join(', ')}</TableCell>
-            <TableCell>{bakery.moodTags.join(', ')}</TableCell>
-            <TableCell>{bakery.neighbourhood}</TableCell>
+            <TableCell>
+              {bakery.foodTags.map((tag) => (
+                <span key={tag} className="tag-chip tag-chip-food">{tag}</span>
+              ))}
+            </TableCell>
+            <TableCell>
+              {bakery.moodTags.map((tag) => (
+                <span key={tag} className="tag-chip tag-chip-mood">{tag}</span>
+              ))}
+            </TableCell>
+            <TableCell>
+              <span className="tag-chip tag-chip-hood">{bakery.neighbourhood}</span>
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>
