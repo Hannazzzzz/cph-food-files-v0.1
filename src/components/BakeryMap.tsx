@@ -38,7 +38,7 @@ const markerIcon = new DivIcon({
   className: 'cph-food-files-marker',
   html: `
     <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-      <circle cx="8" cy="8" r="6" fill="hsl(var(--accent))" />
+      <circle cx="8" cy="8" r="6" fill="hsl(var(--marker))" />
     </svg>
   `,
   iconSize: [16, 16],
@@ -46,12 +46,12 @@ const markerIcon = new DivIcon({
   popupAnchor: [0, -10],
 });
 
-// Hover/selected marker icon (gold)
+// Selected marker icon (gold with a black outline, slightly larger)
 const markerIconHover = new DivIcon({
   className: 'cph-food-files-marker',
   html: `
     <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-      <circle cx="8" cy="8" r="6" fill="hsl(var(--marker-hover))" />
+      <circle cx="8" cy="8" r="6.5" fill="hsl(var(--marker-hover))" stroke="hsl(var(--foreground))" stroke-width="2" />
     </svg>
   `,
   iconSize: [16, 16],
@@ -193,11 +193,12 @@ const BakeryMap = ({
       */}
       <style>{`
         [data-map-theme="cph-food-files"] .leaflet-container {
-          background: hsl(var(--background));
+          background: hsl(var(--muted));
+          border-top: 1px solid hsl(var(--border));
+          border-bottom: 1px solid hsl(var(--border));
         }
         [data-map-theme="cph-food-files"] .leaflet-tile {
-          filter: grayscale(1) contrast(0.9) brightness(1.15);
-          opacity: 0.92;
+          filter: grayscale(1) contrast(1.1) brightness(0.97);
         }
 
         /*
@@ -220,6 +221,8 @@ const BakeryMap = ({
 
         [data-map-theme="cph-food-files"] .cph-food-files-marker:hover svg circle {
           fill: hsl(var(--marker-hover));
+          stroke: hsl(var(--foreground));
+          stroke-width: 2;
         }
 
         /* Popup typography + link colors (match global page styles) */
@@ -275,8 +278,8 @@ const BakeryMap = ({
           width: 24px;
           height: 24px;
           border-radius: 50%;
-          background: hsl(var(--accent));
-          color: hsl(var(--accent-foreground));
+          background: hsl(var(--marker));
+          color: hsl(var(--foreground));
           font-weight: 600;
           font-size: 10px;
           box-shadow: 0 1px 0 hsl(var(--border)), 0 2px 4px hsl(var(--foreground) / 0.18);
@@ -285,7 +288,8 @@ const BakeryMap = ({
         }
 
         [data-map-theme="cph-food-files"] .cluster-marker:hover {
-          background: hsl(var(--marker-hover));
+          background: hsl(var(--foreground));
+          color: hsl(var(--background));
           transform: scale(1.15);
         }
 

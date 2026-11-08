@@ -1,3 +1,4 @@
+import { tagChipStyle } from '@/lib/tagColours';
 import { useMemo, useState } from 'react';
 import { HelpCircle } from 'lucide-react';
 import type { Bakery } from '@/data/bakeries';
@@ -175,9 +176,19 @@ const BakeryTable = ({ onSelectBakery, bakeries = allBakeries }: BakeryTableProp
                 </a>
               )}
             </TableCell>
-            <TableCell>{bakery.foodTags.join(', ')}</TableCell>
-            <TableCell>{bakery.moodTags.join(', ')}</TableCell>
-            <TableCell>{bakery.neighbourhood}</TableCell>
+            <TableCell>
+              {bakery.foodTags.map((tag) => (
+                <span key={tag} className="tag-chip" style={tagChipStyle('food', tag)}>{tag}</span>
+              ))}
+            </TableCell>
+            <TableCell>
+              {bakery.moodTags.map((tag) => (
+                <span key={tag} className="tag-chip" style={tagChipStyle('mood', tag)}>{tag}</span>
+              ))}
+            </TableCell>
+            <TableCell>
+              <span className="tag-chip" style={tagChipStyle('hood', bakery.neighbourhood)}>{bakery.neighbourhood}</span>
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>

@@ -27,6 +27,8 @@ type MapFiltersOverlayProps = {
   onSelectHoodTag?: (tags: string[]) => void;
 };
 
+import { tagChipStyle } from '@/lib/tagColours';
+
 type FilterVariant = 'food' | 'mood' | 'hood';
 
 function TagDropdown({
@@ -46,13 +48,13 @@ function TagDropdown({
 }) {
   const variantClasses: Record<FilterVariant, string> = {
     // Default: filled category color.
-    // Hover/Focus/Active: white background with a category-colored border and dark text.
+    // Hover/Focus/Active: white background with the same 1px black outline and dark text.
     food:
-      'bg-food text-food-foreground border-transparent hover:bg-background hover:text-foreground hover:border-food focus-visible:bg-background focus-visible:text-foreground focus-visible:border-food',
+      'bg-food text-food-foreground border-border hover:bg-background hover:text-foreground focus-visible:bg-background focus-visible:text-foreground',
     mood:
-      'bg-mood text-mood-foreground border-transparent hover:bg-background hover:text-foreground hover:border-mood focus-visible:bg-background focus-visible:text-foreground focus-visible:border-mood',
+      'bg-mood text-mood-foreground border-border hover:bg-background hover:text-foreground focus-visible:bg-background focus-visible:text-foreground',
     hood:
-      'bg-hood text-hood-foreground border-transparent hover:bg-background hover:text-foreground hover:border-hood focus-visible:bg-background focus-visible:text-foreground focus-visible:border-hood',
+      'bg-hood text-hood-foreground border-border hover:bg-background hover:text-foreground focus-visible:bg-background focus-visible:text-foreground',
   };
 
   const variantLabels: Record<FilterVariant, string> = {
@@ -78,7 +80,7 @@ function TagDropdown({
           variant="outline"
           size="sm"
           className={cn(
-            'rounded-none border-2',
+            'rounded-none border',
             variantClasses[variant],
             selectedTags.size > 0 && 'bg-background text-foreground',
           )}
@@ -107,14 +109,16 @@ function TagDropdown({
                   e.preventDefault();
                   onToggle(tag);
                 }}
-                className={cn(
-                  // Keep the pink highlight for selected items (no bold)
-                  selectedTags.has(tag) && 'bg-accent text-accent-foreground',
-                )}
                 role="option"
                 aria-selected={selectedTags.has(tag)}
               >
-                {tag}
+                {/* Each tag shows in its own colour; selected tags get a thicker black outline. */}
+                <span
+                  className={cn('tag-chip m-0', selectedTags.has(tag) && 'outline outline-2 outline-offset-1 outline-black font-bold')}
+                  style={tagChipStyle(variant, tag)}
+                >
+                  {tag}
+                </span>
               </DropdownMenuItem>
             ))}
             <DropdownMenuItem

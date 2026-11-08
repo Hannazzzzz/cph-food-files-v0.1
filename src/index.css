@@ -6,8 +6,8 @@
 
 @layer base {
   :root {
-    /* Beige/cream background per style guide */
-    --background: 45 33% 91%;
+    /* Bright white background */
+    --background: 0 0% 100%;
     --foreground: 0 0% 0%;
     
     --card: 0 0% 100%;
@@ -20,53 +20,54 @@
     --primary: 210 100% 56%;
     --primary-foreground: 0 0% 100%;
     
-    /* Electric pink for active states #FF1493 = hsl(328, 100%, 54%) */
-    --accent: 328 100% 54%;
+    /* Deep orange for active states and link hover #FF4500 = hsl(16, 100%, 50%) */
+    --accent: 16 100% 50%;
     --accent-foreground: 0 0% 100%;
 
     /* Map filter category colors */
-    /* FOOD: Deep Orange #FF4500 = hsl(16, 100%, 50%) */
-    --food: 16 100% 50%;
+    /* FOOD: Electric Pink #FF1493 = hsl(328, 100%, 54%) */
+    --food: 328 100% 54%;
     --food-foreground: 0 0% 100%;
-    /* MOOD: Purple #8B4789 = ~hsl(302, 32%, 41%) */
-    --mood: 302 32% 41%;
-    --mood-foreground: 0 0% 100%;
-    /* HOOD: Black */
-    --hood: 0 0% 0%;
-    --hood-foreground: 0 0% 100%;
+    /* MOOD: Gold #FFD700 = hsl(51, 100%, 50%) */
+    --mood: 51 100% 50%;
+    --mood-foreground: 0 0% 0%;
+    /* HOOD: Sky blue #00B3E1 = hsl(192, 100%, 44%). Also used for the signup Send button. */
+    --hood: 192 100% 44%;
+    --hood-foreground: 0 0% 0%;
 
-    /* Marker hover/selected: Gold #FFD700 = hsl(51, 100%, 50%) */
+    /* Map pins: Gold #FFD700. Selected/hovered pins add a black outline. */
+    --marker: 51 100% 50%;
     --marker-hover: 51 100% 50%;
     
-    --secondary: 45 33% 85%;
+    --secondary: 0 0% 92%;
     --secondary-foreground: 0 0% 0%;
     
     /* Secondary text #666666 = hsl(0, 0%, 40%) */
-    --muted: 45 20% 88%;
+    --muted: 0 0% 95%;
     --muted-foreground: 0 0% 40%;
     
     --destructive: 0 100% 50%;
     --destructive-foreground: 0 0% 100%;
     
     --border: 0 0% 0%;
-    --input: 45 20% 85%;
+    --input: 0 0% 92%;
     --ring: 210 100% 56%;
     
     --radius: 0px;
     
     /* Sidebar */
-    --sidebar-background: 45 33% 88%;
+    --sidebar-background: 0 0% 96%;
     --sidebar-foreground: 0 0% 0%;
     --sidebar-primary: 210 100% 56%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 328 100% 54%;
+    --sidebar-accent: 16 100% 50%;
     --sidebar-accent-foreground: 0 0% 100%;
     --sidebar-border: 0 0% 0%;
     --sidebar-ring: 210 100% 56%;
   }
 
   .dark {
-    --background: 45 33% 91%;
+    --background: 0 0% 100%;
     --foreground: 0 0% 0%;
     --card: 0 0% 100%;
     --card-foreground: 0 0% 0%;
@@ -74,34 +75,34 @@
     --popover-foreground: 0 0% 0%;
     --primary: 210 100% 56%;
     --primary-foreground: 0 0% 100%;
-    --accent: 328 100% 54%;
+    --accent: 16 100% 50%;
     --accent-foreground: 0 0% 100%;
 
     /* Map filter category colors */
-    /* FOOD: Deep Orange #FF4500 = hsl(16, 100%, 50%) */
-    --food: 16 100% 50%;
+    /* FOOD: Electric Pink, MOOD: Gold, HOOD: Cyan */
+    --food: 328 100% 54%;
     --food-foreground: 0 0% 100%;
-    --mood: 302 32% 41%;
-    --mood-foreground: 0 0% 100%;
-    --hood: 0 0% 0%;
-    --hood-foreground: 0 0% 100%;
+    --mood: 51 100% 50%;
+    --mood-foreground: 0 0% 0%;
+    --hood: 192 100% 44%;
+    --hood-foreground: 0 0% 0%;
 
-    /* Marker hover/selected: Gold #FFD700 = hsl(51, 100%, 50%) */
+    --marker: 51 100% 50%;
     --marker-hover: 51 100% 50%;
-    --secondary: 45 33% 85%;
+    --secondary: 0 0% 92%;
     --secondary-foreground: 0 0% 0%;
-    --muted: 45 20% 88%;
+    --muted: 0 0% 95%;
     --muted-foreground: 0 0% 40%;
     --destructive: 0 100% 50%;
     --destructive-foreground: 0 0% 100%;
     --border: 0 0% 0%;
-    --input: 45 20% 85%;
+    --input: 0 0% 92%;
     --ring: 210 100% 56%;
-    --sidebar-background: 45 33% 88%;
+    --sidebar-background: 0 0% 96%;
     --sidebar-foreground: 0 0% 0%;
     --sidebar-primary: 210 100% 56%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 328 100% 54%;
+    --sidebar-accent: 16 100% 50%;
     --sidebar-accent-foreground: 0 0% 100%;
     --sidebar-border: 0 0% 0%;
     --sidebar-ring: 210 100% 56%;
@@ -152,7 +153,7 @@
   }
   
   a:hover {
-    color: hsl(328 100% 54%);
+    color: hsl(16 100% 50%);
     text-decoration: none;
   }
   
@@ -188,6 +189,18 @@
     font-size: 0.8125rem;
     letter-spacing: 0.5px;
     text-transform: lowercase;
+  }
+
+  /* Tag chips. Colours come per tag from src/lib/tagColours.ts */
+  .tag-chip {
+    display: inline-block;
+    padding: 1px 6px;
+    margin: 0 4px 2px 0;
+    border: 1px solid hsl(var(--border));
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    text-transform: lowercase;
+    line-height: 1.5;
   }
 
   /* Screen reader only - visually hidden but accessible */
