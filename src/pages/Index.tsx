@@ -5,6 +5,7 @@ import BakeryTable from '@/components/BakeryTable';
 import BakeryMap from '@/components/BakeryMap';
 import { bakeries } from '@/data/bakeries';
 import { filtersToSearchParams, searchParamsToFilters } from '@/lib/urlFilters';
+import { track } from '@/lib/analytics';
 
 const Index = () => {
   const [selectedBakeryName, setSelectedBakeryName] = useState<string | null>(null);
@@ -43,6 +44,23 @@ const Index = () => {
 
       return matchesFood && matchesMood && matchesHood;
     });
+  }, [selectedFoodTags, selectedMoodTags, selectedHoodTags]);
+
+  // Track filter usage (skip the initial render so shared filter links are not counted as use)
+  const filtersInitialised = useRef(false);
+  useEffect(() => {
+    if (!filtersInitialised.current) {
+      filtersInitialised.current = true;
+      return;
+    }
+    if (selectedFoodTags.length + selectedMoodTags.length + selectedHoodTags.length === 0) return;
+    track('filter-changed', {
+      food: selectedFoodTags.join(','),
+      mood: selectedMoodTags.join(','),
+      hood: selectedHoodTags.join(','),
+      results: filteredBakeries.length,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedFoodTags, selectedMoodTags, selectedHoodTags]);
 
   // Sync filter state to URL (without page reload)
@@ -140,6 +158,7 @@ const Index = () => {
         <BakeryTable
           bakeries={filteredBakeries}
           onSelectBakery={(name) => {
+            track('place-selected', { place: name, source: 'list' });
             setSelectedBakeryName(name);
             mapSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
           }}

@@ -31,6 +31,7 @@ import 'leaflet/dist/leaflet.css';
 import type { Bakery } from '@/data/bakeries';
 import MapFiltersOverlay from '@/components/MapFiltersOverlay';
 import MarkerClusterGroup from '@/components/MarkerClusterGroup';
+import { track } from '@/lib/analytics';
 
 // Custom marker icon (colored using design tokens)
 const markerIcon = new DivIcon({
@@ -445,6 +446,9 @@ const BakeryMap = ({
                 }}
                 // @ts-ignore - Custom option for cluster identification
                 bakeryName={bakery.name}
+                eventHandlers={{
+                  click: () => track('place-selected', { place: bakery.name, source: 'map' }),
+                }}
               >
                 <Popup>
                   <div className="text-sm">
@@ -452,6 +456,7 @@ const BakeryMap = ({
                       href={bakery.website || bakery.url}
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={() => track('outbound-click', { place: bakery.name, target: bakery.website ? 'website' : 'google-maps' })}
                       className={
                         bakery.temporarilyClosed
                           ? 'font-semibold text-muted-foreground hover:text-muted-foreground'
@@ -466,6 +471,7 @@ const BakeryMap = ({
                         href={bakery.url}
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={() => track('outbound-click', { place: bakery.name, target: 'google-maps' })}
                         className={
                           bakery.temporarilyClosed
                             ? 'text-xs text-muted-foreground hover:text-muted-foreground'
