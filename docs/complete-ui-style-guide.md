@@ -86,13 +86,13 @@ Every filter tag has its own colour, inside a family per category. The values li
 | Category | Family | Examples |
 |----------|--------|----------|
 | FOOD | Violet to pink | coffee `#8047DD`, new nordic `#FF1493`, danish `#FF366B`, for thought `#B0B0B0` (grey) |
-| MOOD | Orange to yellow | restaurant `#FF4400`, cafe `#FF925C`, cinema `#FFC600`, music `#FFFB8F` |
-| HOOD | Green to azure | albertslund `#00C261`, nørrebro `#00BBC2`, vesterbro `#0088C2`, nordhavn `#519160` |
+| MOOD | Cyan to blue to indigo | restaurant `#00C7C7`, cafe `#0078B8`, shop `#3C35CB`, hotel `#96A7FF` |
+| HOOD | Orange to yellow | sydhavn `#F55600`, amager `#FE9E0E`, østerbro `#FFBE2B`, frederiksberg `#FFF8B6` |
 
 - Tags are shown as chips with a 1px black outline, lowercase text, and the same colours in the table and in the filter dropdowns. Selected dropdown items get a thicker black outline.
 - Chip text is black or white, whichever has the higher contrast on the chip colour.
 - A tag without an assigned colour falls back to its category colour (FOOD pink, MOOD dark purple, HOOD orange). Add the new tag to `src/lib/tagColours.ts` and pick a colour that stays clearly different from its neighbours in the family.
-- Avoid dark blue in the FOOD and MOOD families. Avoid murky brown and olive tones in all families.
+- Keep MOOD clearly apart from the FOOD violets. Avoid murky brown and olive tones in all families.
 
 ---
 
