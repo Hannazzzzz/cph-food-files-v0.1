@@ -92,7 +92,7 @@ const PreRegister = () => {
             <button
               type="submit"
               disabled={status === 'sending'}
-              className="border border-black bg-gold px-[18px] py-2 text-sm font-bold text-black transition-colors hover:bg-accent hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-60"
+              className="border border-black bg-primary px-[18px] py-2 text-sm font-bold text-black transition-colors hover:bg-accent hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-60"
             >
               {status === 'sending' ? 'Sending...' : 'Send'}
             </button>
