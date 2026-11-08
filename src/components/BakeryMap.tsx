@@ -192,11 +192,12 @@ const BakeryMap = ({
       */}
       <style>{`
         [data-map-theme="cph-food-files"] .leaflet-container {
-          background: hsl(var(--background));
+          background: hsl(var(--muted));
+          border-top: 1px solid hsl(var(--border));
+          border-bottom: 1px solid hsl(var(--border));
         }
         [data-map-theme="cph-food-files"] .leaflet-tile {
-          filter: grayscale(1) contrast(0.9) brightness(1.15);
-          opacity: 0.92;
+          filter: grayscale(1) contrast(1.1) brightness(0.97);
         }
 
         /*
