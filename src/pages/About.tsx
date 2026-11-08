@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import PreRegister from '@/components/PreRegister';
 
 const About = () => {
   return (
@@ -57,6 +58,8 @@ const About = () => {
       </div>
       
       <hr style={{ margin: '30px 0' }} />
+
+      <PreRegister />
       
       <p className="text-label" style={{ marginTop: '10px' }}>
         © 2026 CPH Food Files · Hanna Zoon

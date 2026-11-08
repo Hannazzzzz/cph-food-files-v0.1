@@ -28,8 +28,14 @@ jobs:
       - run: npm run build
         env:
           VITE_CARTO_API_KEY: ${{ secrets.CARTO_API_KEY }}
-      - name: SPA fallback (404 -> index)
-        run: cp dist/index.html dist/404.html
+      # GitHub Pages answers unknown paths with 404.html and an HTTP 404 status, even
+      # though the app renders. 404.html stays as the fallback for genuinely unknown
+      # paths. Real routes get their own index.html so they return a proper 200.
+      - name: SPA fallback and real routes
+        run: |
+          cp dist/index.html dist/404.html
+          mkdir -p dist/about
+          cp dist/index.html dist/about/index.html
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
