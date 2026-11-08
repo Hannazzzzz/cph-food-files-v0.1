@@ -86,15 +86,15 @@ const PreRegister = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={status === 'sending'}
-              className="min-w-0 flex-1 border border-r-0 border-black bg-white px-2.5 py-2 text-sm placeholder:text-neutral-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-60"
+              className="min-w-0 flex-1 h-9 border border-r-0 border-black bg-white px-2.5 text-sm placeholder:text-neutral-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-60"
             />
             <input type="checkbox" name="botcheck" className="hidden" tabIndex={-1} autoComplete="off" />
             <button
               type="submit"
               disabled={status === 'sending'}
-              className="border border-black bg-primary px-[18px] py-2 text-sm font-bold text-black transition-colors hover:bg-accent hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-60"
+              className="border border-black bg-primary h-9 px-3 text-sm font-normal tracking-wide text-black transition-colors hover:bg-accent hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-60"
             >
-              {status === 'sending' ? 'Sending...' : 'Send'}
+              {status === 'sending' ? 'SENDING...' : 'SEND'}
             </button>
           </form>
           <p className="text-label m-0 mt-2" role="status">
