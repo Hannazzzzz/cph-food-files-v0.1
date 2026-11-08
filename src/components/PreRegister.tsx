@@ -2,7 +2,7 @@ import { useState, type FormEvent } from 'react';
 
 // Public access key from web3forms.com (safe to commit: it can only send to Hanna's inbox).
 // While this is still the placeholder, the sign-up block stays hidden.
-const WEB3FORMS_ACCESS_KEY = 'YOUR_ACCESS_KEY_HERE';
+const WEB3FORMS_ACCESS_KEY = '419241bc-3bb9-4082-8a2e-f50842225a45';
 
 // 254 is the maximum length of a valid email address, so no real address is cut off.
 const MAX_EMAIL_LENGTH = 254;
