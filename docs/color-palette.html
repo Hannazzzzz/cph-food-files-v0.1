@@ -8,7 +8,7 @@
         body {
             font-family: 'Courier New', monospace;
             padding: 40px;
-            background: #f5f5f5;
+            background: #ffffff;
         }
         h1 {
             font-size: 24px;
@@ -64,7 +64,7 @@
     </style>
 </head>
 <body>
-    <h1>CPH Food Files - Color Palette (VPRO Reference)</h1>
+    <h1>CPH Food Files - Color Palette</h1>
 
     <div class="palette">
         <div class="swatch">
@@ -95,20 +95,29 @@
         </div>
 
         <div class="swatch">
-            <div class="color-box" style="background: #8B4789;"></div>
+            <div class="color-box" style="background: #2E1A6B;"></div>
             <div class="color-info">
-                <div class="color-name">Purple</div>
-                <div class="color-hex">#8B4789</div>
-                <div class="color-rgb">RGB(139, 71, 137)</div>
+                <div class="color-name">Dark Purple</div>
+                <div class="color-hex">#2E1A6B</div>
+                <div class="color-rgb">RGB(46, 26, 107)</div>
             </div>
         </div>
 
         <div class="swatch">
-            <div class="color-box" style="background: #00CED1;"></div>
+            <div class="color-box" style="background: #FF8A00;"></div>
             <div class="color-info">
-                <div class="color-name">Cyan</div>
-                <div class="color-hex">#00CED1</div>
-                <div class="color-rgb">RGB(0, 206, 209)</div>
+                <div class="color-name">Orange</div>
+                <div class="color-hex">#FF8A00</div>
+                <div class="color-rgb">RGB(255, 138, 0)</div>
+            </div>
+        </div>
+
+        <div class="swatch">
+            <div class="color-box" style="background: #00B3E1;"></div>
+            <div class="color-info">
+                <div class="color-name">Sky Blue</div>
+                <div class="color-hex">#00B3E1</div>
+                <div class="color-rgb">RGB(0, 179, 225)</div>
             </div>
         </div>
 
@@ -131,32 +140,36 @@
         </div>
 
         <div class="swatch">
-            <div class="color-box" style="background: #F5F5DC;"></div>
+            <div class="color-box" style="background: #FFFFFF;"></div>
             <div class="color-info">
-                <div class="color-name">Beige/Cream</div>
-                <div class="color-hex">#F5F5DC</div>
-                <div class="color-rgb">RGB(245, 245, 220)</div>
+                <div class="color-name">White</div>
+                <div class="color-hex">#FFFFFF</div>
+                <div class="color-rgb">RGB(255, 255, 255)</div>
             </div>
         </div>
 
         <div class="swatch">
-            <div class="color-box" style="background: #8B7355;"></div>
+            <div class="color-box" style="background: #F2F2F2;"></div>
             <div class="color-info">
-                <div class="color-name">Brown</div>
-                <div class="color-hex">#8B7355</div>
-                <div class="color-rgb">RGB(139, 115, 85)</div>
+                <div class="color-name">Light Grey</div>
+                <div class="color-hex">#F2F2F2</div>
+                <div class="color-rgb">RGB(242, 242, 242)</div>
             </div>
         </div>
     </div>
 
     <div class="usage">
-        <h2>Recommended Usage (based on Design Direction)</h2>
-        <div class="usage-item"><strong>Electric Pink (#FF1493):</strong> Active filter buttons, selected states, interactive highlights</div>
-        <div class="usage-item"><strong>Deep Orange (#FF4500):</strong> Secondary interactive elements, hover states</div>
-        <div class="usage-item"><strong>Black (#000000):</strong> Text, borders, card outlines (1px thin borders)</div>
-        <div class="usage-item"><strong>Beige/Cream (#F5F5DC):</strong> Main background, "workstation grey" base</div>
-        <div class="usage-item"><strong>Purple, Cyan, Blue, Gold:</strong> Accent colors for tags, categories, or decorative elements</div>
-        <div class="usage-item"><strong>Brown:</strong> Subtle accents or secondary text</div>
+        <h2>Recommended Usage (current multicolour design)</h2>
+        <div class="usage-item"><strong>Electric Pink (#FF1493):</strong> FOOD filter button and base of the FOOD tag family</div>
+        <div class="usage-item"><strong>Dark Purple (#2E1A6B):</strong> MOOD filter button</div>
+        <div class="usage-item"><strong>Orange (#FF8A00):</strong> HOOD filter button</div>
+        <div class="usage-item"><strong>Sky Blue (#00B3E1):</strong> Signup Send button</div>
+        <div class="usage-item"><strong>Gold (#FFD700):</strong> All map pins and clusters</div>
+        <div class="usage-item"><strong>Deep Orange (#FF4500):</strong> Hover and active accent, link hover</div>
+        <div class="usage-item"><strong>Blue (#1E90FF):</strong> Links</div>
+        <div class="usage-item"><strong>Black (#000000):</strong> Text, borders, outlines (1px thin borders)</div>
+        <div class="usage-item"><strong>White (#FFFFFF):</strong> Page background. <strong>Light Grey (#F2F2F2):</strong> row hover, map placeholder</div>
+        <div class="usage-item"><strong>Tag colours:</strong> every filter tag has its own colour within its category family (FOOD violet to pink, MOOD orange to yellow, HOOD green to azure). See src/lib/tagColours.ts and the Tag Colours section of the UI style guide.</div>
     </div>
 </body>
 </html>
