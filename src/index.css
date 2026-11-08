@@ -28,11 +28,11 @@
     /* FOOD: Electric Pink #FF1493 = hsl(328, 100%, 54%) */
     --food: 328 100% 54%;
     --food-foreground: 0 0% 100%;
-    /* MOOD: Gold #FFD700 = hsl(51, 100%, 50%) */
-    --mood: 51 100% 50%;
-    --mood-foreground: 0 0% 0%;
-    /* HOOD: Sky blue #00B3E1 = hsl(192, 100%, 44%). Also used for the signup Send button. */
-    --hood: 192 100% 44%;
+    /* MOOD: Dark purple #2E1A6B = hsl(255, 61%, 26%) */
+    --mood: 255 61% 26%;
+    --mood-foreground: 0 0% 100%;
+    /* HOOD: Orange #FF8A00 = hsl(32, 100%, 50%). The signup Send button is sky blue #00B3E1, set in PreRegister.tsx. */
+    --hood: 32 100% 50%;
     --hood-foreground: 0 0% 0%;
 
     /* Map pins: Gold #FFD700. Selected/hovered pins add a black outline. */
@@ -79,12 +79,12 @@
     --accent-foreground: 0 0% 100%;
 
     /* Map filter category colors */
-    /* FOOD: Electric Pink, MOOD: Gold, HOOD: Cyan */
+    /* FOOD: Electric Pink, MOOD: Dark purple, HOOD: Orange */
     --food: 328 100% 54%;
     --food-foreground: 0 0% 100%;
-    --mood: 51 100% 50%;
-    --mood-foreground: 0 0% 0%;
-    --hood: 192 100% 44%;
+    --mood: 255 61% 26%;
+    --mood-foreground: 0 0% 100%;
+    --hood: 32 100% 50%;
     --hood-foreground: 0 0% 0%;
 
     --marker: 51 100% 50%;
