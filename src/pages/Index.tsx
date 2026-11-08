@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { ArrowUp } from 'lucide-react';
 import BakeryTable from '@/components/BakeryTable';
 import BakeryMap from '@/components/BakeryMap';
+import PreRegister from '@/components/PreRegister';
 import { bakeries } from '@/data/bakeries';
 import { filtersToSearchParams, searchParamsToFilters } from '@/lib/urlFilters';
 import { track } from '@/lib/analytics';
@@ -166,6 +167,8 @@ const Index = () => {
       </section>
 
       <footer className="mt-10">
+        <PreRegister />
+
         <p className="text-meta m-0" style={{ color: 'hsl(0 0% 40%)' }}>
           <em>
             CPH Food Files | My answers to 'Hanna, where do you go for ...?'<br />
