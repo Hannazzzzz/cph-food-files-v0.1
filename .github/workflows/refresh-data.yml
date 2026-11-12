@@ -59,13 +59,19 @@ jobs:
           total = len(rows)
           errors = sum(1 for r in rows if not (r.get('status') or 'success').startswith('success'))
           perm = sum(1 for r in rows if r.get('permanently_closed') == 'Yes')
-          print(f"{total} places, {errors} errors, {perm} permanently closed")
+          no_coords = sum(1 for r in rows
+                          if (r.get('status') or 'success').startswith('success')
+                          and r.get('permanently_closed') != 'Yes'
+                          and not ((r.get('latitude') or '').strip() and (r.get('longitude') or '').strip()))
+          print(f"{total} places, {errors} errors, {perm} permanently closed, {no_coords} without coordinates")
           if total < 100:
               sys.exit(f"Only {total} rows - refusing to commit a truncated file.")
           if errors / total > 0.15:
               sys.exit(f"{errors}/{total} errors (>15%) - refusing to commit a bad run.")
           if perm / total > 0.2:
               sys.exit(f"{perm}/{total} flagged permanently closed (>20%) - looks wrong, refusing to commit.")
+          if no_coords / total > 0.05:
+              sys.exit(f"{no_coords}/{total} places without coordinates (>5%) - map pins would vanish, refusing to commit.")
           EOF
       - name: Commit and push if changed
         if: github.event_name != 'push'
