@@ -11,7 +11,7 @@ import unittest
 from harvest_restaurants import (
     sniff_delimiter, read_places_csv, get_name_and_url, extract_place_id,
     force_english, extract_postal_code, get_neighborhood, detect_closure,
-    load_existing_tags, lookup_tags, dedupe_rows, save_results, OUTPUT_FIELDS,
+    load_existing_tags, lookup_tags, load_existing_coords, lookup_coords, dedupe_rows, save_results, OUTPUT_FIELDS,
 )
 
 URL_A = "https://www.google.com/maps/place/Hart/data=!4m2!3m1!1s0x4652531111111111:0xaaaaaaaaaaaaaaaa"
@@ -140,6 +140,68 @@ class TestTagPreservation(unittest.TestCase):
 
     def test_missing_file(self):
         self.assertEqual(load_existing_tags('/nonexistent/file.csv'), {})
+
+
+class TestCoordinatePreservation(unittest.TestCase):
+    """A scrape that misses coordinates must not wipe the old ones (Nov 2026: 93 pins vanished)."""
+    def _enriched(self):
+        return write_tmp(
+            'name,latitude,longitude,maps url,status\n'
+            'Hart,55.1,12.1,%s,success\n'
+            'Hart,55.2,12.2,%s,success\n'
+            'NoCoords,,,https://www.google.com/maps/place/N/data=!4m2!3m1!1s0x3:0x4,success\n' % (URL_A, URL_B))
+
+    def test_duplicate_names_keep_distinct_coords(self):
+        path = self._enriched()
+        coords = load_existing_coords(path)
+        self.assertEqual(lookup_coords(coords, 'Hart', URL_A), ('55.1', '12.1'))
+        self.assertEqual(lookup_coords(coords, 'Hart', URL_B), ('55.2', '12.2'))
+        os.remove(path)
+
+    def test_rename_keeps_coords_via_place_id(self):
+        path = self._enriched()
+        coords = load_existing_coords(path)
+        self.assertEqual(lookup_coords(coords, 'Hart (renamed)', URL_A), ('55.1', '12.1'))
+        os.remove(path)
+
+    def test_blank_coords_are_not_loaded(self):
+        path = self._enriched()
+        coords = load_existing_coords(path)
+        self.assertEqual(lookup_coords(coords, 'NoCoords', 'https://www.google.com/maps/place/N/data=!4m2!3m1!1s0x3:0x4'), ('', ''))
+        os.remove(path)
+
+    def test_missing_file(self):
+        self.assertEqual(load_existing_coords('/nonexistent/file.csv'), {})
+
+
+class TestGeocodeFallback(unittest.TestCase):
+    """Address lookup is the last resort for brand-new places without coordinates."""
+    def _geo(self, address, payload=None, exc=None):
+        from harvest_restaurants import geocode_address
+        def fake_fetch(url):
+            self.url = url
+            if exc:
+                raise exc
+            return payload
+        return geocode_address(address, fetch=fake_fetch)
+
+    def test_danish_address_is_found(self):
+        lat, lon = self._geo("Århusgade 48, 2100 København", '[{"lat": "55.7061815", "lon": "12.5818152"}]')
+        self.assertEqual((lat, lon), ('55.7061815', '12.5818152'))
+        self.assertIn('countrycodes=dk', self.url)
+
+    def test_result_outside_denmark_is_rejected(self):
+        self.assertEqual(self._geo("Somewhere", '[{"lat": "48.85", "lon": "2.35"}]'), ('', ''))
+
+    def test_no_result(self):
+        self.assertEqual(self._geo("Nowhere 1", '[]'), ('', ''))
+
+    def test_network_error_never_raises(self):
+        self.assertEqual(self._geo("Århusgade 48", exc=OSError("down")), ('', ''))
+
+    def test_blank_address_skips_lookup(self):
+        from harvest_restaurants import geocode_address
+        self.assertEqual(geocode_address('', fetch=lambda u: self.fail('should not fetch')), ('', ''))
 
 
 class TestDedupe(unittest.TestCase):

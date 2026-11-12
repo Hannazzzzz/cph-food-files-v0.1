@@ -22,7 +22,9 @@ import os
 import re
 import sys
 import time
+import json
 import logging
+import urllib.request
 from urllib.parse import urlparse, parse_qs, urlencode, urlunparse
 
 logging.basicConfig(
@@ -240,6 +242,87 @@ def load_existing_tags(path):
     return tags
 
 
+def load_existing_coords(path):
+    """Load latitude/longitude from a previous enriched CSV.
+
+    A place's coordinates do not change, so if a scrape fails to read them
+    (Google sometimes omits them from the page/URL) we keep the old values
+    instead of blanking them. Blank coordinates make the place disappear
+    from the map. Keyed like load_existing_tags.
+    """
+    coords = {}
+    if not path or not os.path.exists(path):
+        return coords
+    try:
+        for row in read_places_csv(path):
+            lat = (row.get('latitude') or '').strip()
+            lon = (row.get('longitude') or '').strip()
+            if not (lat and lon):
+                continue
+            name, url = get_name_and_url(row)
+            entry = (lat, lon)
+            place_id = extract_place_id(url)
+            if place_id:
+                coords[place_id] = entry
+            if name:
+                coords.setdefault(name, entry)
+        logging.info(f"Loaded existing coordinates for {len(coords)} keys")
+    except Exception as e:
+        logging.warning(f"Could not load existing coordinates: {e}")
+    return coords
+
+
+def lookup_coords(coords, name, url):
+    place_id = extract_place_id(url)
+    if place_id and place_id in coords:
+        return coords[place_id]
+    return coords.get(name, ('', ''))
+
+
+NOMINATIM_URL = 'https://nominatim.openstreetmap.org/search'
+NOMINATIM_UA = 'cph-food-files-geocoder (https://github.com/Hannazzzzz/cph-food-files-v0.1)'
+_last_geocode = [0.0]
+
+
+def _nominatim_fetch(url):
+    req = urllib.request.Request(url, headers={'User-Agent': NOMINATIM_UA})
+    with urllib.request.urlopen(req, timeout=15) as resp:
+        return resp.read().decode('utf-8')
+
+
+def geocode_address(address, fetch=None):
+    """Last-resort coordinates from the street address via OpenStreetMap.
+
+    Used only when Google gave no coordinates AND we have none from a
+    previous run (i.e. brand-new places). Free, no API key; Nominatim's
+    usage policy allows max 1 request/second, which we respect. Results
+    outside Denmark are rejected. Never raises; returns ('', '') on failure.
+    """
+    if not address:
+        return '', ''
+    fetch = fetch or _nominatim_fetch
+    wait = 1.1 - (time.time() - _last_geocode[0])
+    if wait > 0 and fetch is _nominatim_fetch:
+        time.sleep(wait)
+    query = urlencode({'q': address, 'countrycodes': 'dk', 'format': 'json', 'limit': 1})
+    try:
+        results = json.loads(fetch(f'{NOMINATIM_URL}?{query}'))
+    except Exception as e:
+        logging.warning(f"Geocoding failed for '{address}': {e}")
+        return '', ''
+    finally:
+        _last_geocode[0] = time.time()
+    if not results:
+        return '', ''
+    try:
+        lat, lon = float(results[0]['lat']), float(results[0]['lon'])
+    except (KeyError, TypeError, ValueError, IndexError):
+        return '', ''
+    if not (DK_LAT[0] <= lat <= DK_LAT[1] and DK_LON[0] <= lon <= DK_LON[1]):
+        return '', ''
+    return f'{lat:.7f}', f'{lon:.7f}'
+
+
 def lookup_tags(tags, name, url):
     place_id = extract_place_id(url)
     if place_id and place_id in tags:
@@ -292,6 +375,7 @@ class RestaurantHarvester:
         self.wait = WebDriverWait(self.driver, 10)
         self.consent_handled = False
         self.existing_tags = {}
+        self.existing_coords = {}
 
     # -- page helpers -------------------------------------------------------
 
@@ -443,6 +527,19 @@ class RestaurantHarvester:
                 if not any(core):
                     raise RuntimeError(
                         "no data extracted - consent wall or page structure change?")
+            # Coordinates never change: keep the previous ones rather than
+            # blanking them when Google omits them (blank = missing map pin).
+            if not (data['latitude'] and data['longitude']):
+                prev_lat, prev_lon = lookup_coords(self.existing_coords, name, url)
+                if prev_lat and prev_lon:
+                    data['latitude'], data['longitude'] = prev_lat, prev_lon
+                    logging.info(f"  -> Kept previous coordinates for {name}")
+            if not (data['latitude'] and data['longitude']):
+                data['latitude'], data['longitude'] = geocode_address(data['address'])
+                if data['latitude']:
+                    logging.info(f"  -> Coordinates for {name} looked up from address (OpenStreetMap)")
+                else:
+                    logging.warning(f"  -> NO COORDINATES for {name}: listed on site but no map pin")
             if not is_in_denmark(data['latitude'], data['longitude'], data['address']):
                 data['status'] = 'excluded: outside Denmark'
                 logging.warning(f"EXCLUDED (outside Denmark): {name} - {data['address']}")
@@ -457,6 +554,7 @@ class RestaurantHarvester:
 
     def process_csv(self, input_file, output_file, limit=None):
         self.existing_tags = load_existing_tags(output_file)
+        self.existing_coords = load_existing_coords(output_file)
 
         rows = dedupe_rows(read_places_csv(input_file))
         if limit:

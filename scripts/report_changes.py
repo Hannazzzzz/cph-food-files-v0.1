@@ -2,6 +2,7 @@
 """
 Compare two versions of the enriched CSV and report closure-flag changes:
 newly permanently closed, newly temporarily closed, and reopened places.
+Also lists visible places that have no coordinates (no map pin).
 Everything else (adds, removals, ratings, hours) is deliberately ignored
 for notification purposes; pass --all to include adds/removals too.
 
@@ -47,7 +48,20 @@ def compare(old_rows, new_rows):
         'added': added, 'removed': removed,
         'perm_closed': perm_closed, 'temp_closed': temp_closed,
         'reopened': reopened,
+        'missing_coords': missing_coordinates(new_rows),
     }
+
+
+def missing_coordinates(rows):
+    """Visible places (not permanently closed, not errored) with no map pin."""
+    out = []
+    for r in rows:
+        status = (r.get('status') or 'success').strip().lower()
+        if status != 'success' or flag(r, 'permanently_closed'):
+            continue
+        if not ((r.get('latitude') or '').strip() and (r.get('longitude') or '').strip()):
+            out.append(r)
+    return out
 
 
 def names(rows):
@@ -67,6 +81,11 @@ def render(changes, include_membership=False):
         lines.append(f"**Newly temporarily closed ({len(changes['temp_closed'])}):** {names(changes['temp_closed'])}")
     if changes['reopened']:
         lines.append(f"**Reopened ({len(changes['reopened'])}):** {names(changes['reopened'])}")
+    if changes.get('missing_coords'):
+        lines.append(f"**No map pin, coordinates not found ({len(changes['missing_coords'])}):** "
+                     f"{names(changes['missing_coords'])}. "
+                     "They are still in the list. To add a pin, fill in latitude/longitude for the row in "
+                     "`Favorite places_enriched.csv` (or ask Claude); it is kept from then on.")
     return '\n\n'.join(lines)
 
 
