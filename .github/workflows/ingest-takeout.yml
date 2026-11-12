@@ -19,7 +19,7 @@ jobs:
   ingest:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Find uploaded file
         id: find
         run: |
@@ -31,7 +31,7 @@ jobs:
             echo "Processing: $FILE"
             echo "file=$FILE" >> "$GITHUB_OUTPUT"
           fi
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         if: steps.find.outputs.file != ''
         with:
           python-version: '3.11'
