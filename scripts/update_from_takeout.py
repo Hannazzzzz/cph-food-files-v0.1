@@ -31,7 +31,7 @@ from datetime import date
 
 from harvest_restaurants import (
     read_places_csv, get_name_and_url, extract_place_id, dedupe_rows,
-    load_existing_tags, save_results, OUTPUT_FIELDS, sniff_delimiter,
+    load_existing_tags, load_existing_coords, save_results, OUTPUT_FIELDS, sniff_delimiter,
 )
 
 EXCLUSIONS_FILE = 'exclusions.csv'
@@ -158,6 +158,7 @@ def main():
     from harvest_restaurants import RestaurantHarvester
     harvester = RestaurantHarvester(headless=True)
     harvester.existing_tags = load_existing_tags(enriched_path)
+    harvester.existing_coords = load_existing_coords(enriched_path)
     results = []
     try:
         if new_only:
