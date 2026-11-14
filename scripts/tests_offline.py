@@ -56,6 +56,12 @@ class TestCsvReading(unittest.TestCase):
 
 
 class TestUrlHelpers(unittest.TestCase):
+    def test_backslashes_removed_from_url(self):
+        """zsh escapes '!' as '\\!'; such URLs don't open the place page."""
+        escaped = URL_A.replace('!', '\\!')
+        self.assertIn('\\!', escaped)
+        self.assertEqual(get_name_and_url({'name': 'Hart', 'maps url': escaped}), ('Hart', URL_A))
+
     def test_place_id(self):
         self.assertEqual(extract_place_id(URL_A), '0x4652531111111111:0xaaaaaaaaaaaaaaaa')
         self.assertIsNone(extract_place_id('https://maps.app.goo.gl/abc123'))
@@ -271,6 +277,40 @@ class TestDenmarkFilter(unittest.TestCase):
 
     def test_missing_everything_kept(self):
         self.assertTrue(self.f('', '', ''))
+
+
+class TestNotAPlacePage(unittest.TestCase):
+    """A link that opens a general map (no address) must not be saved as
+    success with the map's centre as coordinates (Mikkeller Bar, July 2026)."""
+
+    def _harvest(self, address):
+        from harvest_restaurants import RestaurantHarvester
+        h = object.__new__(RestaurantHarvester)
+        h.existing_tags, h.existing_coords = {}, {}
+        h.driver = type('D', (), {'get': lambda self, url: None})()
+        h._handle_consent = lambda: None
+        h._wait_for_place_page = lambda timeout=12: True
+        h._header_region_texts = lambda: []
+        h._find_text = lambda sel: '4.5' if 'F7nice' in sel else ''
+        h._find_attr = lambda sel, attr: ('Address: ' + address) if (address and 'address' in sel) else ''
+        h._extract_coordinates = lambda max_retries=3: ('55.869147', '11.228027')
+        import harvest_restaurants
+        orig_sleep = harvest_restaurants.time.sleep
+        harvest_restaurants.time.sleep = lambda s: None
+        try:
+            return h.harvest_restaurant('Mikkeller Bar', URL_A)
+        finally:
+            harvest_restaurants.time.sleep = orig_sleep
+
+    def test_no_address_is_a_failure(self):
+        data = self._harvest('')
+        self.assertTrue(data['status'].startswith('error'))
+        self.assertIn('no address', data['status'])
+
+    def test_with_address_still_succeeds(self):
+        data = self._harvest('Viktoriagade 8, B-C, 1655 København')
+        self.assertEqual(data['status'], 'success')
+        self.assertEqual(data['neighborhood'], 'Vesterbro')
 
 
 if __name__ == '__main__':
