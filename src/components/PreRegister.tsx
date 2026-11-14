@@ -63,7 +63,7 @@ const PreRegister = () => {
   }
 
   return (
-    <div className="mb-7 max-w-[460px]">
+    <div className="mb-7">
       {status === 'done' ? (
         <p className="m-0 font-bold" role="status">
           Thanks, you're on the list.
@@ -73,7 +73,7 @@ const PreRegister = () => {
           <p className="m-0 mb-2.5">
             Should I start writing reviews? Pre-register if you'd like to receive those.
           </p>
-          <form onSubmit={handleSubmit} className="flex">
+          <form onSubmit={handleSubmit} className="flex max-w-[460px]">
             <label htmlFor="preregister-email" className="sr-only">
               Email address
             </label>
