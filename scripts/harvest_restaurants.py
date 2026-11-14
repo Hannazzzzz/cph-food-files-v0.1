@@ -159,7 +159,18 @@ def get_name_and_url(row):
     lower = {k.lower(): v for k, v in row.items()}
     name = lower.get('title') or lower.get('name') or ''
     url = lower.get('url') or lower.get('maps url') or lower.get('maps_url') or ''
-    return name.strip(), url.strip()
+    return name.strip(), clean_maps_url(url)
+
+
+def clean_maps_url(url):
+    """Remove stray backslashes from a maps URL.
+
+    Shells such as zsh escape '!' as '\\!', and Google Maps URLs are full of
+    '!'. A URL like '.../data=\\!4m2\\!3m1...' does not open the place page:
+    Google shows a general map instead, and the scraper then read the map's
+    centre as the place's coordinates (Mikkeller Bar, July 2026).
+    """
+    return (url or '').replace('\\', '').strip()
 
 
 def extract_place_id(url):
@@ -527,6 +538,12 @@ class RestaurantHarvester:
                 if not any(core):
                     raise RuntimeError(
                         "no data extracted - consent wall or page structure change?")
+                # Without an address this is not a place page (e.g. a broken
+                # link that opens a general map). Any coordinates found would
+                # be the map's centre, not the place, so don't save them.
+                if not data['address']:
+                    raise RuntimeError(
+                        "no address - link may not open a place page")
             # Coordinates never change: keep the previous ones rather than
             # blanking them when Google omits them (blank = missing map pin).
             if not (data['latitude'] and data['longitude']):
