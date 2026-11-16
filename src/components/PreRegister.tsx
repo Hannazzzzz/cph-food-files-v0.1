@@ -102,7 +102,7 @@ const PreRegister = () => {
               ? 'Please wait a minute before trying again.'
               : status === 'error'
                 ? 'Something went wrong. Please try again.'
-                : 'Only used to send you reviews.'}
+                : ''}
           </p>
         </>
       )}
