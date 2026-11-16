@@ -1,0 +1,32 @@
+name: Bug report
+description: Something on cphfoodfiles.dk is broken or wrong (bug, broken link, closed place, wrong details)
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for helping keep CPH Food Files accurate. A few details below are enough.
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of problem is it?
+      options:
+        - Something on the site is broken
+        - Broken link
+        - A place has closed or moved
+        - Wrong details (hours, address, tags)
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: Which place or page, what you expected and what you saw instead.
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Device and browser (optional)
+      placeholder: e.g. iPhone, Safari
